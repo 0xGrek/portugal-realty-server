@@ -46,9 +46,13 @@ def _init_db():
 def login_required(f):
     @wraps(f)
     def decorated(*args, **kwargs):
-        if not session.get("authed"):
-            return jsonify({"error": "unauthorized"}), 401
-        return f(*args, **kwargs)
+        # Check session OR X-Password header
+        if session.get("authed"):
+            return f(*args, **kwargs)
+        pw = request.headers.get("X-Password", "")
+        if pw == PASSWORD:
+            return f(*args, **kwargs)
+        return jsonify({"error": "unauthorized"}), 401
     return decorated
 
 
