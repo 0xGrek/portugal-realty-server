@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Portugal Realty</title>
+<style>
+body { font-family: -apple-system, sans-serif; background: #1a237e; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
+.box { background: white; padding: 30px; border-radius: 16px; text-align: center; max-width: 320px; width: 90%; }
+h2 { color: #1a237e; margin-bottom: 20px; }
+input { width: 100%; padding: 12px; border: 2px solid #ccc; border-radius: 8px; font-size: 16px; margin-bottom: 12px; box-sizing: border-box; }
+button { width: 100%; padding: 12px; background: #1a237e; color: white; border: none; border-radius: 8px; font-size: 16px; font-weight: 600; cursor: pointer; }
+.err { color: #c62828; font-size: 13px; margin-top: 8px; }
+</style></head>
+<body><div class="box">
+<h2>Portugal Realty</h2>
+<input type="password" id="pw" placeholder="Пароль" autofocus>
+<button onclick="doLogin()">Войти</button>
+<div id="err" class="err"></div>
+</div>
+<script>
+function doLogin() {
+  fetch('/api/login', {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({password: document.getElementById('pw').value}),
+    credentials: 'same-origin'
+  }).then(function(r) {
+    if (r.ok) { window.location.href = '/'; }
+    else { document.getElementById('err').textContent = 'Неверный пароль'; }
+  });
+}
+document.getElementById('pw').addEventListener('keydown', function(e) {
+  if (e.key === 'Enter') doLogin();
+});
+</script>
+</body></html>

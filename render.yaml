@@ -1,0 +1,11 @@
+services:
+  - type: web
+    name: portugal-realty
+    runtime: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn app:app --bind 0.0.0.0:$PORT
+    envVars:
+      - key: APP_PASSWORD
+        value: "assdt423423/@31231fsda!!212121"
+      - key: SECRET_KEY
+        value: "pr_render_secret_2026_xyz"
