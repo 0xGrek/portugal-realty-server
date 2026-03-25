@@ -15,7 +15,7 @@ app.secret_key = os.getenv("SECRET_KEY", "pr_secret_2026_render")
 DB_PATH = Path(__file__).parent / "data" / "shared.db"
 DB_PATH.parent.mkdir(exist_ok=True)
 
-PASSWORD = os.getenv("APP_PASSWORD", "assdt423423/@31231fsda!!212121")
+PASSWORD = os.getenv("APP_PASSWORD", "realty2026portugalrealty2026portugalrealty2026portugal")
 
 
 def _get_conn():
