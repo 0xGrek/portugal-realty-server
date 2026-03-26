@@ -74,7 +74,7 @@ def login():
 @login_required
 def get_state():
     conn = _get_conn()
-    favs, maybe, blocked = {}, {}, {}
+    favs, maybe, blocked, contacted = {}, {}, {}, {}
     for row in conn.execute("SELECT listing_id, category FROM shared_favorites"):
         if row["category"] == "fav":
             favs[row["listing_id"]] = True
@@ -82,11 +82,13 @@ def get_state():
             maybe[row["listing_id"]] = True
         elif row["category"] == "blocked":
             blocked[row["listing_id"]] = True
+        elif row["category"] == "contacted":
+            contacted[row["listing_id"]] = True
     notes = {}
     for row in conn.execute("SELECT listing_id, note FROM shared_notes"):
         notes[row["listing_id"]] = row["note"]
     conn.close()
-    return jsonify({"favs": favs, "maybe": maybe, "blocked": blocked, "notes": notes})
+    return jsonify({"favs": favs, "maybe": maybe, "blocked": blocked, "contacted": contacted, "notes": notes})
 
 
 @app.route("/api/fav/<lid>", methods=["POST", "DELETE"])
@@ -108,6 +110,18 @@ def toggle_maybe(lid):
     conn.execute("DELETE FROM shared_favorites WHERE listing_id = ?", (lid,))
     if request.method == "POST":
         conn.execute("INSERT INTO shared_favorites (listing_id, category) VALUES (?, 'maybe')", (lid,))
+    conn.commit()
+    conn.close()
+    return jsonify({"ok": True})
+
+
+@app.route("/api/contacted/<lid>", methods=["POST", "DELETE"])
+@login_required
+def toggle_contacted(lid):
+    conn = _get_conn()
+    conn.execute("DELETE FROM shared_favorites WHERE listing_id = ?", (lid,))
+    if request.method == "POST":
+        conn.execute("INSERT INTO shared_favorites (listing_id, category) VALUES (?, 'contacted')", (lid,))
     conn.commit()
     conn.close()
     return jsonify({"ok": True})
