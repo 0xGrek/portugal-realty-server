@@ -9,3 +9,5 @@ services:
         value: "assdt423423/@31231fsda!!212121"
       - key: SECRET_KEY
         value: "pr_render_secret_2026_xyz"
+      - key: NEON_DATABASE_URL
+        value: "postgresql://neondb_owner:npg_uay0br3MkvZf@ep-red-thunder-agbl6hl3-pooler.c-2.eu-central-1.aws.neon.tech/neondb?sslmode=require"

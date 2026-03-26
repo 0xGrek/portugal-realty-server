@@ -1,52 +1,26 @@
 """Portugal Realty — cloud backend for shared favorites/notes.
-Deployed on Render.com free tier.
+Uses Neon PostgreSQL — data persists across Render deploys.
 """
-import json
 import os
-import sqlite3
 from functools import wraps
-from pathlib import Path
 
+import psycopg2
 from flask import Flask, jsonify, redirect, request, send_from_directory, session
 
 app = Flask(__name__, static_folder="static")
-app.secret_key = os.getenv("SECRET_KEY", "pr_secret_2026_render")
+app.secret_key = os.getenv("SECRET_KEY", "pr_render_secret_2026_xyz")
 
-DB_PATH = Path(__file__).parent / "data" / "shared.db"
-DB_PATH.parent.mkdir(exist_ok=True)
-
-PASSWORD = os.getenv("APP_PASSWORD", "realty2026portugalrealty2026portugalrealty2026portugal")
+NEON_URL = os.environ["NEON_DATABASE_URL"]
+PASSWORD = os.getenv("APP_PASSWORD", "assdt423423/@31231fsda!!212121")
 
 
 def _get_conn():
-    conn = sqlite3.connect(str(DB_PATH))
-    conn.row_factory = sqlite3.Row
-    conn.execute("PRAGMA journal_mode=WAL")
-    return conn
-
-
-def _init_db():
-    conn = _get_conn()
-    conn.executescript("""
-        CREATE TABLE IF NOT EXISTS shared_favorites (
-            listing_id TEXT PRIMARY KEY,
-            category TEXT NOT NULL DEFAULT 'fav',
-            created_at TEXT DEFAULT CURRENT_TIMESTAMP
-        );
-        CREATE TABLE IF NOT EXISTS shared_notes (
-            listing_id TEXT PRIMARY KEY,
-            note TEXT NOT NULL,
-            created_at TEXT DEFAULT CURRENT_TIMESTAMP
-        );
-    """)
-    conn.commit()
-    conn.close()
+    return psycopg2.connect(NEON_URL)
 
 
 def login_required(f):
     @wraps(f)
     def decorated(*args, **kwargs):
-        # Check session OR X-Password header
         if session.get("authed"):
             return f(*args, **kwargs)
         pw = request.headers.get("X-Password", "")
@@ -74,84 +48,82 @@ def login():
 @login_required
 def get_state():
     conn = _get_conn()
+    cur = conn.cursor()
     favs, maybe, blocked, contacted = {}, {}, {}, {}
-    for row in conn.execute("SELECT listing_id, category FROM shared_favorites"):
-        if row["category"] == "fav":
-            favs[row["listing_id"]] = True
-        elif row["category"] == "maybe":
-            maybe[row["listing_id"]] = True
-        elif row["category"] == "blocked":
-            blocked[row["listing_id"]] = True
-        elif row["category"] == "contacted":
-            contacted[row["listing_id"]] = True
+    cur.execute("SELECT listing_id, category FROM shared_favorites")
+    for row in cur.fetchall():
+        lid, cat = row
+        if cat == "fav":
+            favs[lid] = True
+        elif cat == "maybe":
+            maybe[lid] = True
+        elif cat == "blocked":
+            blocked[lid] = True
+        elif cat == "contacted":
+            contacted[lid] = True
+
     notes = {}
-    for row in conn.execute("SELECT listing_id, note FROM shared_notes"):
-        notes[row["listing_id"]] = row["note"]
+    cur.execute("SELECT listing_id, note FROM shared_notes")
+    for row in cur.fetchall():
+        notes[row[0]] = row[1]
+
     conn.close()
     return jsonify({"favs": favs, "maybe": maybe, "blocked": blocked, "contacted": contacted, "notes": notes})
+
+
+def _set_category(listing_id, category):
+    conn = _get_conn()
+    cur = conn.cursor()
+    cur.execute("DELETE FROM shared_favorites WHERE listing_id = %s", (listing_id,))
+    if request.method == "POST":
+        cur.execute("INSERT INTO shared_favorites (listing_id, category) VALUES (%s, %s)", (listing_id, category))
+    conn.commit()
+    conn.close()
+    return jsonify({"ok": True})
 
 
 @app.route("/api/fav/<lid>", methods=["POST", "DELETE"])
 @login_required
 def toggle_fav(lid):
-    conn = _get_conn()
-    conn.execute("DELETE FROM shared_favorites WHERE listing_id = ?", (lid,))
-    if request.method == "POST":
-        conn.execute("INSERT INTO shared_favorites (listing_id, category) VALUES (?, 'fav')", (lid,))
-    conn.commit()
-    conn.close()
-    return jsonify({"ok": True})
-
-
-@app.route("/api/maybe/<lid>", methods=["POST", "DELETE"])
-@login_required
-def toggle_maybe(lid):
-    conn = _get_conn()
-    conn.execute("DELETE FROM shared_favorites WHERE listing_id = ?", (lid,))
-    if request.method == "POST":
-        conn.execute("INSERT INTO shared_favorites (listing_id, category) VALUES (?, 'maybe')", (lid,))
-    conn.commit()
-    conn.close()
-    return jsonify({"ok": True})
+    return _set_category(lid, "fav")
 
 
 @app.route("/api/contacted/<lid>", methods=["POST", "DELETE"])
 @login_required
 def toggle_contacted(lid):
-    conn = _get_conn()
-    conn.execute("DELETE FROM shared_favorites WHERE listing_id = ?", (lid,))
-    if request.method == "POST":
-        conn.execute("INSERT INTO shared_favorites (listing_id, category) VALUES (?, 'contacted')", (lid,))
-    conn.commit()
-    conn.close()
-    return jsonify({"ok": True})
+    return _set_category(lid, "contacted")
+
+
+@app.route("/api/maybe/<lid>", methods=["POST", "DELETE"])
+@login_required
+def toggle_maybe(lid):
+    return _set_category(lid, "maybe")
 
 
 @app.route("/api/block/<lid>", methods=["POST", "DELETE"])
 @login_required
 def toggle_block(lid):
-    conn = _get_conn()
-    conn.execute("DELETE FROM shared_favorites WHERE listing_id = ?", (lid,))
-    if request.method == "POST":
-        conn.execute("INSERT INTO shared_favorites (listing_id, category) VALUES (?, 'blocked')", (lid,))
-    conn.commit()
-    conn.close()
-    return jsonify({"ok": True})
+    return _set_category(lid, "blocked")
 
 
 @app.route("/api/note/<lid>", methods=["POST", "DELETE"])
 @login_required
 def save_note(lid):
     conn = _get_conn()
+    cur = conn.cursor()
     if request.method == "POST":
         data = request.get_json() or {}
         note = data.get("note", "").strip()
         if note:
-            conn.execute("INSERT OR REPLACE INTO shared_notes (listing_id, note) VALUES (?, ?)", (lid, note))
+            cur.execute(
+                "INSERT INTO shared_notes (listing_id, note) VALUES (%s, %s) "
+                "ON CONFLICT (listing_id) DO UPDATE SET note = %s",
+                (lid, note, note),
+            )
         else:
-            conn.execute("DELETE FROM shared_notes WHERE listing_id = ?", (lid,))
+            cur.execute("DELETE FROM shared_notes WHERE listing_id = %s", (lid,))
     else:
-        conn.execute("DELETE FROM shared_notes WHERE listing_id = ?", (lid,))
+        cur.execute("DELETE FROM shared_notes WHERE listing_id = %s", (lid,))
     conn.commit()
     conn.close()
     return jsonify({"ok": True})
@@ -165,8 +137,6 @@ def index():
         return send_from_directory("static", "login.html")
     return send_from_directory("static", "index.html")
 
-
-_init_db()
 
 if __name__ == "__main__":
     from datetime import timedelta
