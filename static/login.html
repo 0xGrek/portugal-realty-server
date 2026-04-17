@@ -1,34 +1,139 @@
 <!DOCTYPE html>
-<html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Portugal Realty</title>
-<style>
-body { font-family: -apple-system, sans-serif; background: #1a237e; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
-.box { background: white; padding: 30px; border-radius: 16px; text-align: center; max-width: 320px; width: 90%; }
-h2 { color: #1a237e; margin-bottom: 20px; }
-input { width: 100%; padding: 12px; border: 2px solid #ccc; border-radius: 8px; font-size: 16px; margin-bottom: 12px; box-sizing: border-box; }
-button { width: 100%; padding: 12px; background: #1a237e; color: white; border: none; border-radius: 8px; font-size: 16px; font-weight: 600; cursor: pointer; }
-.err { color: #c62828; font-size: 13px; margin-top: 8px; }
-</style></head>
-<body><div class="box">
-<h2>Portugal Realty</h2>
-<input type="password" id="pw" placeholder="Пароль" autofocus>
-<button onclick="doLogin()">Войти</button>
-<div id="err" class="err"></div>
-</div>
-<script>
-function doLogin() {
-  fetch('/api/login', {
-    method: 'POST',
-    headers: {'Content-Type': 'application/json'},
-    body: JSON.stringify({password: document.getElementById('pw').value}),
-    credentials: 'same-origin'
-  }).then(function(r) {
-    if (r.ok) { localStorage.setItem('pr_pwd', document.getElementById('pw').value); window.location.href = '/'; }
-    else { document.getElementById('err').textContent = 'Неверный пароль'; }
-  });
-}
-document.getElementById('pw').addEventListener('keydown', function(e) {
-  if (e.key === 'Enter') doLogin();
-});
-</script>
-</body></html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Portugal Realty — Login</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: linear-gradient(135deg, #1a237e 0%, #283593 100%);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      margin: 0;
+      padding: 20px;
+    }
+    .box {
+      background: #fff;
+      padding: 40px 32px;
+      border-radius: 16px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+      width: 100%;
+      max-width: 360px;
+    }
+    h2 {
+      color: #1a237e;
+      margin: 0 0 8px 0;
+      text-align: center;
+      font-size: 24px;
+    }
+    .subtitle {
+      color: #666;
+      text-align: center;
+      margin-bottom: 28px;
+      font-size: 14px;
+    }
+    label {
+      display: block;
+      font-size: 13px;
+      color: #444;
+      margin-bottom: 6px;
+      font-weight: 500;
+    }
+    input {
+      width: 100%;
+      padding: 12px 14px;
+      border: 2px solid #ddd;
+      border-radius: 8px;
+      font-size: 15px;
+      margin-bottom: 16px;
+      transition: border-color 0.15s;
+    }
+    input:focus {
+      outline: none;
+      border-color: #1a237e;
+    }
+    button {
+      width: 100%;
+      padding: 13px;
+      background: #1a237e;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.15s;
+    }
+    button:hover { background: #283593; }
+    button:disabled { background: #9fa8da; cursor: not-allowed; }
+    .err {
+      color: #c62828;
+      font-size: 13px;
+      margin-top: 12px;
+      text-align: center;
+      min-height: 18px;
+    }
+  </style>
+</head>
+<body>
+  <div class="box">
+    <h2>Portugal Realty</h2>
+    <div class="subtitle">Sign in to continue</div>
+
+    <form id="loginForm" autocomplete="on">
+      <label for="username">Username</label>
+      <input type="text" id="username" name="username" autocomplete="username" autofocus required>
+
+      <label for="password">Password</label>
+      <input type="password" id="password" name="password" autocomplete="current-password" required>
+
+      <button type="submit" id="submitBtn">Sign In</button>
+      <div id="err" class="err"></div>
+    </form>
+  </div>
+
+  <script>
+    const form = document.getElementById('loginForm');
+    const errEl = document.getElementById('err');
+    const btn = document.getElementById('submitBtn');
+
+    form.addEventListener('submit', async function (e) {
+      e.preventDefault();
+      errEl.textContent = '';
+      btn.disabled = true;
+      btn.textContent = 'Signing in...';
+
+      const username = document.getElementById('username').value.trim();
+      const password = document.getElementById('password').value;
+
+      try {
+        const r = await fetch('/api/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ username, password }),
+          credentials: 'same-origin'
+        });
+        const data = await r.json().catch(function () { return {}; });
+
+        if (r.ok) {
+          if (data.csrf_token) {
+            try { sessionStorage.setItem('csrf_token', data.csrf_token); } catch (e) {}
+          }
+          window.location.href = '/';
+        } else {
+          errEl.textContent = data.error || 'Invalid credentials';
+        }
+      } catch (err) {
+        errEl.textContent = 'Network error. Try again.';
+      } finally {
+        btn.disabled = false;
+        btn.textContent = 'Sign In';
+      }
+    });
+  </script>
+</body>
+</html>
