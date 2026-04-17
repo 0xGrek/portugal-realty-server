@@ -46,19 +46,26 @@ def _init_schema():
                 updated_at TIMESTAMPTZ DEFAULT NOW()
             )
         """)
-        # Backfill UNIQUE constraint if old schema lacks it (safe no-op when already present).
+        # Backfill UNIQUE constraint on legacy schemas.
+        # 1) Dedup existing rows (keep latest by created_at, fall back to ctid).
+        # 2) Add UNIQUE only if missing. Wrap in WHEN OTHERS so app never fails to boot.
         cur.execute("""
             DO $$
             BEGIN
                 IF NOT EXISTS (
                     SELECT 1 FROM pg_constraint
                     WHERE conname = 'shared_favorites_listing_id_key'
+                      AND conrelid = 'shared_favorites'::regclass
                 ) THEN
                     BEGIN
+                        DELETE FROM shared_favorites a
+                        USING shared_favorites b
+                        WHERE a.ctid < b.ctid
+                          AND a.listing_id = b.listing_id;
                         ALTER TABLE shared_favorites
                         ADD CONSTRAINT shared_favorites_listing_id_key UNIQUE (listing_id);
-                    EXCEPTION WHEN duplicate_table OR duplicate_object OR invalid_table_definition THEN
-                        NULL;
+                    EXCEPTION WHEN OTHERS THEN
+                        RAISE NOTICE 'shared_favorites unique backfill skipped: %', SQLERRM;
                     END;
                 END IF;
             END$$;
