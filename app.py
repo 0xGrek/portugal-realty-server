@@ -99,38 +99,39 @@ def login():
 @app.route("/api/state")
 @login_required
 def get_state():
-    conn = _get_conn()
-    cur = conn.cursor()
     favs, maybe, blocked, contacted = {}, {}, {}, {}
-    cur.execute("SELECT listing_id, category FROM shared_favorites")
-    for row in cur.fetchall():
-        lid, cat = row
-        if cat == "fav":
-            favs[lid] = True
-        elif cat == "maybe":
-            maybe[lid] = True
-        elif cat == "blocked":
-            blocked[lid] = True
-        elif cat == "contacted":
-            contacted[lid] = True
-
     notes = {}
-    cur.execute("SELECT listing_id, note FROM shared_notes")
-    for row in cur.fetchall():
-        notes[row[0]] = row[1]
+    with _get_conn() as conn:
+        cur = conn.cursor()
+        cur.execute("SELECT listing_id, category FROM shared_favorites")
+        for row in cur.fetchall():
+            lid, cat = row
+            if cat == "fav":
+                favs[lid] = True
+            elif cat == "maybe":
+                maybe[lid] = True
+            elif cat == "blocked":
+                blocked[lid] = True
+            elif cat == "contacted":
+                contacted[lid] = True
 
-    conn.close()
+        cur.execute("SELECT listing_id, note FROM shared_notes")
+        for row in cur.fetchall():
+            notes[row[0]] = row[1]
     return jsonify({"favs": favs, "maybe": maybe, "blocked": blocked, "contacted": contacted, "notes": notes})
 
 
 def _set_category(listing_id, category):
-    conn = _get_conn()
-    cur = conn.cursor()
-    cur.execute("DELETE FROM shared_favorites WHERE listing_id = %s", (listing_id,))
-    if request.method == "POST":
-        cur.execute("INSERT INTO shared_favorites (listing_id, category) VALUES (%s, %s)", (listing_id, category))
-    conn.commit()
-    conn.close()
+    with _get_conn() as conn:
+        cur = conn.cursor()
+        cur.execute("DELETE FROM shared_favorites WHERE listing_id = %s", (listing_id,))
+        if request.method == "POST":
+            cur.execute(
+                "INSERT INTO shared_favorites (listing_id, category) VALUES (%s, %s) "
+                "ON CONFLICT (listing_id) DO NOTHING",
+                (listing_id, category),
+            )
+        conn.commit()
     return jsonify({"ok": True})
 
 
