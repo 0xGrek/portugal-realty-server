@@ -8,10 +8,12 @@ import psycopg2
 from flask import Flask, jsonify, redirect, request, send_from_directory, session
 
 app = Flask(__name__, static_folder="static")
-app.secret_key = os.getenv("SECRET_KEY", "pr_render_secret_2026_xyz")
+app.secret_key = os.getenv("SECRET_KEY")
 
-NEON_URL = os.environ["NEON_DATABASE_URL"]
-PASSWORD = os.getenv("APP_PASSWORD", "assdt423423/@31231fsda!!212121")
+NEON_URL = os.getenv("NEON_DATABASE_URL")
+PASSWORD = os.getenv("APP_PASSWORD")
+if not app.secret_key or not NEON_URL or not PASSWORD:
+    raise RuntimeError("Missing required env vars: SECRET_KEY, NEON_DATABASE_URL, APP_PASSWORD")
 
 
 def _get_conn():

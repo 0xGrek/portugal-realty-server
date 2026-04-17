@@ -6,8 +6,8 @@ services:
     startCommand: gunicorn app:app --bind 0.0.0.0:$PORT
     envVars:
       - key: APP_PASSWORD
-        value: "assdt423423/@31231fsda!!212121"
+        sync: false
       - key: SECRET_KEY
-        value: "pr_render_secret_2026_xyz"
+        sync: false
       - key: NEON_DATABASE_URL
-        value: "postgresql://neondb_owner:npg_uay0br3MkvZf@ep-red-thunder-agbl6hl3-pooler.c-2.eu-central-1.aws.neon.tech/neondb?sslmode=require"
+        sync: false
