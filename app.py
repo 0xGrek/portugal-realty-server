@@ -1,7 +1,9 @@
 """Portugal Realty — cloud backend for shared favorites/notes.
 Uses Neon PostgreSQL — data persists across Render deploys.
 """
+import hmac
 import os
+from contextlib import contextmanager
 from functools import wraps
 
 import psycopg2
@@ -16,8 +18,55 @@ if not app.secret_key or not NEON_URL or not PASSWORD:
     raise RuntimeError("Missing required env vars: SECRET_KEY, NEON_DATABASE_URL, APP_PASSWORD")
 
 
+@contextmanager
 def _get_conn():
-    return psycopg2.connect(NEON_URL)
+    """Context manager — guarantees connection close even on exception."""
+    conn = psycopg2.connect(NEON_URL)
+    try:
+        yield conn
+    finally:
+        conn.close()
+
+
+def _init_schema():
+    """Bootstrap schema — idempotent. UNIQUE(listing_id) prevents duplicate rows."""
+    with _get_conn() as conn:
+        cur = conn.cursor()
+        cur.execute("""
+            CREATE TABLE IF NOT EXISTS shared_favorites (
+                listing_id TEXT PRIMARY KEY,
+                category TEXT NOT NULL,
+                created_at TIMESTAMPTZ DEFAULT NOW()
+            )
+        """)
+        cur.execute("""
+            CREATE TABLE IF NOT EXISTS shared_notes (
+                listing_id TEXT PRIMARY KEY,
+                note TEXT NOT NULL,
+                updated_at TIMESTAMPTZ DEFAULT NOW()
+            )
+        """)
+        # Backfill UNIQUE constraint if old schema lacks it (safe no-op when already present).
+        cur.execute("""
+            DO $$
+            BEGIN
+                IF NOT EXISTS (
+                    SELECT 1 FROM pg_constraint
+                    WHERE conname = 'shared_favorites_listing_id_key'
+                ) THEN
+                    BEGIN
+                        ALTER TABLE shared_favorites
+                        ADD CONSTRAINT shared_favorites_listing_id_key UNIQUE (listing_id);
+                    EXCEPTION WHEN duplicate_table OR duplicate_object OR invalid_table_definition THEN
+                        NULL;
+                    END;
+                END IF;
+            END$$;
+        """)
+        conn.commit()
+
+
+_init_schema()
 
 
 def login_required(f):
@@ -26,7 +75,7 @@ def login_required(f):
         if session.get("authed"):
             return f(*args, **kwargs)
         pw = request.headers.get("X-Password", "")
-        if pw == PASSWORD:
+        if hmac.compare_digest(pw, PASSWORD):
             return f(*args, **kwargs)
         return jsonify({"error": "unauthorized"}), 401
     return decorated
@@ -37,7 +86,8 @@ def login_required(f):
 @app.route("/api/login", methods=["POST"])
 def login():
     data = request.get_json() or {}
-    if data.get("password") == PASSWORD:
+    submitted = data.get("password") or ""
+    if hmac.compare_digest(submitted, PASSWORD):
         session["authed"] = True
         session.permanent = True
         return jsonify({"ok": True})
