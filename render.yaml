@@ -7,6 +7,8 @@ services:
     envVars:
       - key: APP_PASSWORD
         sync: false
+      - key: APP_ADMIN_PASSWORD
+        sync: false
       - key: SECRET_KEY
         sync: false
       - key: NEON_DATABASE_URL
