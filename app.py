@@ -162,23 +162,22 @@ def toggle_block(lid):
 @app.route("/api/note/<lid>", methods=["POST", "DELETE"])
 @login_required
 def save_note(lid):
-    conn = _get_conn()
-    cur = conn.cursor()
-    if request.method == "POST":
-        data = request.get_json() or {}
-        note = data.get("note", "").strip()
-        if note:
-            cur.execute(
-                "INSERT INTO shared_notes (listing_id, note) VALUES (%s, %s) "
-                "ON CONFLICT (listing_id) DO UPDATE SET note = %s",
-                (lid, note, note),
-            )
+    with _get_conn() as conn:
+        cur = conn.cursor()
+        if request.method == "POST":
+            data = request.get_json() or {}
+            note = data.get("note", "").strip()
+            if note:
+                cur.execute(
+                    "INSERT INTO shared_notes (listing_id, note) VALUES (%s, %s) "
+                    "ON CONFLICT (listing_id) DO UPDATE SET note = %s",
+                    (lid, note, note),
+                )
+            else:
+                cur.execute("DELETE FROM shared_notes WHERE listing_id = %s", (lid,))
         else:
             cur.execute("DELETE FROM shared_notes WHERE listing_id = %s", (lid,))
-    else:
-        cur.execute("DELETE FROM shared_notes WHERE listing_id = %s", (lid,))
-    conn.commit()
-    conn.close()
+        conn.commit()
     return jsonify({"ok": True})
 
 
