@@ -331,6 +331,14 @@ def logout():
     return redirect(url_for("login_page"))
 
 
+@app.route("/api/logout", methods=["POST"])
+@csrf_required
+def api_logout():
+    """JSON-friendly logout. CSRF-protected; frontend redirects after ok:true."""
+    session.clear()
+    return jsonify({"ok": True})
+
+
 @app.route("/api/me")
 @login_required
 def me():
