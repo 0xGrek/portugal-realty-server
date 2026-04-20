@@ -759,8 +759,12 @@ def static_files(path):
 
 
 # --- Serve listings/ directory (server-synced frontend) ---
+# Files synced into render_server/static/listings/ by sync_to_render.py.
+# Falls back to sibling ../listings/ dir for local dev without sync.
 from pathlib import Path as _Path
-_LISTINGS_DIR = _Path(__file__).parent.parent / "listings"
+_LISTINGS_DIR = _Path(__file__).parent / "static" / "listings"
+if not _LISTINGS_DIR.exists():
+    _LISTINGS_DIR = _Path(__file__).parent.parent / "listings"
 
 
 @app.route("/listings/")
