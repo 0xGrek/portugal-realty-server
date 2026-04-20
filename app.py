@@ -758,5 +758,22 @@ def static_files(path):
     return send_from_directory("static", path)
 
 
+# --- Serve listings/ directory (server-synced frontend) ---
+from pathlib import Path as _Path
+_LISTINGS_DIR = _Path(__file__).parent.parent / "listings"
+
+
+@app.route("/listings/")
+@login_required
+def listings_index():
+    return send_from_directory(str(_LISTINGS_DIR), "index.html")
+
+
+@app.route("/listings/<path:filename>")
+@login_required
+def serve_listing(filename):
+    return send_from_directory(str(_LISTINGS_DIR), filename)
+
+
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=int(os.getenv("PORT", 5555)))
