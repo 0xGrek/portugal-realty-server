@@ -861,7 +861,7 @@ function buildCard(l) {
 
   // ── Photo ────────────────────────────────────────────────────────────────
   const photoHtml = l.photo
-    ? `<div class="photos"><img src="${escAttr(l.photo)}" loading="lazy" referrerpolicy="no-referrer" alt="" onerror="this.parentElement.classList.add('no-photo');this.replaceWith(Object.assign(document.createElement('div'),{className:'photo-empty',textContent:'Без фото'}))"></div>`
+    ? `<div class="photos"><img src="${escAttr(l.photo)}" loading="lazy" alt="" onerror="this.parentElement.classList.add('no-photo');this.replaceWith(Object.assign(document.createElement('div'),{className:'photo-empty',textContent:'Без фото'}))"></div>`
     : `<div class="photos no-photo"><div class="photo-empty">Без фото</div></div>`;
 
   // ── Location + Maps URL ──────────────────────────────────────────────────
