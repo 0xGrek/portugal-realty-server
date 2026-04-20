@@ -82,6 +82,36 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 .view-btn{padding:6px 10px;border:1.5px solid var(--border);border-radius:8px;background:#fff;cursor:pointer;font-size:14px}
 .view-btn.active{background:var(--brand);color:#fff;border-color:var(--brand)}
 
+/* === CATEGORY TABS (ported from old dashboard) === */
+.mode-bar{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px;padding:8px;background:#fff;border-radius:var(--radius);box-shadow:var(--shadow)}
+.mode-btn{padding:7px 14px;border-radius:20px;border:2px solid var(--brand);background:#fff;color:var(--brand);font-weight:600;font-size:12px;cursor:pointer;white-space:nowrap;transition:.15s}
+.mode-btn:hover{background:#f0f2ff}
+.mode-btn.active{background:var(--brand);color:#fff}
+.mode-btn.fav-mode{border-color:#ffc107;color:#f57f17}
+.mode-btn.fav-mode.active{background:#ffc107;color:#333}
+.mode-btn.contacted-mode{border-color:var(--green);color:#2e7d32}
+.mode-btn.contacted-mode.active{background:var(--green);color:#fff}
+.mode-btn.maybe-mode{border-color:var(--orange);color:#e65100}
+.mode-btn.maybe-mode.active{background:var(--orange);color:#fff}
+.mode-btn.block-mode{border-color:var(--red);color:var(--red)}
+.mode-btn.block-mode.active{background:var(--red);color:#fff}
+.mode-btn.nb-mode{border-color:#1565C0;color:#1565C0}
+.mode-btn.nb-mode.active{background:#1565C0;color:#fff}
+.mode-btn.top50-mode{border-color:#d84315;color:#d84315}
+.mode-btn.top50-mode.active{background:#d84315;color:#fff}
+
+/* === EDGE FILTER PILLS === */
+.edge-bar{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:10px;padding:8px;background:linear-gradient(90deg,#fafafa,#f0f4ff);border-radius:var(--radius)}
+.edge-pill{padding:6px 12px;border-radius:18px;border:1.5px solid #5c6bc0;background:#fff;color:#3949ab;font-size:11px;font-weight:600;cursor:pointer;white-space:nowrap;transition:.15s}
+.edge-pill:hover{background:#eef1ff}
+.edge-pill.active{background:#5c6bc0;color:#fff}
+
+/* Photo carousel dots */
+.photos{position:relative}
+.photo-dots{position:absolute;bottom:6px;left:50%;transform:translateX(-50%);display:flex;gap:4px;z-index:2;pointer-events:none}
+.photo-dot{width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,.5);box-shadow:0 0 3px rgba(0,0,0,.4)}
+.photo-dot.active{background:#fff}
+
 /* === CARDS GRID === */
 #cards-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px;margin-top:12px;align-items:stretch}
 #cards-grid.list-view{grid-template-columns:1fr}
@@ -91,7 +121,8 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 .card.fav{border-left:4px solid var(--gold)}
 .card.contacted{border-left:4px solid var(--green)}
 .card.maybe{border-left:4px solid var(--orange)}
-.card.blocked{display:none!important}
+.card.blocked:not(.show-blocked){display:none!important}
+.card.blocked.show-blocked{border-left:4px solid var(--red);opacity:.75}
 .card-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
 .type-badge{color:#fff;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:600}
 .seller-badge{color:#fff;padding:2px 8px;border-radius:12px;font-size:10px;font-weight:600}
@@ -386,6 +417,30 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 
 <!-- MAIN -->
 <main class="main">
+
+  <!-- Category mode tabs (ported from legacy dashboard) -->
+  <div class="mode-bar" id="mode-bar">
+    <button class="mode-btn active" data-mode="all" onclick="setMode('all')">Все (<span id="cnt-all">0</span>)</button>
+    <button class="mode-btn fav-mode" data-mode="favs" onclick="setMode('favs')">★ (<span id="cnt-fav">0</span>)</button>
+    <button class="mode-btn contacted-mode" data-mode="contacted" onclick="setMode('contacted')">☎ (<span id="cnt-contacted">0</span>)</button>
+    <button class="mode-btn maybe-mode" data-mode="maybe" onclick="setMode('maybe')">± (<span id="cnt-maybe">0</span>)</button>
+    <button class="mode-btn block-mode" data-mode="blocked" onclick="setMode('blocked')">✕ (<span id="cnt-block">0</span>)</button>
+    <button class="mode-btn nb-mode" onclick="toggleNovoBanco()">🏦 NB 70% (<span id="cnt-nb">0</span>)</button>
+    <button class="mode-btn top50-mode" onclick="toggleTop50()">🔥 Топ-50</button>
+  </div>
+
+  <!-- Edge filter pills (competitive signals) -->
+  <div class="edge-bar">
+    <button class="edge-pill" data-edge="private" onclick="toggleEdge('private')">🧑 Частники</button>
+    <button class="edge-pill" data-edge="agent" onclick="toggleEdge('agent')">🏢 Агентства</button>
+    <button class="edge-pill" data-edge="fresh" onclick="toggleEdge('fresh')">🆕 &lt;24ч</button>
+    <button class="edge-pill" data-edge="drop" onclick="toggleEdge('drop')">💰 Снижение</button>
+    <button class="edge-pill" data-edge="gem" onclick="toggleEdge('gem')">💎 Находка</button>
+    <button class="edge-pill" data-edge="dom-lt-30" onclick="toggleEdge('dom-lt-30')">📅 &lt;30 дней</button>
+    <button class="edge-pill" data-edge="dom-gt-365" onclick="toggleEdge('dom-gt-365')">📅 &gt;1 года</button>
+    <button class="edge-pill" data-edge="video" onclick="toggleEdge('video')">🎥 С видео</button>
+  </div>
+
   <div class="sort-row results-header">
     <span id="results-count">Загрузка...</span>
     <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
@@ -445,6 +500,13 @@ let rendered_count = 0;
 let active_typos = new Set();
 let blocked_ids = new Set();
 let _favs = new Set(), _contacted = new Set(), _maybe = new Set();
+
+// === Ported state: category mode + edge filters + top50 + Novo Banco ===
+let activeMode = 'all';       // 'all' | 'favs' | 'contacted' | 'maybe' | 'blocked'
+let activeEdges = new Set();  // edge-filter pills: private/agent/fresh/drop/gem/dom-lt-30/dom-gt-365/video
+let top50Mode = false;
+let novoBancoMode = false;
+const SAVINGS_CAP = 29000;    // NB 70% affordability threshold (EUR required cash)
 
 const LS = {
   favs:      'realty_favs',
@@ -643,9 +705,36 @@ function getFilters() {
 }
 
 function matchesFilter(l, f) {
-  // Blacklist
   const sid = l.sid || l.id;
-  if (f.fHideBlocked && blocked_ids.has(sid)) return false;
+
+  // Category mode — takes priority over blacklist-hide
+  if (activeMode === 'favs'      && !_favs.has(sid))       return false;
+  if (activeMode === 'contacted' && !_contacted.has(sid))  return false;
+  if (activeMode === 'maybe'     && !_maybe.has(sid))      return false;
+  if (activeMode === 'blocked'   && !blocked_ids.has(sid)) return false;
+
+  // Blacklist hide (only in 'all' mode)
+  if (activeMode === 'all' && f.fHideBlocked && blocked_ids.has(sid)) return false;
+
+  // Novo Banco 70% mode — first LTV scenario is NB 70%, required cash = l.ltv.s[0].c
+  if (novoBancoMode) {
+    const cash70 = (l.ltv && l.ltv.s && l.ltv.s[0]) ? l.ltv.s[0].c : 9e9;
+    if (cash70 > SAVINGS_CAP) return false;
+  }
+
+  // Edge filter pills (AND-combined)
+  if (activeEdges.size > 0) {
+    for (const edge of activeEdges) {
+      if (edge === 'private' && l.seller !== 'private') return false;
+      if (edge === 'agent'   && l.seller !== 'agent')   return false;
+      if (edge === 'fresh'   && !l.fresh)               return false;
+      if (edge === 'drop'    && !l.drop)                return false;
+      if (edge === 'gem'     && !l.gem)                 return false;
+      if (edge === 'video'   && !l.video)               return false;
+      if (edge === 'dom-lt-30'  && !(l.days < 30))      return false;
+      if (edge === 'dom-gt-365' && !(l.days > 365))     return false;
+    }
+  }
 
   // Price
   if (l.price < f.priceMin || l.price > f.priceMax) return false;
@@ -723,10 +812,13 @@ function applyFilters() {
   const sortKey = document.getElementById('sort-select').value;
 
   // Filter
-  const filtered = ALL_DATA.filter(l => matchesFilter(l, f));
+  let filtered = ALL_DATA.filter(l => matchesFilter(l, f));
 
   // Sort
   FILTERED = sortData(filtered, sortKey);
+
+  // Top-50 cap: slice to first 50 after sort
+  if (top50Mode) FILTERED = FILTERED.slice(0, 50);
 
   // Reset render
   rendered_count = 0;
@@ -737,6 +829,74 @@ function applyFilters() {
   rendered_count = Math.min(PAGE_SIZE, FILTERED.length);
 
   updateResultsUI();
+  updateCategoryCounts();
+}
+
+// === Category mode / edge filters / top50 / Novo Banco — ported from legacy ===
+function setMode(m) {
+  activeMode = m;
+  document.querySelectorAll('.mode-bar .mode-btn[data-mode]').forEach(b => {
+    b.classList.toggle('active', b.dataset.mode === m);
+  });
+  applyFilters();
+}
+
+function toggleEdge(key) {
+  if (activeEdges.has(key)) activeEdges.delete(key);
+  else activeEdges.add(key);
+  document.querySelectorAll('.edge-pill').forEach(b => {
+    b.classList.toggle('active', activeEdges.has(b.dataset.edge));
+  });
+  applyFilters();
+}
+
+function toggleTop50() {
+  top50Mode = !top50Mode;
+  const btn = document.querySelector('.top50-mode');
+  if (btn) btn.classList.toggle('active', top50Mode);
+  if (top50Mode) {
+    // Auto-sort by best discount (pm2 ascending = cheapest EUR/m²)
+    document.getElementById('sort-select').value = 'pm2_asc';
+  }
+  applyFilters();
+}
+
+function toggleNovoBanco() {
+  novoBancoMode = !novoBancoMode;
+  const btn = document.querySelector('.nb-mode');
+  if (btn) btn.classList.toggle('active', novoBancoMode);
+  applyFilters();
+}
+
+function updateCategoryCounts() {
+  // Count only items that pass the *non-mode* filters (price/area/typo/district/etc)
+  // so counts reflect what user sees in each tab
+  const f = getFilters();
+  const savedMode = activeMode;
+  const savedTop50 = top50Mode;
+  activeMode = 'all';
+  top50Mode = false;
+  let favCnt = 0, conCnt = 0, mayCnt = 0, blkCnt = 0, allCnt = 0, nbCnt = 0;
+  for (const l of ALL_DATA) {
+    if (!matchesFilter(l, f)) continue;
+    const sid = l.sid || l.id;
+    if (_favs.has(sid))       favCnt++;
+    if (_contacted.has(sid))  conCnt++;
+    if (_maybe.has(sid))      mayCnt++;
+    if (blocked_ids.has(sid)) blkCnt++;
+    if (!blocked_ids.has(sid)) allCnt++;
+    const c70 = (l.ltv && l.ltv.s && l.ltv.s[0]) ? l.ltv.s[0].c : 9e9;
+    if (c70 <= SAVINGS_CAP) nbCnt++;
+  }
+  activeMode = savedMode;
+  top50Mode = savedTop50;
+  const setTxt = (id, v) => { const el = document.getElementById(id); if (el) el.textContent = v; };
+  setTxt('cnt-all', allCnt);
+  setTxt('cnt-fav', favCnt);
+  setTxt('cnt-contacted', conCnt);
+  setTxt('cnt-maybe', mayCnt);
+  setTxt('cnt-block', blkCnt);
+  setTxt('cnt-nb', nbCnt);
 }
 
 function updatePreviewCount() {
@@ -821,6 +981,30 @@ function renderCards(items) {
   }
   grid.appendChild(frag);
   applyStorageStates();
+  attachCarouselDots();
+}
+
+// Track scroll position inside each .photos container → update active dot
+function attachCarouselDots() {
+  document.querySelectorAll('.photos').forEach(ph => {
+    if (ph.dataset.carouselWired) return;
+    const dots = ph.querySelectorAll('.photo-dot');
+    if (dots.length <= 1) return;
+    ph.dataset.carouselWired = '1';
+    ph.addEventListener('scroll', () => {
+      const imgs = ph.querySelectorAll('img');
+      if (!imgs.length) return;
+      // Find image closest to left edge
+      const scrollL = ph.scrollLeft;
+      let activeIdx = 0;
+      let minDist = Infinity;
+      imgs.forEach((im, i) => {
+        const d = Math.abs(im.offsetLeft - scrollL);
+        if (d < minDist) { minDist = d; activeIdx = i; }
+      });
+      dots.forEach((d, i) => d.classList.toggle('active', i === activeIdx));
+    }, {passive: true});
+  });
 }
 
 function buildCard(l) {
@@ -859,10 +1043,23 @@ function buildCard(l) {
   else if (dom >= 30)  domClass = 'eb-dom-normal';
   edgeBadges += `<span class="edge-badge ${domClass}">${domIcon(dom)} ${dom} дн</span>`;
 
-  // ── Photo ────────────────────────────────────────────────────────────────
-  const photoHtml = l.photo
-    ? `<div class="photos"><img src="${escAttr(l.photo)}" loading="lazy" alt="" onerror="this.parentElement.classList.add('no-photo');this.replaceWith(Object.assign(document.createElement('div'),{className:'photo-empty',textContent:'Без фото'}))"></div>`
-    : `<div class="photos no-photo"><div class="photo-empty">Без фото</div></div>`;
+  // ── Photo carousel (multi-photo support) ─────────────────────────────────
+  // Prefer l.photos array (new field). Fallback to single l.photo for backward compat.
+  const photoList = (Array.isArray(l.photos) && l.photos.length)
+    ? l.photos
+    : (l.photo ? [l.photo] : []);
+  let photoHtml;
+  if (photoList.length === 0) {
+    photoHtml = `<div class="photos no-photo"><div class="photo-empty">Без фото</div></div>`;
+  } else {
+    const imgs = photoList.map((src, i) =>
+      `<img src="${escAttr(src)}" loading="lazy" alt="" onerror="this.style.display='none'">`
+    ).join('');
+    const dots = photoList.length > 1
+      ? `<div class="photo-dots">${photoList.map((_,i) => `<span class="photo-dot${i===0?' active':''}"></span>`).join('')}</div>`
+      : '';
+    photoHtml = `<div class="photos">${imgs}${dots}</div>`;
+  }
 
   // ── Location + Maps URL ──────────────────────────────────────────────────
   const locParts = [l.district, l.muni].filter(Boolean).join(' / ');
@@ -977,6 +1174,8 @@ function applyStorageStates() {
     card.classList.toggle('contacted', _contacted.has(sid));
     card.classList.toggle('maybe',     _maybe.has(sid));
     card.classList.toggle('blocked',   blocked_ids.has(sid));
+    // In 'blocked' category tab, reveal blocked cards (override display:none)
+    card.classList.toggle('show-blocked', activeMode === 'blocked');
     const starBtn = card.querySelector('.star-btn');
     if (starBtn) { starBtn.textContent = _favs.has(sid) ? '★' : '☆'; starBtn.classList.toggle('active', _favs.has(sid)); }
     const cBtn = card.querySelector('.contacted-btn');
@@ -999,33 +1198,35 @@ function toggleFav(sid) {
   adding ? _favs.add(sid) : _favs.delete(sid);
   saveLS(); applyStorageStates();
   syncToggle('fav', sid, adding);
+  updateCategoryCounts();
+  if (activeMode !== 'all') applyFilters();
 }
 function toggleContacted(sid) {
   const adding = !_contacted.has(sid);
   adding ? _contacted.add(sid) : _contacted.delete(sid);
   saveLS(); applyStorageStates();
   syncToggle('contacted', sid, adding);
+  updateCategoryCounts();
+  if (activeMode !== 'all') applyFilters();
 }
 function toggleMaybe(sid) {
   const adding = !_maybe.has(sid);
   adding ? _maybe.add(sid) : _maybe.delete(sid);
   saveLS(); applyStorageStates();
   syncToggle('maybe', sid, adding);
+  updateCategoryCounts();
+  if (activeMode !== 'all') applyFilters();
 }
 function toggleBlock(sid) {
   const adding = !blocked_ids.has(sid);
   if (adding) { blocked_ids.add(sid); }
   else { blocked_ids.delete(sid); }
   saveLS();
-  // Re-apply immediately: hide or show the card
-  const card = document.querySelector(`.card[data-sid="${sid}"]`);
-  if (card) {
-    const hideBlocked = document.getElementById('f-hide-blocked').checked;
-    if (hideBlocked && blocked_ids.has(sid)) card.classList.add('blocked');
-    else card.classList.remove('blocked');
-  }
   applyStorageStates();
   syncToggle('block', sid, adding);
+  updateCategoryCounts();
+  // Re-filter so card hides/appears based on current mode + hide-blocked checkbox
+  applyFilters();
 }
 
 function openNote(sid) {
