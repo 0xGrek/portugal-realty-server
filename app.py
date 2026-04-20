@@ -758,7 +758,7 @@ def sync_to_user():
 def index():
     if not session.get("user_id"):
         return redirect(url_for("login_page"))
-    return send_from_directory("static", "index.html")
+    return redirect("/listings/search.html")
 
 
 @app.route("/static/<path:path>")
