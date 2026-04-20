@@ -23,8 +23,13 @@ from flask import (
     session,
     url_for,
 )
+from werkzeug.middleware.proxy_fix import ProxyFix
 
 app = Flask(__name__, static_folder="static")
+# Render terminates TLS at one proxy — trust exactly one X-Forwarded-For hop.
+# Prevents attacker-spoofed XFF bypassing rate limits (request.remote_addr
+# now reflects the true client IP, not the socket peer).
+app.wsgi_app = ProxyFix(app.wsgi_app, x_for=1, x_proto=1, x_host=1)
 app.secret_key = os.getenv("SECRET_KEY")
 
 NEON_URL = os.getenv("NEON_DATABASE_URL")
