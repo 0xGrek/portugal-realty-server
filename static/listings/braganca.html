@@ -141,9 +141,25 @@ body { font-size: var(--fs-body); }
 }
 html, body { overflow-x: hidden; }
 .card { word-wrap: break-word; overflow-wrap: break-word; }
+
+/* User bar — fixed top-right, shown only when logged into server */
+#user-bar { position: fixed; top: 10px; right: 14px; z-index: 300; display: none; align-items: center; gap: 8px; background: rgba(255,255,255,0.95); padding: 6px 12px; border-radius: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.2); font-size: 12px; color: #555; }
+#user-bar.visible { display: inline-flex; }
+#user-bar .user-name { font-weight: 600; color: #1a237e; }
+#user-bar .logout-btn { background: #c62828; color: #fff; border: none; border-radius: 14px; padding: 5px 12px; font-size: 11px; font-weight: 600; cursor: pointer; transition: 0.15s; }
+#user-bar .logout-btn:hover { background: #8e0000; }
+@media (max-width: 480px) {
+  #user-bar { top: 6px; right: 6px; padding: 4px 8px; font-size: 11px; }
+  #user-bar .logout-btn { padding: 3px 8px; font-size: 10px; }
+}
 </style>
 </head>
 <body>
+<!-- User bar — fixed top-right, shown only when logged into server -->
+<div id="user-bar">
+  <span>👤 <span class="user-name" id="user-name"></span></span>
+  <button class="logout-btn" onclick="logout()">Выйти</button>
+</div>
 <div id="app-content">
 <a href="index.html" class="back-link">← Все районы</a>
 <div class="header">
@@ -1704,7 +1720,7 @@ html, body { overflow-x: hidden; }
              data-is-fresh="0"
              data-price-drop-eur="0"
              data-hidden-gem="0"
-             data-days-on-market="25"
+             data-days-on-market="26"
              data-has-video="0"
              data-new-build="0">
           <div class="card-header">
@@ -1718,7 +1734,7 @@ html, body { overflow-x: hidden; }
               <button class="note-btn" onclick="openNote('32217542')" title="Комментарий">&#9998;</button>
             </div>
           </div>
-          <div class="edge-badges"><span class="edge-badge edge-seller" title="Агентство — с комиссией">🏢 АГЕНТСТВО</span><span class="edge-badge dom-fresh" title="Дней на рынке">🟢 25 дн</span></div>
+          <div class="edge-badges"><span class="edge-badge edge-seller" title="Агентство — с комиссией">🏢 АГЕНТСТВО</span><span class="edge-badge dom-fresh" title="Дней на рынке">🟢 26 дн</span></div>
           
           <div class="photos"><img src="https://pub-cdcf65e04720413aaa6bb1ccc89ec675.r2.dev/5058eade1a18_0.jpg" loading="lazy" referrerpolicy="no-referrer" alt="" onerror="this.style.display='none'"><img src="https://pub-cdcf65e04720413aaa6bb1ccc89ec675.r2.dev/5058eade1a18_1.jpg" loading="lazy" referrerpolicy="no-referrer" alt="" onerror="this.style.display='none'"></div>
           <h3>Terraced house in Do Poço no number</h3>
@@ -1731,7 +1747,7 @@ html, body { overflow-x: hidden; }
           <div class="location">
             <a href="https://www.google.com/maps/search/Do%20Po%C3%A7o%20no%20number%2C%20Amendoeira%2C%20Bragan%C3%A7a%2C%20Portugal" target="_blank" class="map-link">Bragança / Amendoeira</a>
           </div>
-          <div class="tracking"><span>На рынке: <b>25 дн</b></span><span>Найдено: 25.03.2026</span></div>
+          <div class="tracking"><span>На рынке: <b>26 дн</b></span><span>Найдено: 25.03.2026</span></div>
           
           <div class="desc">House in the peaceful village of Amendoeira. This is 5 km from Macedo, 10 km from the Azibo reservoir, 41 km from Bragança and 25 km from Mirandela. If you are looking to live in the peace of the countryside in harmony with nature, here is the ideal ...</div>
           <div class="tags"><span class="tag pro">+ Дешево: 813/м2</span><span class="tag pro">+ T3</span></div>
@@ -3471,7 +3487,7 @@ html, body { overflow-x: hidden; }
              data-is-fresh="0"
              data-price-drop-eur="0"
              data-hidden-gem="0"
-             data-days-on-market="25"
+             data-days-on-market="26"
              data-has-video="0"
              data-new-build="0">
           <div class="card-header">
@@ -3485,7 +3501,7 @@ html, body { overflow-x: hidden; }
               <button class="note-btn" onclick="openNote('32863133')" title="Комментарий">&#9998;</button>
             </div>
           </div>
-          <div class="edge-badges"><span class="edge-badge edge-seller" title="Агентство — с комиссией">🏢 АГЕНТСТВО</span><span class="edge-badge dom-fresh" title="Дней на рынке">🟢 25 дн</span></div>
+          <div class="edge-badges"><span class="edge-badge edge-seller" title="Агентство — с комиссией">🏢 АГЕНТСТВО</span><span class="edge-badge dom-fresh" title="Дней на рынке">🟢 26 дн</span></div>
           
           <div class="photos"><img src="https://pub-cdcf65e04720413aaa6bb1ccc89ec675.r2.dev/4b39ff939210_0.jpg" loading="lazy" referrerpolicy="no-referrer" alt="" onerror="this.style.display='none'"><img src="https://pub-cdcf65e04720413aaa6bb1ccc89ec675.r2.dev/4b39ff939210_1.jpg" loading="lazy" referrerpolicy="no-referrer" alt="" onerror="this.style.display='none'"></div>
           <h3>Flat in rua Alexandre Herculano</h3>
@@ -3498,7 +3514,7 @@ html, body { overflow-x: hidden; }
           <div class="location">
             <a href="https://www.google.com/maps/search/rua%20Alexandre%20Herculano%2C%20Macedo%20de%20Cavaleiros%2C%20Bragan%C3%A7a%2C%20Portugal" target="_blank" class="map-link">Bragança / Macedo de Cavaleiros</a>
           </div>
-          <div class="tracking"><span>На рынке: <b>25 дн</b></span><span>Найдено: 25.03.2026</span></div>
+          <div class="tracking"><span>На рынке: <b>26 дн</b></span><span>Найдено: 25.03.2026</span></div>
           
           <div class="desc">SELL APARTMENT T2 MACEDO DE CAVALEIROS Are you looking for a T2 apartment in the center of Macedo de Cavaleiros? AVE Real Estate has one for you. Here is an ideal for you, consisting of 2 bedrooms, kitchen, living/dining room, bathroom, Apartment in ...</div>
           <div class="tags"><span class="tag pro">+ Дешево: 1,545/м2</span><span class="tag con">- Дорого: +50% от медианы района</span></div>
@@ -4383,7 +4399,7 @@ html, body { overflow-x: hidden; }
              data-is-fresh="0"
              data-price-drop-eur="0"
              data-hidden-gem="0"
-             data-days-on-market="25"
+             data-days-on-market="26"
              data-has-video="0"
              data-new-build="0">
           <div class="card-header">
@@ -4397,7 +4413,7 @@ html, body { overflow-x: hidden; }
               <button class="note-btn" onclick="openNote('33120095')" title="Комментарий">&#9998;</button>
             </div>
           </div>
-          <div class="edge-badges"><span class="edge-badge edge-seller" title="Агентство — с комиссией">🏢 АГЕНТСТВО</span><span class="edge-badge dom-fresh" title="Дней на рынке">🟢 25 дн</span></div>
+          <div class="edge-badges"><span class="edge-badge edge-seller" title="Агентство — с комиссией">🏢 АГЕНТСТВО</span><span class="edge-badge dom-fresh" title="Дней на рынке">🟢 26 дн</span></div>
           
           <div class="photos"><img src="https://pub-cdcf65e04720413aaa6bb1ccc89ec675.r2.dev/5e0f02cb2c46_0.jpg" loading="lazy" referrerpolicy="no-referrer" alt="" onerror="this.style.display='none'"><img src="https://pub-cdcf65e04720413aaa6bb1ccc89ec675.r2.dev/5e0f02cb2c46_1.jpg" loading="lazy" referrerpolicy="no-referrer" alt="" onerror="this.style.display='none'"></div>
           <h3>Semi-detached house in rua de Negrilhos</h3>
@@ -4410,7 +4426,7 @@ html, body { overflow-x: hidden; }
           <div class="location">
             <a href="https://www.google.com/maps/search/rua%20de%20Negrilhos%2C%20Vale%20de%20Gouvinhas%2C%20Bragan%C3%A7a%2C%20Portugal" target="_blank" class="map-link">Bragança / Vale de Gouvinhas</a>
           </div>
-          <div class="tracking"><span>На рынке: <b>25 дн</b></span><span>Найдено: 25.03.2026</span></div>
+          <div class="tracking"><span>На рынке: <b>26 дн</b></span><span>Найдено: 25.03.2026</span></div>
           
           <div class="desc">SELL READY HOUSE TO LIVE IN If you are looking for a house in Trás os Montes to invest in, Imobiliária AVE has the ideal one for you. Comprising two bedrooms, a kitchen/lounge, a bathroom, storage. Valley of Gouvinhas is a Portuguese parish in the mu...</div>
           <div class="tags"><span class="tag pro">+ Дешево: 982/м2</span><span class="tag pro">+ Большая: 112 м2</span></div>
@@ -5751,7 +5767,7 @@ html, body { overflow-x: hidden; }
              data-is-fresh="0"
              data-price-drop-eur="0"
              data-hidden-gem="0"
-             data-days-on-market="25"
+             data-days-on-market="26"
              data-has-video="0"
              data-new-build="0">
           <div class="card-header">
@@ -5765,7 +5781,7 @@ html, body { overflow-x: hidden; }
               <button class="note-btn" onclick="openNote('34561986')" title="Комментарий">&#9998;</button>
             </div>
           </div>
-          <div class="edge-badges"><span class="edge-badge edge-seller" title="Агентство — с комиссией">🏢 АГЕНТСТВО</span><span class="edge-badge dom-fresh" title="Дней на рынке">🟢 25 дн</span></div>
+          <div class="edge-badges"><span class="edge-badge edge-seller" title="Агентство — с комиссией">🏢 АГЕНТСТВО</span><span class="edge-badge dom-fresh" title="Дней на рынке">🟢 26 дн</span></div>
           
           <div class="photos"><img src="https://pub-cdcf65e04720413aaa6bb1ccc89ec675.r2.dev/e5058818e91f_0.jpg" loading="lazy" referrerpolicy="no-referrer" alt="" onerror="this.style.display='none'"><img src="https://pub-cdcf65e04720413aaa6bb1ccc89ec675.r2.dev/e5058818e91f_1.jpg" loading="lazy" referrerpolicy="no-referrer" alt="" onerror="this.style.display='none'"></div>
           <h3>Detached house in rua Principal no number</h3>
@@ -5778,7 +5794,7 @@ html, body { overflow-x: hidden; }
           <div class="location">
             <a href="https://www.google.com/maps/search/rua%20Principal%20no%20number%2C%20Parada%20e%20Fa%C3%ADlde%2C%20Bragan%C3%A7a%2C%20Portugal" target="_blank" class="map-link">Bragança / Parada e Faílde</a>
           </div>
-          <div class="tracking"><span>На рынке: <b>25 дн</b></span><span>Найдено: 25.03.2026</span></div>
+          <div class="tracking"><span>На рынке: <b>26 дн</b></span><span>Найдено: 25.03.2026</span></div>
           
           <div class="desc">We present this welcoming house located in the village of Paredes, a peaceful place full of identity, situated just 20 minutes from the city of Bragança. Paredes is a village with soul, marked by its connection to mining history, which is reflected i...</div>
           <div class="tags"><span class="tag pro">+ Дешево: 1,250/м2</span><span class="tag pro">+ Большая: 104 м2</span><span class="tag pro">+ T3</span><span class="tag con">- Дорого: +37% от медианы района</span></div>
@@ -6549,7 +6565,7 @@ html, body { overflow-x: hidden; }
              data-is-fresh="0"
              data-price-drop-eur="0"
              data-hidden-gem="0"
-             data-days-on-market="25"
+             data-days-on-market="26"
              data-has-video="0"
              data-new-build="0">
           <div class="card-header">
@@ -6563,7 +6579,7 @@ html, body { overflow-x: hidden; }
               <button class="note-btn" onclick="openNote('32926853')" title="Комментарий">&#9998;</button>
             </div>
           </div>
-          <div class="edge-badges"><span class="edge-badge edge-seller" title="Агентство — с комиссией">🏢 АГЕНТСТВО</span><span class="edge-badge dom-fresh" title="Дней на рынке">🟢 25 дн</span></div>
+          <div class="edge-badges"><span class="edge-badge edge-seller" title="Агентство — с комиссией">🏢 АГЕНТСТВО</span><span class="edge-badge dom-fresh" title="Дней на рынке">🟢 26 дн</span></div>
           
           <div class="photos"><img src="https://pub-cdcf65e04720413aaa6bb1ccc89ec675.r2.dev/9dbd6de37f6d_0.jpg" loading="lazy" referrerpolicy="no-referrer" alt="" onerror="this.style.display='none'"><img src="https://pub-cdcf65e04720413aaa6bb1ccc89ec675.r2.dev/9dbd6de37f6d_1.jpg" loading="lazy" referrerpolicy="no-referrer" alt="" onerror="this.style.display='none'"></div>
           <h3>Detached house in rua das Alminhas</h3>
@@ -6576,7 +6592,7 @@ html, body { overflow-x: hidden; }
           <div class="location">
             <a href="https://www.google.com/maps/search/rua%20das%20Alminhas%2C%20Mascarenhas%2C%20Bragan%C3%A7a%2C%20Portugal" target="_blank" class="map-link">Bragança / Mascarenhas</a>
           </div>
-          <div class="tracking"><span>На рынке: <b>25 дн</b></span><span>Найдено: 25.03.2026</span></div>
+          <div class="tracking"><span>На рынке: <b>26 дн</b></span><span>Найдено: 25.03.2026</span></div>
           
           <div class="desc">T5 HOUSE FOR SALE MASCARENHAS MIRANNDELA. Are you looking for a 5-bedroom house 8 minutes from the center of Mirandela? IMOBILIARIA AVE has the ideal solution for you. House with the following divisions: 2- floors, 1- Large kitchen, 1- Living room wi...</div>
           <div class="tags"><span class="tag pro">+ Дешево: 1,352/м2</span><span class="tag pro">+ Большая: 105 м2</span><span class="tag pro">+ T5</span><span class="tag con">- Дорого: +35% от медианы района</span></div>
@@ -7689,7 +7705,7 @@ html, body { overflow-x: hidden; }
              data-is-fresh="0"
              data-price-drop-eur="0"
              data-hidden-gem="0"
-             data-days-on-market="25"
+             data-days-on-market="26"
              data-has-video="0"
              data-new-build="0">
           <div class="card-header">
@@ -7703,7 +7719,7 @@ html, body { overflow-x: hidden; }
               <button class="note-btn" onclick="openNote('34227556')" title="Комментарий">&#9998;</button>
             </div>
           </div>
-          <div class="edge-badges"><span class="edge-badge edge-seller" title="Агентство — с комиссией">🏢 АГЕНТСТВО</span><span class="edge-badge dom-fresh" title="Дней на рынке">🟢 25 дн</span></div>
+          <div class="edge-badges"><span class="edge-badge edge-seller" title="Агентство — с комиссией">🏢 АГЕНТСТВО</span><span class="edge-badge dom-fresh" title="Дней на рынке">🟢 26 дн</span></div>
           
           <div class="photos"><img src="https://pub-cdcf65e04720413aaa6bb1ccc89ec675.r2.dev/5d4b4195b681_0.jpg" loading="lazy" referrerpolicy="no-referrer" alt="" onerror="this.style.display='none'"><img src="https://pub-cdcf65e04720413aaa6bb1ccc89ec675.r2.dev/5d4b4195b681_1.jpg" loading="lazy" referrerpolicy="no-referrer" alt="" onerror="this.style.display='none'"></div>
           <h3>Flat</h3>
@@ -7716,7 +7732,7 @@ html, body { overflow-x: hidden; }
           <div class="location">
             <a href="https://www.google.com/maps/search/Mirandela%2C%20Mirandela%2C%20Bragan%C3%A7a%2C%20Portugal" target="_blank" class="map-link">Bragança / Mirandela</a>
           </div>
-          <div class="tracking"><span>На рынке: <b>25 дн</b></span><span>Найдено: 25.03.2026</span></div>
+          <div class="tracking"><span>На рынке: <b>26 дн</b></span><span>Найдено: 25.03.2026</span></div>
           
           <div class="desc">T3 apartment in the city of Mirandela This 144m² apartment is a true urban refuge, where comfort meets the beauty of the landscape. Located on the second floor of a reserved building, it enchants with its balconies that embrace all divisions, providi...</div>
           <div class="tags"><span class="tag pro">+ Дешево: 1,111/м2</span><span class="tag pro">+ Большая: 144 м2</span><span class="tag pro">+ T3</span></div>
@@ -8715,7 +8731,7 @@ html, body { overflow-x: hidden; }
              data-is-fresh="0"
              data-price-drop-eur="0"
              data-hidden-gem="0"
-             data-days-on-market="25"
+             data-days-on-market="26"
              data-has-video="0"
              data-new-build="0">
           <div class="card-header">
@@ -8729,7 +8745,7 @@ html, body { overflow-x: hidden; }
               <button class="note-btn" onclick="openNote('33229349')" title="Комментарий">&#9998;</button>
             </div>
           </div>
-          <div class="edge-badges"><span class="edge-badge edge-seller" title="Агентство — с комиссией">🏢 АГЕНТСТВО</span><span class="edge-badge dom-fresh" title="Дней на рынке">🟢 25 дн</span></div>
+          <div class="edge-badges"><span class="edge-badge edge-seller" title="Агентство — с комиссией">🏢 АГЕНТСТВО</span><span class="edge-badge dom-fresh" title="Дней на рынке">🟢 26 дн</span></div>
           
           <div class="photos"><img src="https://pub-cdcf65e04720413aaa6bb1ccc89ec675.r2.dev/a8090384c8c1_0.jpg" loading="lazy" referrerpolicy="no-referrer" alt="" onerror="this.style.display='none'"><img src="https://pub-cdcf65e04720413aaa6bb1ccc89ec675.r2.dev/a8090384c8c1_1.jpg" loading="lazy" referrerpolicy="no-referrer" alt="" onerror="this.style.display='none'"></div>
           <h3>Semi-detached house in rua Doutor Daniel Rodrigues no number</h3>
@@ -8742,7 +8758,7 @@ html, body { overflow-x: hidden; }
           <div class="location">
             <a href="https://www.google.com/maps/search/rua%20Doutor%20Daniel%20Rodrigues%20no%20number%2C%20Samil%2C%20Bragan%C3%A7a%2C%20Portugal" target="_blank" class="map-link">Bragança / Samil</a>
           </div>
-          <div class="tracking"><span>На рынке: <b>25 дн</b></span><span>Найдено: 25.03.2026</span></div>
+          <div class="tracking"><span>На рынке: <b>26 дн</b></span><span>Найдено: 25.03.2026</span></div>
           
           <div class="desc">3 Bedroom House in Bragança This house located in the city of Bragança is the perfect opportunity to remodel to your taste, making it your home or, if you prefer, make your investment here and create a valuable source of income. On the ground floor t...</div>
           <div class="tags"><span class="tag pro">+ Дешево: 1,683/м2</span><span class="tag pro">+ Большая: 101 м2</span><span class="tag pro">+ T3</span><span class="tag con">- Дорого: +85% от медианы района</span></div>
@@ -8772,7 +8788,7 @@ html, body { overflow-x: hidden; }
              data-is-fresh="0"
              data-price-drop-eur="0"
              data-hidden-gem="0"
-             data-days-on-market="25"
+             data-days-on-market="26"
              data-has-video="0"
              data-new-build="0">
           <div class="card-header">
@@ -8786,7 +8802,7 @@ html, body { overflow-x: hidden; }
               <button class="note-btn" onclick="openNote('34466429')" title="Комментарий">&#9998;</button>
             </div>
           </div>
-          <div class="edge-badges"><span class="edge-badge edge-seller" title="Агентство — с комиссией">🏢 АГЕНТСТВО</span><span class="edge-badge dom-fresh" title="Дней на рынке">🟢 25 дн</span></div>
+          <div class="edge-badges"><span class="edge-badge edge-seller" title="Агентство — с комиссией">🏢 АГЕНТСТВО</span><span class="edge-badge dom-fresh" title="Дней на рынке">🟢 26 дн</span></div>
           
           <div class="photos"><img src="https://pub-cdcf65e04720413aaa6bb1ccc89ec675.r2.dev/6b202541f066_0.jpg" loading="lazy" referrerpolicy="no-referrer" alt="" onerror="this.style.display='none'"><img src="https://pub-cdcf65e04720413aaa6bb1ccc89ec675.r2.dev/6b202541f066_1.jpg" loading="lazy" referrerpolicy="no-referrer" alt="" onerror="this.style.display='none'"></div>
           <h3>Detached house in Cimo do povo</h3>
@@ -8799,7 +8815,7 @@ html, body { overflow-x: hidden; }
           <div class="location">
             <a href="https://www.google.com/maps/search/Cimo%20do%20povo%2C%20Aguieiras%2C%20Bragan%C3%A7a%2C%20Portugal" target="_blank" class="map-link">Bragança / Aguieiras</a>
           </div>
-          <div class="tracking"><span>На рынке: <b>25 дн</b></span><span>Найдено: 25.03.2026</span></div>
+          <div class="tracking"><span>На рынке: <b>26 дн</b></span><span>Найдено: 25.03.2026</span></div>
           
           <div class="desc">We present this magnificent 4-bedroom two-story villa, with 346 m² of gross area, located in a quiet and welcoming area of Soutilha, Aguieiras. The house stands out for its spaciousness and functionality, spread over two floors, offering bright and w...</div>
           <div class="tags"><span class="tag alert">СУПЕР ДЕШЕВО -46% от медианы района (910/м2)</span><span class="tag pro">+ Дешево: 491/м2</span><span class="tag pro">+ Большая: 346 м2</span><span class="tag pro">+ T4</span></div>
@@ -10653,7 +10669,7 @@ html, body { overflow-x: hidden; }
              data-is-fresh="0"
              data-price-drop-eur="0"
              data-hidden-gem="0"
-             data-days-on-market="25"
+             data-days-on-market="26"
              data-has-video="0"
              data-new-build="0">
           <div class="card-header">
@@ -10667,7 +10683,7 @@ html, body { overflow-x: hidden; }
               <button class="note-btn" onclick="openNote('34515636')" title="Комментарий">&#9998;</button>
             </div>
           </div>
-          <div class="edge-badges"><span class="edge-badge edge-seller" title="Агентство — с комиссией">🏢 АГЕНТСТВО</span><span class="edge-badge dom-fresh" title="Дней на рынке">🟢 25 дн</span></div>
+          <div class="edge-badges"><span class="edge-badge edge-seller" title="Агентство — с комиссией">🏢 АГЕНТСТВО</span><span class="edge-badge dom-fresh" title="Дней на рынке">🟢 26 дн</span></div>
           
           <div class="photos"><img src="https://pub-cdcf65e04720413aaa6bb1ccc89ec675.r2.dev/5c1ea50c8ab1_0.jpg" loading="lazy" referrerpolicy="no-referrer" alt="" onerror="this.style.display='none'"><img src="https://pub-cdcf65e04720413aaa6bb1ccc89ec675.r2.dev/5c1ea50c8ab1_1.jpg" loading="lazy" referrerpolicy="no-referrer" alt="" onerror="this.style.display='none'"></div>
           <h3>Semi-detached house in largo Padre António José de Morais</h3>
@@ -10680,7 +10696,7 @@ html, body { overflow-x: hidden; }
           <div class="location">
             <a href="https://www.google.com/maps/search/largo%20Padre%20Ant%C3%B3nio%20Jos%C3%A9%20de%20Morais%2C%20Vila%20Flor%2C%20Bragan%C3%A7a%2C%20Portugal" target="_blank" class="map-link">Bragança / Vila Flor</a>
           </div>
-          <div class="tracking"><span>На рынке: <b>25 дн</b></span><span>Найдено: 25.03.2026</span></div>
+          <div class="tracking"><span>На рынке: <b>26 дн</b></span><span>Найдено: 25.03.2026</span></div>
           
           <div class="desc">SELLING HOUSE IN VILA FLOR If you are looking for a house in the center of Vila Flor, AVE real estate has the ideal one for you. House composed of: House for housing ground floor and 1st floor, two terraces intended for two dwellings. It has 5 bedroo...</div>
           <div class="tags"><span class="tag alert">СУПЕР ДЕШЕВО -39% от медианы района (910/м2)</span><span class="tag pro">+ Дешево: 559/м2</span><span class="tag pro">+ Большая: 340 м2</span><span class="tag pro">+ T5</span></div>
@@ -16581,7 +16597,7 @@ html, body { overflow-x: hidden; }
              data-is-fresh="0"
              data-price-drop-eur="0"
              data-hidden-gem="0"
-             data-days-on-market="25"
+             data-days-on-market="26"
              data-has-video="0"
              data-new-build="0">
           <div class="card-header">
@@ -16595,7 +16611,7 @@ html, body { overflow-x: hidden; }
               <button class="note-btn" onclick="openNote('34400194')" title="Комментарий">&#9998;</button>
             </div>
           </div>
-          <div class="edge-badges"><span class="edge-badge edge-seller" title="Агентство — с комиссией">🏢 АГЕНТСТВО</span><span class="edge-badge dom-fresh" title="Дней на рынке">🟢 25 дн</span></div>
+          <div class="edge-badges"><span class="edge-badge edge-seller" title="Агентство — с комиссией">🏢 АГЕНТСТВО</span><span class="edge-badge dom-fresh" title="Дней на рынке">🟢 26 дн</span></div>
           
           <div class="photos"><img src="https://pub-cdcf65e04720413aaa6bb1ccc89ec675.r2.dev/536b3a57d748_0.jpg" loading="lazy" referrerpolicy="no-referrer" alt="" onerror="this.style.display='none'"><img src="https://pub-cdcf65e04720413aaa6bb1ccc89ec675.r2.dev/536b3a57d748_1.jpg" loading="lazy" referrerpolicy="no-referrer" alt="" onerror="this.style.display='none'"></div>
           <h3>House</h3>
@@ -16608,7 +16624,7 @@ html, body { overflow-x: hidden; }
           <div class="location">
             <a href="https://www.google.com/maps/search/Valtorno%2C%20Valtorno%2C%20Bragan%C3%A7a%2C%20Portugal" target="_blank" class="map-link">Bragança / Valtorno</a>
           </div>
-          <div class="tracking"><span>На рынке: <b>25 дн</b></span><span>Найдено: 25.03.2026</span></div>
+          <div class="tracking"><span>На рынке: <b>26 дн</b></span><span>Найдено: 25.03.2026</span></div>
           
           <div class="desc">Imagine a property with soul, located in one of the most symbolic points of the region: the Sanctuary of Santa Cecilia, in Seixo de Manhoses. Cozy and comfortable accommodation, ideal for those looking for rest in a quiet environment. The property of...</div>
           <div class="tags"><span class="tag pro">+ Дешево: 1,115/м2</span><span class="tag pro">+ Большая: 314 м2</span><span class="tag pro">+ T9</span></div>
@@ -17334,6 +17350,24 @@ function initTop50() {
 }
 
 // Session-cookie sync then init
+function logout() {
+  fetch('/api/logout', {
+    method: 'POST',
+    credentials: 'include',
+    headers: {'X-CSRF-Token': CSRF_TOKEN}
+  }).catch(function(){}).then(function(){
+    window.location.href = '/login';
+  });
+}
+
+function showUserBar(username) {
+  var bar = document.getElementById('user-bar');
+  var nameEl = document.getElementById('user-name');
+  if (!bar || !nameEl) return;
+  nameEl.textContent = username || '';
+  bar.classList.add('visible');
+}
+
 function initSync() {
   return fetch('/api/me', {credentials: 'same-origin'}).then(function(r) {
     if (!r.ok) throw 'no session';
@@ -17341,6 +17375,8 @@ function initSync() {
   }).then(function(me) {
     CSRF_TOKEN = me.csrf_token || '';
     API_HEADERS = {'X-CSRF-Token': CSRF_TOKEN, 'Content-Type': 'application/json'};
+    window.CURRENT_USER = me.username || '';
+    showUserBar(window.CURRENT_USER);
     return fetch('/api/state', {credentials: 'same-origin'});
   }).then(function(r) {
     if (!r.ok) throw 'no state';

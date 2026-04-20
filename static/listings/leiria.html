@@ -141,9 +141,25 @@ body { font-size: var(--fs-body); }
 }
 html, body { overflow-x: hidden; }
 .card { word-wrap: break-word; overflow-wrap: break-word; }
+
+/* User bar — fixed top-right, shown only when logged into server */
+#user-bar { position: fixed; top: 10px; right: 14px; z-index: 300; display: none; align-items: center; gap: 8px; background: rgba(255,255,255,0.95); padding: 6px 12px; border-radius: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.2); font-size: 12px; color: #555; }
+#user-bar.visible { display: inline-flex; }
+#user-bar .user-name { font-weight: 600; color: #1a237e; }
+#user-bar .logout-btn { background: #c62828; color: #fff; border: none; border-radius: 14px; padding: 5px 12px; font-size: 11px; font-weight: 600; cursor: pointer; transition: 0.15s; }
+#user-bar .logout-btn:hover { background: #8e0000; }
+@media (max-width: 480px) {
+  #user-bar { top: 6px; right: 6px; padding: 4px 8px; font-size: 11px; }
+  #user-bar .logout-btn { padding: 3px 8px; font-size: 10px; }
+}
 </style>
 </head>
 <body>
+<!-- User bar — fixed top-right, shown only when logged into server -->
+<div id="user-bar">
+  <span>👤 <span class="user-name" id="user-name"></span></span>
+  <button class="logout-btn" onclick="logout()">Выйти</button>
+</div>
 <div id="app-content">
 <a href="index.html" class="back-link">← Все районы</a>
 <div class="header">
@@ -10824,7 +10840,7 @@ html, body { overflow-x: hidden; }
              data-is-fresh="0"
              data-price-drop-eur="0"
              data-hidden-gem="0"
-             data-days-on-market="25"
+             data-days-on-market="26"
              data-has-video="0"
              data-new-build="0">
           <div class="card-header">
@@ -10838,7 +10854,7 @@ html, body { overflow-x: hidden; }
               <button class="note-btn" onclick="openNote('33990672')" title="Комментарий">&#9998;</button>
             </div>
           </div>
-          <div class="edge-badges"><span class="edge-badge edge-seller" title="Агентство — с комиссией">🏢 АГЕНТСТВО</span><span class="edge-badge dom-fresh" title="Дней на рынке">🟢 25 дн</span></div>
+          <div class="edge-badges"><span class="edge-badge edge-seller" title="Агентство — с комиссией">🏢 АГЕНТСТВО</span><span class="edge-badge dom-fresh" title="Дней на рынке">🟢 26 дн</span></div>
           
           <div class="photos"><img src="https://pub-cdcf65e04720413aaa6bb1ccc89ec675.r2.dev/bf4b9c4fdc56_0.jpg" loading="lazy" referrerpolicy="no-referrer" alt="" onerror="this.style.display='none'"><img src="https://pub-cdcf65e04720413aaa6bb1ccc89ec675.r2.dev/bf4b9c4fdc56_1.jpg" loading="lazy" referrerpolicy="no-referrer" alt="" onerror="this.style.display='none'"></div>
           <h3>House in rua Padre Moura, 13</h3>
@@ -10851,7 +10867,7 @@ html, body { overflow-x: hidden; }
           <div class="location">
             <a href="https://www.google.com/maps/search/rua%20Padre%20Moura%2C%2013%2C%20Amoreira%2C%20Leiria%2C%20Portugal" target="_blank" class="map-link">Leiria / Amoreira</a>
           </div>
-          <div class="tracking"><span>На рынке: <b>25 дн</b></span><span>Найдено: 25.03.2026</span></div>
+          <div class="tracking"><span>На рынке: <b>26 дн</b></span><span>Найдено: 25.03.2026</span></div>
           
           <div class="desc">House in the center of the quiet village of Amoreira- Óbidos. This house consists of 2 floors, with garden, outbuildings, garage, rustic kitchen, sheds and well. Pleasant house with friendly areas, on the ground floor with a 22m2 living room, 7m2 bat...</div>
           <div class="tags"><span class="tag alert">СУПЕР ДЕШЕВО -60% от медианы района (1,892/м2)</span><span class="tag pro">+ Дешево: 758/м2</span><span class="tag pro">+ Большая: 297 м2</span><span class="tag pro">+ T3</span></div>
@@ -10881,7 +10897,7 @@ html, body { overflow-x: hidden; }
              data-is-fresh="0"
              data-price-drop-eur="0"
              data-hidden-gem="0"
-             data-days-on-market="25"
+             data-days-on-market="26"
              data-has-video="0"
              data-new-build="0">
           <div class="card-header">
@@ -10895,7 +10911,7 @@ html, body { overflow-x: hidden; }
               <button class="note-btn" onclick="openNote('34778839')" title="Комментарий">&#9998;</button>
             </div>
           </div>
-          <div class="edge-badges"><span class="edge-badge edge-seller" title="Агентство — с комиссией">🏢 АГЕНТСТВО</span><span class="edge-badge dom-fresh" title="Дней на рынке">🟢 25 дн</span></div>
+          <div class="edge-badges"><span class="edge-badge edge-seller" title="Агентство — с комиссией">🏢 АГЕНТСТВО</span><span class="edge-badge dom-fresh" title="Дней на рынке">🟢 26 дн</span></div>
           
           <div class="photos"><img src="https://pub-cdcf65e04720413aaa6bb1ccc89ec675.r2.dev/703c18dbc152_0.jpg" loading="lazy" referrerpolicy="no-referrer" alt="" onerror="this.style.display='none'"><img src="https://pub-cdcf65e04720413aaa6bb1ccc89ec675.r2.dev/703c18dbc152_1.jpg" loading="lazy" referrerpolicy="no-referrer" alt="" onerror="this.style.display='none'"></div>
           <h3>Flat in rua Elias Garcia</h3>
@@ -10908,7 +10924,7 @@ html, body { overflow-x: hidden; }
           <div class="location">
             <a href="https://www.google.com/maps/search/rua%20Elias%20Garcia%2C%20Peniche%2C%20Leiria%2C%20Portugal" target="_blank" class="map-link">Leiria / Peniche</a>
           </div>
-          <div class="tracking"><span>На рынке: <b>25 дн</b></span><span>Найдено: 25.03.2026</span></div>
+          <div class="tracking"><span>На рынке: <b>26 дн</b></span><span>Найдено: 25.03.2026</span></div>
           
           <div class="desc">1-bedroom apartment in Peniche. At first floor level. Comprising an open-plan kitchen and living room, corridor, bedroom, and a full bathroom. With a 20.92 sq. M terrace. Kitchen equipped with hob, oven, extractor fan, fridge-freezer, and dishwasher....</div>
           
@@ -18405,7 +18421,7 @@ html, body { overflow-x: hidden; }
              data-is-fresh="0"
              data-price-drop-eur="0"
              data-hidden-gem="26"
-             data-days-on-market="25"
+             data-days-on-market="26"
              data-has-video="0"
              data-new-build="0">
           <div class="card-header">
@@ -18419,7 +18435,7 @@ html, body { overflow-x: hidden; }
               <button class="note-btn" onclick="openNote('34778177')" title="Комментарий">&#9998;</button>
             </div>
           </div>
-          <div class="edge-badges"><span class="edge-badge edge-gem" title="Цена сильно ниже медианы муниципалитета">💎 НАХОДКА −26%</span><span class="edge-badge edge-seller" title="Агентство — с комиссией">🏢 АГЕНТСТВО</span><span class="edge-badge dom-fresh" title="Дней на рынке">🟢 25 дн</span></div>
+          <div class="edge-badges"><span class="edge-badge edge-gem" title="Цена сильно ниже медианы муниципалитета">💎 НАХОДКА −26%</span><span class="edge-badge edge-seller" title="Агентство — с комиссией">🏢 АГЕНТСТВО</span><span class="edge-badge dom-fresh" title="Дней на рынке">🟢 26 дн</span></div>
           
           <div class="photos"><img src="https://pub-cdcf65e04720413aaa6bb1ccc89ec675.r2.dev/f8894ca741c8_0.jpg" loading="lazy" referrerpolicy="no-referrer" alt="" onerror="this.style.display='none'"><img src="https://pub-cdcf65e04720413aaa6bb1ccc89ec675.r2.dev/f8894ca741c8_1.jpg" loading="lazy" referrerpolicy="no-referrer" alt="" onerror="this.style.display='none'"></div>
           <h3>Flat in rua do Moinho Velho</h3>
@@ -18432,7 +18448,7 @@ html, body { overflow-x: hidden; }
           <div class="location">
             <a href="https://www.google.com/maps/search/rua%20do%20Moinho%20Velho%2C%20Peniche%2C%20Leiria%2C%20Portugal" target="_blank" class="map-link">Leiria / Peniche</a>
           </div>
-          <div class="tracking"><span>На рынке: <b>25 дн</b></span><span>Найдено: 25.03.2026</span></div>
+          <div class="tracking"><span>На рынке: <b>26 дн</b></span><span>Найдено: 25.03.2026</span></div>
           
           <div class="desc">3-Bedroom Duplex Apartment in Peniche. With a 12-month ERA WARRANTY! Includes private parking space and storage room. Located on the second and third floor levels. The main floor features a hallway, living room, kitchen, and a full bathroom. The uppe...</div>
           <div class="tags"><span class="tag pro">+ Ниже рынка на 26% (медиана 2,957/м2)</span><span class="tag pro">+ Дешево: 2,190/м2</span><span class="tag pro">+ Большая: 121 м2</span><span class="tag pro">+ T3</span></div>
@@ -24732,7 +24748,7 @@ html, body { overflow-x: hidden; }
              data-is-fresh="0"
              data-price-drop-eur="0"
              data-hidden-gem="22"
-             data-days-on-market="25"
+             data-days-on-market="26"
              data-has-video="0"
              data-new-build="0">
           <div class="card-header">
@@ -24746,7 +24762,7 @@ html, body { overflow-x: hidden; }
               <button class="note-btn" onclick="openNote('34414927')" title="Комментарий">&#9998;</button>
             </div>
           </div>
-          <div class="edge-badges"><span class="edge-badge edge-gem" title="Цена сильно ниже медианы муниципалитета">💎 НАХОДКА −22%</span><span class="edge-badge edge-seller" title="Агентство — с комиссией">🏢 АГЕНТСТВО</span><span class="edge-badge dom-fresh" title="Дней на рынке">🟢 25 дн</span></div>
+          <div class="edge-badges"><span class="edge-badge edge-gem" title="Цена сильно ниже медианы муниципалитета">💎 НАХОДКА −22%</span><span class="edge-badge edge-seller" title="Агентство — с комиссией">🏢 АГЕНТСТВО</span><span class="edge-badge dom-fresh" title="Дней на рынке">🟢 26 дн</span></div>
           
           <div class="photos"><img src="https://pub-cdcf65e04720413aaa6bb1ccc89ec675.r2.dev/ecb666642d71_0.jpg" loading="lazy" referrerpolicy="no-referrer" alt="" onerror="this.style.display='none'"><img src="https://pub-cdcf65e04720413aaa6bb1ccc89ec675.r2.dev/ecb666642d71_1.jpg" loading="lazy" referrerpolicy="no-referrer" alt="" onerror="this.style.display='none'"></div>
           <h3>Flat in rua das Ginjeiras, 7</h3>
@@ -24759,7 +24775,7 @@ html, body { overflow-x: hidden; }
           <div class="location">
             <a href="https://www.google.com/maps/search/rua%20das%20Ginjeiras%2C%207%2C%20S%C3%A3o%20Martinho%20do%20Porto%2C%20Leiria%2C%20Portugal" target="_blank" class="map-link">Leiria / São Martinho do Porto</a>
           </div>
-          <div class="tracking"><span>На рынке: <b>25 дн</b></span><span>Найдено: 25.03.2026</span></div>
+          <div class="tracking"><span>На рынке: <b>26 дн</b></span><span>Найдено: 25.03.2026</span></div>
           
           <div class="desc">Located in São Martinho do Porto, this T2 Duplex on the first floor without lift with parking space, is in a quiet area, within walking distance of the market, schools, cafes and all local shops, and is still a few minutes walk from the beach. Key fe...</div>
           <div class="tags"><span class="tag pro">+ Ниже рынка на 22% (медиана 3,132/м2)</span><span class="tag pro">+ Дешево: 2,429/м2</span><span class="tag pro">+ Большая: 119 м2</span></div>
@@ -29634,7 +29650,7 @@ html, body { overflow-x: hidden; }
              data-is-fresh="0"
              data-price-drop-eur="0"
              data-hidden-gem="0"
-             data-days-on-market="25"
+             data-days-on-market="26"
              data-has-video="0"
              data-new-build="0">
           <div class="card-header">
@@ -29648,7 +29664,7 @@ html, body { overflow-x: hidden; }
               <button class="note-btn" onclick="openNote('34335988')" title="Комментарий">&#9998;</button>
             </div>
           </div>
-          <div class="edge-badges"><span class="edge-badge edge-seller" title="Агентство — с комиссией">🏢 АГЕНТСТВО</span><span class="edge-badge dom-fresh" title="Дней на рынке">🟢 25 дн</span></div>
+          <div class="edge-badges"><span class="edge-badge edge-seller" title="Агентство — с комиссией">🏢 АГЕНТСТВО</span><span class="edge-badge dom-fresh" title="Дней на рынке">🟢 26 дн</span></div>
           
           <div class="photos"><img src="https://pub-cdcf65e04720413aaa6bb1ccc89ec675.r2.dev/ada7b966e35a_0.jpg" loading="lazy" referrerpolicy="no-referrer" alt="" onerror="this.style.display='none'"><img src="https://pub-cdcf65e04720413aaa6bb1ccc89ec675.r2.dev/ada7b966e35a_1.jpg" loading="lazy" referrerpolicy="no-referrer" alt="" onerror="this.style.display='none'"></div>
           <h3>House</h3>
@@ -29661,7 +29677,7 @@ html, body { overflow-x: hidden; }
           <div class="location">
             <a href="https://www.google.com/maps/search/Santo%20Onofre%20e%20Serra%20do%20Bouro%2C%20Santo%20Onofre%20e%20Serra%20do%20Bouro%2C%20Leiria%2C%20Portugal" target="_blank" class="map-link">Leiria / Santo Onofre e Serra do Bouro</a>
           </div>
-          <div class="tracking"><span>На рынке: <b>25 дн</b></span><span>Найдено: 25.03.2026</span></div>
+          <div class="tracking"><span>На рынке: <b>26 дн</b></span><span>Найдено: 25.03.2026</span></div>
           
           <div class="desc">Ground floor house with attic and terrace, near the city center; Totally renovated including electricity and plumbing; Original woodwork maintained after properly treated; The entrance we find a living room and kitchen in open-space; 1 Suite with acc...</div>
           <div class="tags"><span class="tag pro">+ T4</span><span class="tag con">- Дорого: +72% от медианы района</span></div>
@@ -36303,7 +36319,7 @@ html, body { overflow-x: hidden; }
              data-is-fresh="0"
              data-price-drop-eur="0"
              data-hidden-gem="27"
-             data-days-on-market="25"
+             data-days-on-market="26"
              data-has-video="0"
              data-new-build="0">
           <div class="card-header">
@@ -36317,7 +36333,7 @@ html, body { overflow-x: hidden; }
               <button class="note-btn" onclick="openNote('34684148')" title="Комментарий">&#9998;</button>
             </div>
           </div>
-          <div class="edge-badges"><span class="edge-badge edge-gem" title="Цена сильно ниже медианы муниципалитета">💎 НАХОДКА −27%</span><span class="edge-badge edge-seller" title="Агентство — с комиссией">🏢 АГЕНТСТВО</span><span class="edge-badge dom-fresh" title="Дней на рынке">🟢 25 дн</span></div>
+          <div class="edge-badges"><span class="edge-badge edge-gem" title="Цена сильно ниже медианы муниципалитета">💎 НАХОДКА −27%</span><span class="edge-badge edge-seller" title="Агентство — с комиссией">🏢 АГЕНТСТВО</span><span class="edge-badge dom-fresh" title="Дней на рынке">🟢 26 дн</span></div>
           
           <div class="photos"><img src="https://pub-cdcf65e04720413aaa6bb1ccc89ec675.r2.dev/33d34e70e7d5_0.jpg" loading="lazy" referrerpolicy="no-referrer" alt="" onerror="this.style.display='none'"><img src="https://pub-cdcf65e04720413aaa6bb1ccc89ec675.r2.dev/33d34e70e7d5_1.jpg" loading="lazy" referrerpolicy="no-referrer" alt="" onerror="this.style.display='none'"></div>
           <h3>House</h3>
@@ -36330,7 +36346,7 @@ html, body { overflow-x: hidden; }
           <div class="location">
             <a href="https://www.google.com/maps/search/Foz%20do%20Arelho%2C%20Foz%20do%20Arelho%2C%20Leiria%2C%20Portugal" target="_blank" class="map-link">Leiria / Foz do Arelho</a>
           </div>
-          <div class="tracking"><span>На рынке: <b>25 дн</b></span><span>Найдено: 25.03.2026</span></div>
+          <div class="tracking"><span>На рынке: <b>26 дн</b></span><span>Найдено: 25.03.2026</span></div>
           
           <div class="desc">4 bedroom villa in the center of Foz do Arelho - Excellent location and sun exposure Used 4-bedroom villa in the heart of Foz do Arelho, just a few minutes from the beach and all the essential services. This villa offers an ideal combination of comfo...</div>
           <div class="tags"><span class="tag pro">+ Ниже рынка на 27% (медиана 3,068/м2)</span><span class="tag pro">+ Дешево: 2,252/м2</span><span class="tag pro">+ Большая: 155 м2</span><span class="tag pro">+ T4</span></div>
@@ -37044,7 +37060,7 @@ html, body { overflow-x: hidden; }
              data-is-fresh="0"
              data-price-drop-eur="0"
              data-hidden-gem="0"
-             data-days-on-market="25"
+             data-days-on-market="26"
              data-has-video="0"
              data-new-build="0">
           <div class="card-header">
@@ -37058,7 +37074,7 @@ html, body { overflow-x: hidden; }
               <button class="note-btn" onclick="openNote('34594475')" title="Комментарий">&#9998;</button>
             </div>
           </div>
-          <div class="edge-badges"><span class="edge-badge edge-seller" title="Агентство — с комиссией">🏢 АГЕНТСТВО</span><span class="edge-badge dom-fresh" title="Дней на рынке">🟢 25 дн</span></div>
+          <div class="edge-badges"><span class="edge-badge edge-seller" title="Агентство — с комиссией">🏢 АГЕНТСТВО</span><span class="edge-badge dom-fresh" title="Дней на рынке">🟢 26 дн</span></div>
           
           <div class="photos"><img src="https://pub-cdcf65e04720413aaa6bb1ccc89ec675.r2.dev/afdffe029b39_0.jpg" loading="lazy" referrerpolicy="no-referrer" alt="" onerror="this.style.display='none'"><img src="https://pub-cdcf65e04720413aaa6bb1ccc89ec675.r2.dev/afdffe029b39_1.jpg" loading="lazy" referrerpolicy="no-referrer" alt="" onerror="this.style.display='none'"></div>
           <h3>Detached house in rua dos Pereiras</h3>
@@ -37071,7 +37087,7 @@ html, body { overflow-x: hidden; }
           <div class="location">
             <a href="https://www.google.com/maps/search/rua%20dos%20Pereiras%2C%20Olho%20Marinho%2C%20Leiria%2C%20Portugal" target="_blank" class="map-link">Leiria / Olho Marinho</a>
           </div>
-          <div class="tracking"><span>На рынке: <b>25 дн</b></span><span>Найдено: 25.03.2026</span></div>
+          <div class="tracking"><span>На рынке: <b>26 дн</b></span><span>Найдено: 25.03.2026</span></div>
           
           <div class="desc">3-bedroom house in Olho Marinho, Óbidos. With a 12-month ERA WARRANTY! Comprising 3 bedrooms, 2 bathrooms, 2 living rooms with fireplaces and a garage. Located on a 2,960sq. M lot with fruit trees, a 250sq. M warehouse, and a 2-story house to renovat...</div>
           <div class="tags"><span class="tag pro">+ Дешево: 862/м2</span><span class="tag pro">+ Большая: 406 м2</span><span class="tag pro">+ T3</span></div>
@@ -37101,7 +37117,7 @@ html, body { overflow-x: hidden; }
              data-is-fresh="0"
              data-price-drop-eur="0"
              data-hidden-gem="15"
-             data-days-on-market="25"
+             data-days-on-market="26"
              data-has-video="0"
              data-new-build="0">
           <div class="card-header">
@@ -37115,7 +37131,7 @@ html, body { overflow-x: hidden; }
               <button class="note-btn" onclick="openNote('34118149')" title="Комментарий">&#9998;</button>
             </div>
           </div>
-          <div class="edge-badges"><span class="edge-badge edge-gem" title="Цена сильно ниже медианы муниципалитета">💎 НАХОДКА −15%</span><span class="edge-badge edge-seller" title="Агентство — с комиссией">🏢 АГЕНТСТВО</span><span class="edge-badge dom-fresh" title="Дней на рынке">🟢 25 дн</span></div>
+          <div class="edge-badges"><span class="edge-badge edge-gem" title="Цена сильно ниже медианы муниципалитета">💎 НАХОДКА −15%</span><span class="edge-badge edge-seller" title="Агентство — с комиссией">🏢 АГЕНТСТВО</span><span class="edge-badge dom-fresh" title="Дней на рынке">🟢 26 дн</span></div>
           
           <div class="photos"><img src="https://pub-cdcf65e04720413aaa6bb1ccc89ec675.r2.dev/e41ec26eaafe_0.jpg" loading="lazy" referrerpolicy="no-referrer" alt="" onerror="this.style.display='none'"><img src="https://pub-cdcf65e04720413aaa6bb1ccc89ec675.r2.dev/e41ec26eaafe_1.jpg" loading="lazy" referrerpolicy="no-referrer" alt="" onerror="this.style.display='none'"></div>
           <h3>Detached house in largo do Visconde</h3>
@@ -37128,7 +37144,7 @@ html, body { overflow-x: hidden; }
           <div class="location">
             <a href="https://www.google.com/maps/search/largo%20do%20Visconde%2C%20Peniche%2C%20Leiria%2C%20Portugal" target="_blank" class="map-link">Leiria / Peniche</a>
           </div>
-          <div class="tracking"><span>На рынке: <b>25 дн</b></span><span>Найдено: 25.03.2026</span></div>
+          <div class="tracking"><span>На рынке: <b>26 дн</b></span><span>Найдено: 25.03.2026</span></div>
           
           <div class="desc">2 Bedroom house in Peniche. With a 12-month ERA warranty! Inserted in the Visconde neighborhood. Two storey. Ground floor comprising entrance hall, open space kitchen and living room, a bedroom and a complete bathroom. Attic with living room, bedroom...</div>
           <div class="tags"><span class="tag pro">+ Ниже рынка на 15% (медиана 2,957/м2)</span><span class="tag pro">+ Большая: 140 м2</span></div>
@@ -39222,6 +39238,24 @@ function initTop50() {
 }
 
 // Session-cookie sync then init
+function logout() {
+  fetch('/api/logout', {
+    method: 'POST',
+    credentials: 'include',
+    headers: {'X-CSRF-Token': CSRF_TOKEN}
+  }).catch(function(){}).then(function(){
+    window.location.href = '/login';
+  });
+}
+
+function showUserBar(username) {
+  var bar = document.getElementById('user-bar');
+  var nameEl = document.getElementById('user-name');
+  if (!bar || !nameEl) return;
+  nameEl.textContent = username || '';
+  bar.classList.add('visible');
+}
+
 function initSync() {
   return fetch('/api/me', {credentials: 'same-origin'}).then(function(r) {
     if (!r.ok) throw 'no session';
@@ -39229,6 +39263,8 @@ function initSync() {
   }).then(function(me) {
     CSRF_TOKEN = me.csrf_token || '';
     API_HEADERS = {'X-CSRF-Token': CSRF_TOKEN, 'Content-Type': 'application/json'};
+    window.CURRENT_USER = me.username || '';
+    showUserBar(window.CURRENT_USER);
     return fetch('/api/state', {credentials: 'same-origin'});
   }).then(function(r) {
     if (!r.ok) throw 'no state';

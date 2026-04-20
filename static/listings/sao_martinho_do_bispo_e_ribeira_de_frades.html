@@ -141,9 +141,25 @@ body { font-size: var(--fs-body); }
 }
 html, body { overflow-x: hidden; }
 .card { word-wrap: break-word; overflow-wrap: break-word; }
+
+/* User bar — fixed top-right, shown only when logged into server */
+#user-bar { position: fixed; top: 10px; right: 14px; z-index: 300; display: none; align-items: center; gap: 8px; background: rgba(255,255,255,0.95); padding: 6px 12px; border-radius: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.2); font-size: 12px; color: #555; }
+#user-bar.visible { display: inline-flex; }
+#user-bar .user-name { font-weight: 600; color: #1a237e; }
+#user-bar .logout-btn { background: #c62828; color: #fff; border: none; border-radius: 14px; padding: 5px 12px; font-size: 11px; font-weight: 600; cursor: pointer; transition: 0.15s; }
+#user-bar .logout-btn:hover { background: #8e0000; }
+@media (max-width: 480px) {
+  #user-bar { top: 6px; right: 6px; padding: 4px 8px; font-size: 11px; }
+  #user-bar .logout-btn { padding: 3px 8px; font-size: 10px; }
+}
 </style>
 </head>
 <body>
+<!-- User bar — fixed top-right, shown only when logged into server -->
+<div id="user-bar">
+  <span>👤 <span class="user-name" id="user-name"></span></span>
+  <button class="logout-btn" onclick="logout()">Выйти</button>
+</div>
 <div id="app-content">
 <a href="index.html" class="back-link">← Все районы</a>
 <div class="header">
@@ -661,6 +677,24 @@ function initTop50() {
 }
 
 // Session-cookie sync then init
+function logout() {
+  fetch('/api/logout', {
+    method: 'POST',
+    credentials: 'include',
+    headers: {'X-CSRF-Token': CSRF_TOKEN}
+  }).catch(function(){}).then(function(){
+    window.location.href = '/login';
+  });
+}
+
+function showUserBar(username) {
+  var bar = document.getElementById('user-bar');
+  var nameEl = document.getElementById('user-name');
+  if (!bar || !nameEl) return;
+  nameEl.textContent = username || '';
+  bar.classList.add('visible');
+}
+
 function initSync() {
   return fetch('/api/me', {credentials: 'same-origin'}).then(function(r) {
     if (!r.ok) throw 'no session';
@@ -668,6 +702,8 @@ function initSync() {
   }).then(function(me) {
     CSRF_TOKEN = me.csrf_token || '';
     API_HEADERS = {'X-CSRF-Token': CSRF_TOKEN, 'Content-Type': 'application/json'};
+    window.CURRENT_USER = me.username || '';
+    showUserBar(window.CURRENT_USER);
     return fetch('/api/state', {credentials: 'same-origin'});
   }).then(function(r) {
     if (!r.ok) throw 'no state';

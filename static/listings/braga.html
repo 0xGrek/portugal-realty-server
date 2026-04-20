@@ -141,9 +141,25 @@ body { font-size: var(--fs-body); }
 }
 html, body { overflow-x: hidden; }
 .card { word-wrap: break-word; overflow-wrap: break-word; }
+
+/* User bar — fixed top-right, shown only when logged into server */
+#user-bar { position: fixed; top: 10px; right: 14px; z-index: 300; display: none; align-items: center; gap: 8px; background: rgba(255,255,255,0.95); padding: 6px 12px; border-radius: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.2); font-size: 12px; color: #555; }
+#user-bar.visible { display: inline-flex; }
+#user-bar .user-name { font-weight: 600; color: #1a237e; }
+#user-bar .logout-btn { background: #c62828; color: #fff; border: none; border-radius: 14px; padding: 5px 12px; font-size: 11px; font-weight: 600; cursor: pointer; transition: 0.15s; }
+#user-bar .logout-btn:hover { background: #8e0000; }
+@media (max-width: 480px) {
+  #user-bar { top: 6px; right: 6px; padding: 4px 8px; font-size: 11px; }
+  #user-bar .logout-btn { padding: 3px 8px; font-size: 10px; }
+}
 </style>
 </head>
 <body>
+<!-- User bar — fixed top-right, shown only when logged into server -->
+<div id="user-bar">
+  <span>👤 <span class="user-name" id="user-name"></span></span>
+  <button class="logout-btn" onclick="logout()">Выйти</button>
+</div>
 <div id="app-content">
 <a href="index.html" class="back-link">← Все районы</a>
 <div class="header">
@@ -38241,7 +38257,7 @@ html, body { overflow-x: hidden; }
              data-is-fresh="0"
              data-price-drop-eur="1500"
              data-hidden-gem="0"
-             data-days-on-market="25"
+             data-days-on-market="26"
              data-has-video="0"
              data-new-build="0">
           <div class="card-header">
@@ -38255,7 +38271,7 @@ html, body { overflow-x: hidden; }
               <button class="note-btn" onclick="openNote('34806244')" title="Комментарий">&#9998;</button>
             </div>
           </div>
-          <div class="edge-badges"><span class="edge-badge edge-pricedrop" title="Падение цены за 90 дней">💰 ЦЕНА СНИЖЕНА −1,500 EUR</span><span class="edge-badge edge-seller" title="Агентство — с комиссией">🏢 АГЕНТСТВО</span><span class="edge-badge dom-fresh" title="Дней на рынке">🟢 25 дн</span></div>
+          <div class="edge-badges"><span class="edge-badge edge-pricedrop" title="Падение цены за 90 дней">💰 ЦЕНА СНИЖЕНА −1,500 EUR</span><span class="edge-badge edge-seller" title="Агентство — с комиссией">🏢 АГЕНТСТВО</span><span class="edge-badge dom-fresh" title="Дней на рынке">🟢 26 дн</span></div>
           
           <div class="photos"><img src="https://pub-cdcf65e04720413aaa6bb1ccc89ec675.r2.dev/748d6d7ce550_0.jpg" loading="lazy" referrerpolicy="no-referrer" alt="" onerror="this.style.display='none'"><img src="https://pub-cdcf65e04720413aaa6bb1ccc89ec675.r2.dev/748d6d7ce550_1.jpg" loading="lazy" referrerpolicy="no-referrer" alt="" onerror="this.style.display='none'"></div>
           <h3>Flat</h3>
@@ -38268,7 +38284,7 @@ html, body { overflow-x: hidden; }
           <div class="location">
             <a href="https://www.google.com/maps/search/Barcelos%2C%20Barcelos%2C%20Braga%2C%20Portugal" target="_blank" class="map-link">Braga / Barcelos</a>
           </div>
-          <div class="tracking"><span>На рынке: <b>25 дн</b></span><span>Найдено: 25.03.2026</span></div>
+          <div class="tracking"><span>На рынке: <b>26 дн</b></span><span>Найдено: 25.03.2026</span></div>
           <div class="price-history"><b>История цен:</b><div>25.03.2026 - 286,500 EUR</div><div>19.04.2026 - 285,000 EUR</div></div>
           <div class="desc">If you want to live with quality of life and with everything that the city of Barcelos has to offer, we present to you this 4-bedroom apartment transformed into a 3-bedroom apartment in one of the most emblematic buildings in our beautiful city. With...</div>
           <div class="tags"><span class="tag pro">+ Цена снижалась</span><span class="tag pro">+ Дешево: 2,415/м2</span><span class="tag pro">+ Большая: 118 м2</span><span class="tag pro">+ T3</span></div>
@@ -39096,7 +39112,7 @@ html, body { overflow-x: hidden; }
              data-is-fresh="0"
              data-price-drop-eur="0"
              data-hidden-gem="0"
-             data-days-on-market="25"
+             data-days-on-market="26"
              data-has-video="0"
              data-new-build="0">
           <div class="card-header">
@@ -39110,7 +39126,7 @@ html, body { overflow-x: hidden; }
               <button class="note-btn" onclick="openNote('34635359')" title="Комментарий">&#9998;</button>
             </div>
           </div>
-          <div class="edge-badges"><span class="edge-badge edge-seller" title="Агентство — с комиссией">🏢 АГЕНТСТВО</span><span class="edge-badge dom-fresh" title="Дней на рынке">🟢 25 дн</span></div>
+          <div class="edge-badges"><span class="edge-badge edge-seller" title="Агентство — с комиссией">🏢 АГЕНТСТВО</span><span class="edge-badge dom-fresh" title="Дней на рынке">🟢 26 дн</span></div>
           
           <div class="photos"><img src="https://pub-cdcf65e04720413aaa6bb1ccc89ec675.r2.dev/900a1e5b3c7f_0.jpg" loading="lazy" referrerpolicy="no-referrer" alt="" onerror="this.style.display='none'"><img src="https://pub-cdcf65e04720413aaa6bb1ccc89ec675.r2.dev/900a1e5b3c7f_1.jpg" loading="lazy" referrerpolicy="no-referrer" alt="" onerror="this.style.display='none'"></div>
           <h3>Detached house</h3>
@@ -39123,7 +39139,7 @@ html, body { overflow-x: hidden; }
           <div class="location">
             <a href="https://www.google.com/maps/search/Carreira%20e%20Fonte%20Coberta%2C%20Carreira%20e%20Fonte%20Coberta%2C%20Braga%2C%20Portugal" target="_blank" class="map-link">Braga / Carreira e Fonte Coberta</a>
           </div>
-          <div class="tracking"><span>На рынке: <b>25 дн</b></span><span>Найдено: 25.03.2026</span></div>
+          <div class="tracking"><span>На рынке: <b>26 дн</b></span><span>Найдено: 25.03.2026</span></div>
           
           <div class="desc">Detached 3-bedroom villa with over 1000m2 of land, 5 minutes from Nine station We present this charming 3-bedroom villa, perfect for those seeking comfort, space and privacy. Main features: Large areas 3 large bedrooms, two of which have private bath...</div>
           <div class="tags"><span class="tag pro">+ Дешево: 1,920/м2</span><span class="tag pro">+ Большая: 150 м2</span><span class="tag pro">+ T3</span><span class="tag pro">+ Бассейн</span></div>
@@ -39381,7 +39397,7 @@ html, body { overflow-x: hidden; }
              data-is-fresh="0"
              data-price-drop-eur="0"
              data-hidden-gem="21"
-             data-days-on-market="25"
+             data-days-on-market="26"
              data-has-video="0"
              data-new-build="0">
           <div class="card-header">
@@ -39395,7 +39411,7 @@ html, body { overflow-x: hidden; }
               <button class="note-btn" onclick="openNote('34900207')" title="Комментарий">&#9998;</button>
             </div>
           </div>
-          <div class="edge-badges"><span class="edge-badge edge-gem" title="Цена сильно ниже медианы муниципалитета">💎 НАХОДКА −21%</span><span class="edge-badge edge-seller" title="Агентство — с комиссией">🏢 АГЕНТСТВО</span><span class="edge-badge dom-fresh" title="Дней на рынке">🟢 25 дн</span></div>
+          <div class="edge-badges"><span class="edge-badge edge-gem" title="Цена сильно ниже медианы муниципалитета">💎 НАХОДКА −21%</span><span class="edge-badge edge-seller" title="Агентство — с комиссией">🏢 АГЕНТСТВО</span><span class="edge-badge dom-fresh" title="Дней на рынке">🟢 26 дн</span></div>
           
           <div class="photos"><img src="https://pub-cdcf65e04720413aaa6bb1ccc89ec675.r2.dev/b87cebfed6d7_0.jpg" loading="lazy" referrerpolicy="no-referrer" alt="" onerror="this.style.display='none'"><img src="https://pub-cdcf65e04720413aaa6bb1ccc89ec675.r2.dev/b87cebfed6d7_1.jpg" loading="lazy" referrerpolicy="no-referrer" alt="" onerror="this.style.display='none'"></div>
           <h3>Flat in rua Germão Galharde, 20</h3>
@@ -39408,7 +39424,7 @@ html, body { overflow-x: hidden; }
           <div class="location">
             <a href="https://www.google.com/maps/search/rua%20Germ%C3%A3o%20Galharde%2C%2020%2C%20S%C3%A3o%20Victor%2C%20Braga%2C%20Portugal" target="_blank" class="map-link">Braga / São Victor</a>
           </div>
-          <div class="tracking"><span>На рынке: <b>25 дн</b></span><span>Найдено: 25.03.2026</span></div>
+          <div class="tracking"><span>На рынке: <b>26 дн</b></span><span>Найдено: 25.03.2026</span></div>
           
           <div class="desc">T3 apartment with closed garage in the MAKRO area of S. Victor, Braga. This property is located in a premium area of the city, close to numerous shops and services such as Makro, Mercadona, Aldi, Leroy Merlin, Lidl, Minho Center (Continente), SuperCo...</div>
           <div class="tags"><span class="tag pro">+ Ниже рынка на 21% (медиана 2,429/м2)</span><span class="tag pro">+ Дешево: 1,927/м2</span><span class="tag pro">+ Большая: 150 м2</span><span class="tag pro">+ T3</span></div>
@@ -41775,7 +41791,7 @@ html, body { overflow-x: hidden; }
              data-is-fresh="0"
              data-price-drop-eur="0"
              data-hidden-gem="0"
-             data-days-on-market="25"
+             data-days-on-market="26"
              data-has-video="0"
              data-new-build="0">
           <div class="card-header">
@@ -41789,7 +41805,7 @@ html, body { overflow-x: hidden; }
               <button class="note-btn" onclick="openNote('34612107')" title="Комментарий">&#9998;</button>
             </div>
           </div>
-          <div class="edge-badges"><span class="edge-badge edge-seller" title="Агентство — с комиссией">🏢 АГЕНТСТВО</span><span class="edge-badge dom-fresh" title="Дней на рынке">🟢 25 дн</span></div>
+          <div class="edge-badges"><span class="edge-badge edge-seller" title="Агентство — с комиссией">🏢 АГЕНТСТВО</span><span class="edge-badge dom-fresh" title="Дней на рынке">🟢 26 дн</span></div>
           
           <div class="photos"><img src="https://pub-cdcf65e04720413aaa6bb1ccc89ec675.r2.dev/50a05a1d5dc8_0.jpg" loading="lazy" referrerpolicy="no-referrer" alt="" onerror="this.style.display='none'"><img src="https://pub-cdcf65e04720413aaa6bb1ccc89ec675.r2.dev/50a05a1d5dc8_1.jpg" loading="lazy" referrerpolicy="no-referrer" alt="" onerror="this.style.display='none'"></div>
           <h3>Flat in rua Ernesto Carvalho no number</h3>
@@ -41802,7 +41818,7 @@ html, body { overflow-x: hidden; }
           <div class="location">
             <a href="https://www.google.com/maps/search/rua%20Ernesto%20Carvalho%20no%20number%2C%20Vila%20Nova%20de%20Famalic%C3%A3o%20e%20Calend%C3%A1rio%2C%20Braga%2C%20Portugal" target="_blank" class="map-link">Braga / Vila Nova de Famalicão e Calendário</a>
           </div>
-          <div class="tracking"><span>На рынке: <b>25 дн</b></span><span>Найдено: 25.03.2026</span></div>
+          <div class="tracking"><span>На рынке: <b>26 дн</b></span><span>Найдено: 25.03.2026</span></div>
           
           <div class="desc">Property Identification: ZMPT582195 Renovated T3 Apartment – Vila Nova de Famalicão Discover this magnificent T3 apartment, located on Rua Ernesto Carvalho, in the Edifício Milão (Quinta de Pelames), in Vila Nova de Famalicão. A property that combine...</div>
           <div class="tags"><span class="tag pro">+ Большая: 109 м2</span><span class="tag pro">+ T3</span></div>
@@ -49071,7 +49087,7 @@ html, body { overflow-x: hidden; }
              data-is-fresh="0"
              data-price-drop-eur="0"
              data-hidden-gem="0"
-             data-days-on-market="25"
+             data-days-on-market="26"
              data-has-video="0"
              data-new-build="0">
           <div class="card-header">
@@ -49085,7 +49101,7 @@ html, body { overflow-x: hidden; }
               <button class="note-btn" onclick="openNote('33172104')" title="Комментарий">&#9998;</button>
             </div>
           </div>
-          <div class="edge-badges"><span class="edge-badge edge-seller" title="Агентство — с комиссией">🏢 АГЕНТСТВО</span><span class="edge-badge dom-fresh" title="Дней на рынке">🟢 25 дн</span></div>
+          <div class="edge-badges"><span class="edge-badge edge-seller" title="Агентство — с комиссией">🏢 АГЕНТСТВО</span><span class="edge-badge dom-fresh" title="Дней на рынке">🟢 26 дн</span></div>
           
           <div class="photos"><img src="https://pub-cdcf65e04720413aaa6bb1ccc89ec675.r2.dev/17aae8da5eae_0.jpg" loading="lazy" referrerpolicy="no-referrer" alt="" onerror="this.style.display='none'"><img src="https://pub-cdcf65e04720413aaa6bb1ccc89ec675.r2.dev/17aae8da5eae_1.jpg" loading="lazy" referrerpolicy="no-referrer" alt="" onerror="this.style.display='none'"></div>
           <h3>Detached house</h3>
@@ -49098,7 +49114,7 @@ html, body { overflow-x: hidden; }
           <div class="location">
             <a href="https://www.google.com/maps/search/Quinti%C3%A3es%20e%20Aguiar%2C%20Quinti%C3%A3es%20e%20Aguiar%2C%20Braga%2C%20Portugal" target="_blank" class="map-link">Braga / Quintiães e Aguiar</a>
           </div>
-          <div class="tracking"><span>На рынке: <b>25 дн</b></span><span>Найдено: 25.03.2026</span></div>
+          <div class="tracking"><span>На рынке: <b>26 дн</b></span><span>Найдено: 25.03.2026</span></div>
           
           <div class="desc">Discover this fantastic two-storey 4 bedroom detached villa, located in Quintiães, Barcelos.  Consisting of two floors, this house in excellent condition has four bedrooms, a fully equipped kitchen, two bathrooms, a living room and a large attic. The...</div>
           <div class="tags"><span class="tag alert">СУПЕР ДЕШЕВО -61% от медианы района (2,140/м2)</span><span class="tag pro">+ Дешево: 842/м2</span><span class="tag pro">+ Большая: 380 м2</span><span class="tag pro">+ T4</span></div>
@@ -57963,7 +57979,7 @@ html, body { overflow-x: hidden; }
              data-is-fresh="0"
              data-price-drop-eur="0"
              data-hidden-gem="0"
-             data-days-on-market="25"
+             data-days-on-market="26"
              data-has-video="0"
              data-new-build="0">
           <div class="card-header">
@@ -57977,7 +57993,7 @@ html, body { overflow-x: hidden; }
               <button class="note-btn" onclick="openNote('34852940')" title="Комментарий">&#9998;</button>
             </div>
           </div>
-          <div class="edge-badges"><span class="edge-badge edge-seller" title="Агентство — с комиссией">🏢 АГЕНТСТВО</span><span class="edge-badge dom-fresh" title="Дней на рынке">🟢 25 дн</span></div>
+          <div class="edge-badges"><span class="edge-badge edge-seller" title="Агентство — с комиссией">🏢 АГЕНТСТВО</span><span class="edge-badge dom-fresh" title="Дней на рынке">🟢 26 дн</span></div>
           
           <div class="photos"><img src="https://pub-cdcf65e04720413aaa6bb1ccc89ec675.r2.dev/f1a62cf3ba02_0.jpg" loading="lazy" referrerpolicy="no-referrer" alt="" onerror="this.style.display='none'"><img src="https://pub-cdcf65e04720413aaa6bb1ccc89ec675.r2.dev/f1a62cf3ba02_1.jpg" loading="lazy" referrerpolicy="no-referrer" alt="" onerror="this.style.display='none'"></div>
           <h3>Flat in rua Maria Seara, 165</h3>
@@ -57990,7 +58006,7 @@ html, body { overflow-x: hidden; }
           <div class="location">
             <a href="https://www.google.com/maps/search/rua%20Maria%20Seara%2C%20165%2C%20Esmeriz%20e%20Cabe%C3%A7udos%2C%20Braga%2C%20Portugal" target="_blank" class="map-link">Braga / Esmeriz e Cabeçudos</a>
           </div>
-          <div class="tracking"><span>На рынке: <b>25 дн</b></span><span>Найдено: 25.03.2026</span></div>
+          <div class="tracking"><span>На рынке: <b>26 дн</b></span><span>Найдено: 25.03.2026</span></div>
           
           <div class="desc">Semi-new T3 apartment (year 2022), with a 4-car garage, in Esmeriz, close to the center of Famalicão city, with all kinds of shops and services around. Composed of: Good-sized kitchen equipped with hob, oven, extractor fan, and water heater; From the...</div>
           <div class="tags"><span class="tag pro">+ Дешево: 2,156/м2</span><span class="tag pro">+ Большая: 160 м2</span><span class="tag pro">+ T3</span></div>
@@ -61680,6 +61696,24 @@ function initTop50() {
 }
 
 // Session-cookie sync then init
+function logout() {
+  fetch('/api/logout', {
+    method: 'POST',
+    credentials: 'include',
+    headers: {'X-CSRF-Token': CSRF_TOKEN}
+  }).catch(function(){}).then(function(){
+    window.location.href = '/login';
+  });
+}
+
+function showUserBar(username) {
+  var bar = document.getElementById('user-bar');
+  var nameEl = document.getElementById('user-name');
+  if (!bar || !nameEl) return;
+  nameEl.textContent = username || '';
+  bar.classList.add('visible');
+}
+
 function initSync() {
   return fetch('/api/me', {credentials: 'same-origin'}).then(function(r) {
     if (!r.ok) throw 'no session';
@@ -61687,6 +61721,8 @@ function initSync() {
   }).then(function(me) {
     CSRF_TOKEN = me.csrf_token || '';
     API_HEADERS = {'X-CSRF-Token': CSRF_TOKEN, 'Content-Type': 'application/json'};
+    window.CURRENT_USER = me.username || '';
+    showUserBar(window.CURRENT_USER);
     return fetch('/api/state', {credentials: 'same-origin'});
   }).then(function(r) {
     if (!r.ok) throw 'no state';

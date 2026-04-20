@@ -141,9 +141,25 @@ body { font-size: var(--fs-body); }
 }
 html, body { overflow-x: hidden; }
 .card { word-wrap: break-word; overflow-wrap: break-word; }
+
+/* User bar — fixed top-right, shown only when logged into server */
+#user-bar { position: fixed; top: 10px; right: 14px; z-index: 300; display: none; align-items: center; gap: 8px; background: rgba(255,255,255,0.95); padding: 6px 12px; border-radius: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.2); font-size: 12px; color: #555; }
+#user-bar.visible { display: inline-flex; }
+#user-bar .user-name { font-weight: 600; color: #1a237e; }
+#user-bar .logout-btn { background: #c62828; color: #fff; border: none; border-radius: 14px; padding: 5px 12px; font-size: 11px; font-weight: 600; cursor: pointer; transition: 0.15s; }
+#user-bar .logout-btn:hover { background: #8e0000; }
+@media (max-width: 480px) {
+  #user-bar { top: 6px; right: 6px; padding: 4px 8px; font-size: 11px; }
+  #user-bar .logout-btn { padding: 3px 8px; font-size: 10px; }
+}
 </style>
 </head>
 <body>
+<!-- User bar — fixed top-right, shown only when logged into server -->
+<div id="user-bar">
+  <span>👤 <span class="user-name" id="user-name"></span></span>
+  <button class="logout-btn" onclick="logout()">Выйти</button>
+</div>
 <div id="app-content">
 <a href="index.html" class="back-link">← Все районы</a>
 <div class="header">
@@ -11394,7 +11410,7 @@ html, body { overflow-x: hidden; }
              data-is-fresh="0"
              data-price-drop-eur="0"
              data-hidden-gem="0"
-             data-days-on-market="25"
+             data-days-on-market="26"
              data-has-video="0"
              data-new-build="1">
           <div class="card-header">
@@ -11408,7 +11424,7 @@ html, body { overflow-x: hidden; }
               <button class="note-btn" onclick="openNote('34846937')" title="Комментарий">&#9998;</button>
             </div>
           </div>
-          <div class="edge-badges"><span class="edge-badge edge-relisted" title="Объявление пересоздавали — скрыт реальный возраст">🔄 ПЕРЕЗАЛИВ</span><span class="edge-badge edge-seller" title="Агентство — с комиссией">🏢 АГЕНТСТВО</span><span class="edge-badge dom-fresh" title="Дней на рынке">🟢 25 дн</span><span class="edge-badge edge-newbuild" title="Новостройка">🏗️ НОВОСТРОЙКА</span></div>
+          <div class="edge-badges"><span class="edge-badge edge-relisted" title="Объявление пересоздавали — скрыт реальный возраст">🔄 ПЕРЕЗАЛИВ</span><span class="edge-badge edge-seller" title="Агентство — с комиссией">🏢 АГЕНТСТВО</span><span class="edge-badge dom-fresh" title="Дней на рынке">🟢 26 дн</span><span class="edge-badge edge-newbuild" title="Новостройка">🏗️ НОВОСТРОЙКА</span></div>
           <div class="relisting-warn">⚠️ ПЕРЕЗАЛИВ — объявление пересоздано, скрыт реальный возраст на рынке</div>
           <div class="photos"><img src="https://pub-cdcf65e04720413aaa6bb1ccc89ec675.r2.dev/7fde20172d20_0.jpg" loading="lazy" referrerpolicy="no-referrer" alt="" onerror="this.style.display='none'"><img src="https://pub-cdcf65e04720413aaa6bb1ccc89ec675.r2.dev/7fde20172d20_1.jpg" loading="lazy" referrerpolicy="no-referrer" alt="" onerror="this.style.display='none'"></div>
           <h3>Flat in rua Padre Gradim no number</h3>
@@ -11421,7 +11437,7 @@ html, body { overflow-x: hidden; }
           <div class="location">
             <a href="https://www.google.com/maps/search/rua%20Padre%20Gradim%20no%20number%2C%20Esmoriz%2C%20Aveiro%2C%20Portugal" target="_blank" class="map-link">Aveiro / Esmoriz</a>
           </div>
-          <div class="tracking"><span>На рынке: <b>25 дн</b></span><span>Найдено: 25.03.2026</span></div>
+          <div class="tracking"><span>На рынке: <b>26 дн</b></span><span>Найдено: 25.03.2026</span></div>
           
           <div class="desc">Atlantic Prime – Esmoriz Development comprising 30 units distributed across 2 blocks, located in Esmoriz, just 2 km from the beach. The project includes T2, T3 Duplex, and T4 Duplex apartments, with different areas and excellent East, South, and West...</div>
           <div class="tags"><span class="tag alert">ПЕРЕЗАЛИВ! Объявление пересоздано — скрыт реальный возраст</span></div>
@@ -12078,7 +12094,7 @@ html, body { overflow-x: hidden; }
              data-is-fresh="0"
              data-price-drop-eur="0"
              data-hidden-gem="0"
-             data-days-on-market="25"
+             data-days-on-market="26"
              data-has-video="0"
              data-new-build="0">
           <div class="card-header">
@@ -12092,7 +12108,7 @@ html, body { overflow-x: hidden; }
               <button class="note-btn" onclick="openNote('34853473')" title="Комментарий">&#9998;</button>
             </div>
           </div>
-          <div class="edge-badges"><span class="edge-badge edge-seller" title="Агентство — с комиссией">🏢 АГЕНТСТВО</span><span class="edge-badge dom-fresh" title="Дней на рынке">🟢 25 дн</span></div>
+          <div class="edge-badges"><span class="edge-badge edge-seller" title="Агентство — с комиссией">🏢 АГЕНТСТВО</span><span class="edge-badge dom-fresh" title="Дней на рынке">🟢 26 дн</span></div>
           
           <div class="photos"><img src="https://pub-cdcf65e04720413aaa6bb1ccc89ec675.r2.dev/eef717c3e792_0.jpg" loading="lazy" referrerpolicy="no-referrer" alt="" onerror="this.style.display='none'"><img src="https://pub-cdcf65e04720413aaa6bb1ccc89ec675.r2.dev/eef717c3e792_1.jpg" loading="lazy" referrerpolicy="no-referrer" alt="" onerror="this.style.display='none'"></div>
           <h3>Flat in rua Principal, 841</h3>
@@ -12105,7 +12121,7 @@ html, body { overflow-x: hidden; }
           <div class="location">
             <a href="https://www.google.com/maps/search/rua%20Principal%2C%20841%2C%20Lob%C3%A3o%2C%20Aveiro%2C%20Portugal" target="_blank" class="map-link">Aveiro / Lobão</a>
           </div>
-          <div class="tracking"><span>На рынке: <b>25 дн</b></span><span>Найдено: 25.03.2026</span></div>
+          <div class="tracking"><span>На рынке: <b>26 дн</b></span><span>Найдено: 25.03.2026</span></div>
           
           <div class="desc">EXCLUSIVE - Fantastic 2-bedroom duplex apartment with a terrace on the top floor in Lobão Gross area: 127 m2 Usable area: 108 m2 EC: E Price: €220,000 2-bedroom duplex apartment with excellent areas. Property that prioritizes functionality, comfort, ...</div>
           <div class="tags"><span class="tag pro">+ Дешево: 1,719/м2</span><span class="tag pro">+ Большая: 128 м2</span></div>
@@ -13275,7 +13291,7 @@ html, body { overflow-x: hidden; }
              data-is-fresh="0"
              data-price-drop-eur="0"
              data-hidden-gem="0"
-             data-days-on-market="25"
+             data-days-on-market="26"
              data-has-video="0"
              data-new-build="1">
           <div class="card-header">
@@ -13289,7 +13305,7 @@ html, body { overflow-x: hidden; }
               <button class="note-btn" onclick="openNote('34846984')" title="Комментарий">&#9998;</button>
             </div>
           </div>
-          <div class="edge-badges"><span class="edge-badge edge-relisted" title="Объявление пересоздавали — скрыт реальный возраст">🔄 ПЕРЕЗАЛИВ</span><span class="edge-badge edge-seller" title="Агентство — с комиссией">🏢 АГЕНТСТВО</span><span class="edge-badge dom-fresh" title="Дней на рынке">🟢 25 дн</span><span class="edge-badge edge-newbuild" title="Новостройка">🏗️ НОВОСТРОЙКА</span></div>
+          <div class="edge-badges"><span class="edge-badge edge-relisted" title="Объявление пересоздавали — скрыт реальный возраст">🔄 ПЕРЕЗАЛИВ</span><span class="edge-badge edge-seller" title="Агентство — с комиссией">🏢 АГЕНТСТВО</span><span class="edge-badge dom-fresh" title="Дней на рынке">🟢 26 дн</span><span class="edge-badge edge-newbuild" title="Новостройка">🏗️ НОВОСТРОЙКА</span></div>
           <div class="relisting-warn">⚠️ ПЕРЕЗАЛИВ — объявление пересоздано, скрыт реальный возраст на рынке</div>
           <div class="photos"><img src="https://pub-cdcf65e04720413aaa6bb1ccc89ec675.r2.dev/e9409f2f39e0_0.jpg" loading="lazy" referrerpolicy="no-referrer" alt="" onerror="this.style.display='none'"><img src="https://pub-cdcf65e04720413aaa6bb1ccc89ec675.r2.dev/e9409f2f39e0_1.jpg" loading="lazy" referrerpolicy="no-referrer" alt="" onerror="this.style.display='none'"></div>
           <h3>Flat in rua Padre Gradim no number</h3>
@@ -13302,7 +13318,7 @@ html, body { overflow-x: hidden; }
           <div class="location">
             <a href="https://www.google.com/maps/search/rua%20Padre%20Gradim%20no%20number%2C%20Esmoriz%2C%20Aveiro%2C%20Portugal" target="_blank" class="map-link">Aveiro / Esmoriz</a>
           </div>
-          <div class="tracking"><span>На рынке: <b>25 дн</b></span><span>Найдено: 25.03.2026</span></div>
+          <div class="tracking"><span>На рынке: <b>26 дн</b></span><span>Найдено: 25.03.2026</span></div>
           
           <div class="desc">Atlantic Prime – Esmoriz Development comprising 30 units distributed across 2 blocks, located in Esmoriz, just 2 km from the beach. The project includes T2, T3 Duplex, and T4 Duplex apartments, with different areas and excellent East, South, and West...</div>
           <div class="tags"><span class="tag alert">ПЕРЕЗАЛИВ! Объявление пересоздано — скрыт реальный возраст</span></div>
@@ -13446,7 +13462,7 @@ html, body { overflow-x: hidden; }
              data-is-fresh="0"
              data-price-drop-eur="0"
              data-hidden-gem="0"
-             data-days-on-market="25"
+             data-days-on-market="26"
              data-has-video="0"
              data-new-build="1">
           <div class="card-header">
@@ -13460,7 +13476,7 @@ html, body { overflow-x: hidden; }
               <button class="note-btn" onclick="openNote('34847060')" title="Комментарий">&#9998;</button>
             </div>
           </div>
-          <div class="edge-badges"><span class="edge-badge edge-relisted" title="Объявление пересоздавали — скрыт реальный возраст">🔄 ПЕРЕЗАЛИВ</span><span class="edge-badge edge-seller" title="Агентство — с комиссией">🏢 АГЕНТСТВО</span><span class="edge-badge dom-fresh" title="Дней на рынке">🟢 25 дн</span><span class="edge-badge edge-newbuild" title="Новостройка">🏗️ НОВОСТРОЙКА</span></div>
+          <div class="edge-badges"><span class="edge-badge edge-relisted" title="Объявление пересоздавали — скрыт реальный возраст">🔄 ПЕРЕЗАЛИВ</span><span class="edge-badge edge-seller" title="Агентство — с комиссией">🏢 АГЕНТСТВО</span><span class="edge-badge dom-fresh" title="Дней на рынке">🟢 26 дн</span><span class="edge-badge edge-newbuild" title="Новостройка">🏗️ НОВОСТРОЙКА</span></div>
           <div class="relisting-warn">⚠️ ПЕРЕЗАЛИВ — объявление пересоздано, скрыт реальный возраст на рынке</div>
           <div class="photos"><img src="https://pub-cdcf65e04720413aaa6bb1ccc89ec675.r2.dev/535046802233_0.jpg" loading="lazy" referrerpolicy="no-referrer" alt="" onerror="this.style.display='none'"><img src="https://pub-cdcf65e04720413aaa6bb1ccc89ec675.r2.dev/535046802233_1.jpg" loading="lazy" referrerpolicy="no-referrer" alt="" onerror="this.style.display='none'"></div>
           <h3>Flat in Rua Padre Gradim no number</h3>
@@ -13473,7 +13489,7 @@ html, body { overflow-x: hidden; }
           <div class="location">
             <a href="https://www.google.com/maps/search/Rua%20Padre%20Gradim%20no%20number%2C%20Esmoriz%2C%20Aveiro%2C%20Portugal" target="_blank" class="map-link">Aveiro / Esmoriz</a>
           </div>
-          <div class="tracking"><span>На рынке: <b>25 дн</b></span><span>Найдено: 25.03.2026</span></div>
+          <div class="tracking"><span>На рынке: <b>26 дн</b></span><span>Найдено: 25.03.2026</span></div>
           
           <div class="desc">Atlantic Prime – Esmoriz Development comprising 30 units distributed across 2 blocks, located in Esmoriz, just 2 km from the beach. The project includes T2, T3 Duplex, and T4 Duplex apartments, with different areas and excellent East, South, and West...</div>
           <div class="tags"><span class="tag alert">ПЕРЕЗАЛИВ! Объявление пересоздано — скрыт реальный возраст</span></div>
@@ -21654,7 +21670,7 @@ html, body { overflow-x: hidden; }
              data-is-fresh="0"
              data-price-drop-eur="0"
              data-hidden-gem="0"
-             data-days-on-market="25"
+             data-days-on-market="26"
              data-has-video="0"
              data-new-build="0">
           <div class="card-header">
@@ -21668,7 +21684,7 @@ html, body { overflow-x: hidden; }
               <button class="note-btn" onclick="openNote('34726371')" title="Комментарий">&#9998;</button>
             </div>
           </div>
-          <div class="edge-badges"><span class="edge-badge edge-seller" title="Агентство — с комиссией">🏢 АГЕНТСТВО</span><span class="edge-badge dom-fresh" title="Дней на рынке">🟢 25 дн</span></div>
+          <div class="edge-badges"><span class="edge-badge edge-seller" title="Агентство — с комиссией">🏢 АГЕНТСТВО</span><span class="edge-badge dom-fresh" title="Дней на рынке">🟢 26 дн</span></div>
           
           <div class="photos"><img src="https://pub-cdcf65e04720413aaa6bb1ccc89ec675.r2.dev/a68e6c2c8296_0.jpg" loading="lazy" referrerpolicy="no-referrer" alt="" onerror="this.style.display='none'"><img src="https://pub-cdcf65e04720413aaa6bb1ccc89ec675.r2.dev/a68e6c2c8296_1.jpg" loading="lazy" referrerpolicy="no-referrer" alt="" onerror="this.style.display='none'"></div>
           <h3>Flat in rua de Aveiro, 25</h3>
@@ -21681,7 +21697,7 @@ html, body { overflow-x: hidden; }
           <div class="location">
             <a href="https://www.google.com/maps/search/rua%20de%20Aveiro%2C%2025%2C%20Gafanha%20da%20Nazar%C3%A9%2C%20Aveiro%2C%20Portugal" target="_blank" class="map-link">Aveiro / Gafanha da Nazaré</a>
           </div>
-          <div class="tracking"><span>На рынке: <b>25 дн</b></span><span>Найдено: 25.03.2026</span></div>
+          <div class="tracking"><span>На рынке: <b>26 дн</b></span><span>Найдено: 25.03.2026</span></div>
           
           <div class="desc">Exclusive 1-Bedroom Apartment on Barra Beach: Where the Lagoon Meets the Sea. Located in the heart of the prestigious Barra Beach, this 1-bedroom apartment, situated on a quiet second floor, is not just a property; it&#x27;s an invitation to a lifestyle t...</div>
           <div class="tags"><span class="tag con">- Дорого: +41% от медианы района</span></div>
@@ -21882,7 +21898,7 @@ html, body { overflow-x: hidden; }
              data-is-fresh="0"
              data-price-drop-eur="0"
              data-hidden-gem="19"
-             data-days-on-market="25"
+             data-days-on-market="26"
              data-has-video="0"
              data-new-build="0">
           <div class="card-header">
@@ -21896,7 +21912,7 @@ html, body { overflow-x: hidden; }
               <button class="note-btn" onclick="openNote('34834110')" title="Комментарий">&#9998;</button>
             </div>
           </div>
-          <div class="edge-badges"><span class="edge-badge edge-gem" title="Цена сильно ниже медианы муниципалитета">💎 НАХОДКА −19%</span><span class="edge-badge edge-seller" title="Агентство — с комиссией">🏢 АГЕНТСТВО</span><span class="edge-badge dom-fresh" title="Дней на рынке">🟢 25 дн</span></div>
+          <div class="edge-badges"><span class="edge-badge edge-gem" title="Цена сильно ниже медианы муниципалитета">💎 НАХОДКА −19%</span><span class="edge-badge edge-seller" title="Агентство — с комиссией">🏢 АГЕНТСТВО</span><span class="edge-badge dom-fresh" title="Дней на рынке">🟢 26 дн</span></div>
           
           <div class="photos"><img src="https://pub-cdcf65e04720413aaa6bb1ccc89ec675.r2.dev/8200be1bf90e_0.jpg" loading="lazy" referrerpolicy="no-referrer" alt="" onerror="this.style.display='none'"><img src="https://pub-cdcf65e04720413aaa6bb1ccc89ec675.r2.dev/8200be1bf90e_1.jpg" loading="lazy" referrerpolicy="no-referrer" alt="" onerror="this.style.display='none'"></div>
           <h3>Flat</h3>
@@ -21909,7 +21925,7 @@ html, body { overflow-x: hidden; }
           <div class="location">
             <a href="https://www.google.com/maps/search/Santa%20Maria%20de%20Lamas%2C%20Santa%20Maria%20de%20Lamas%2C%20Aveiro%2C%20Portugal" target="_blank" class="map-link">Aveiro / Santa Maria de Lamas</a>
           </div>
-          <div class="tracking"><span>На рынке: <b>25 дн</b></span><span>Найдено: 25.03.2026</span></div>
+          <div class="tracking"><span>На рынке: <b>26 дн</b></span><span>Найдено: 25.03.2026</span></div>
           
           <div class="desc">T3 apartment with 3 fronts, located on the top floor of a building with an elevator, very well maintained and with excellent sun exposure. The property stands out for its generous areas, with 120.5 m² of usable area and 157 m² of gross area, providin...</div>
           <div class="tags"><span class="tag pro">+ Ниже рынка на 19% (медиана 2,036/м2)</span><span class="tag pro">+ Дешево: 1,650/м2</span><span class="tag pro">+ Большая: 157 м2</span><span class="tag pro">+ T3</span></div>
@@ -25017,7 +25033,7 @@ html, body { overflow-x: hidden; }
              data-is-fresh="0"
              data-price-drop-eur="0"
              data-hidden-gem="42"
-             data-days-on-market="25"
+             data-days-on-market="26"
              data-has-video="0"
              data-new-build="1">
           <div class="card-header">
@@ -25031,7 +25047,7 @@ html, body { overflow-x: hidden; }
               <button class="note-btn" onclick="openNote('34848432')" title="Комментарий">&#9998;</button>
             </div>
           </div>
-          <div class="edge-badges"><span class="edge-badge edge-gem" title="Цена сильно ниже медианы муниципалитета">💎 НАХОДКА −42%</span><span class="edge-badge edge-seller" title="Агентство — с комиссией">🏢 АГЕНТСТВО</span><span class="edge-badge dom-fresh" title="Дней на рынке">🟢 25 дн</span><span class="edge-badge edge-newbuild" title="Новостройка">🏗️ НОВОСТРОЙКА</span></div>
+          <div class="edge-badges"><span class="edge-badge edge-gem" title="Цена сильно ниже медианы муниципалитета">💎 НАХОДКА −42%</span><span class="edge-badge edge-seller" title="Агентство — с комиссией">🏢 АГЕНТСТВО</span><span class="edge-badge dom-fresh" title="Дней на рынке">🟢 26 дн</span><span class="edge-badge edge-newbuild" title="Новостройка">🏗️ НОВОСТРОЙКА</span></div>
           
           <div class="photos"><img src="https://pub-cdcf65e04720413aaa6bb1ccc89ec675.r2.dev/62abd7a7d9f9_0.jpg" loading="lazy" referrerpolicy="no-referrer" alt="" onerror="this.style.display='none'"><img src="https://pub-cdcf65e04720413aaa6bb1ccc89ec675.r2.dev/62abd7a7d9f9_1.jpg" loading="lazy" referrerpolicy="no-referrer" alt="" onerror="this.style.display='none'"></div>
           <h3>Flat in rua Padre Gradim, 76</h3>
@@ -25044,7 +25060,7 @@ html, body { overflow-x: hidden; }
           <div class="location">
             <a href="https://www.google.com/maps/search/rua%20Padre%20Gradim%2C%2076%2C%20Esmoriz%2C%20Aveiro%2C%20Portugal" target="_blank" class="map-link">Aveiro / Esmoriz</a>
           </div>
-          <div class="tracking"><span>На рынке: <b>25 дн</b></span><span>Найдено: 25.03.2026</span></div>
+          <div class="tracking"><span>На рынке: <b>26 дн</b></span><span>Найдено: 25.03.2026</span></div>
           
           <div class="desc">Atlantic Prime – The new benchmark development in Esmoriz Imagine living just a few minutes from the beach with the train station practically at your doorstep. AD - 75m2 private area + 71m2 terrace + storage and garage At Atlantic Prime, quality of l...</div>
           <div class="tags"><span class="tag alert">СУПЕР ДЕШЕВО -42% от медианы района (2,449/м2)</span><span class="tag pro">+ Дешево: 1,429/м2</span><span class="tag pro">+ Большая: 189 м2</span></div>
@@ -28950,7 +28966,7 @@ html, body { overflow-x: hidden; }
              data-is-fresh="0"
              data-price-drop-eur="0"
              data-hidden-gem="0"
-             data-days-on-market="25"
+             data-days-on-market="26"
              data-has-video="0"
              data-new-build="0">
           <div class="card-header">
@@ -28964,7 +28980,7 @@ html, body { overflow-x: hidden; }
               <button class="note-btn" onclick="openNote('34896868')" title="Комментарий">&#9998;</button>
             </div>
           </div>
-          <div class="edge-badges"><span class="edge-badge edge-seller" title="Агентство — с комиссией">🏢 АГЕНТСТВО</span><span class="edge-badge dom-fresh" title="Дней на рынке">🟢 25 дн</span></div>
+          <div class="edge-badges"><span class="edge-badge edge-seller" title="Агентство — с комиссией">🏢 АГЕНТСТВО</span><span class="edge-badge dom-fresh" title="Дней на рынке">🟢 26 дн</span></div>
           
           <div class="photos"><img src="https://pub-cdcf65e04720413aaa6bb1ccc89ec675.r2.dev/46ae90ed23ef_0.jpg" loading="lazy" referrerpolicy="no-referrer" alt="" onerror="this.style.display='none'"><img src="https://pub-cdcf65e04720413aaa6bb1ccc89ec675.r2.dev/46ae90ed23ef_1.jpg" loading="lazy" referrerpolicy="no-referrer" alt="" onerror="this.style.display='none'"></div>
           <h3>Flat in rua 2 da Urbanização de Albergaria</h3>
@@ -28977,7 +28993,7 @@ html, body { overflow-x: hidden; }
           <div class="location">
             <a href="https://www.google.com/maps/search/rua%202%20da%20Urbaniza%C3%A7%C3%A3o%20de%20Albergaria%2C%20S%C3%A3o%20Jo%C3%A3o%20de%20Ver%2C%20Aveiro%2C%20Portugal" target="_blank" class="map-link">Aveiro / São João de Ver</a>
           </div>
-          <div class="tracking"><span>На рынке: <b>25 дн</b></span><span>Найдено: 25.03.2026</span></div>
+          <div class="tracking"><span>На рынке: <b>26 дн</b></span><span>Найдено: 25.03.2026</span></div>
           
           <div class="desc">T3 apartment with terrace next to the EN1 in Santa Maria da Feira The property is located on the first floor with 3 fronts and excellent sun exposure with a large terrace (60m2) and sea view, facing west. The apartment has been renovated and clad wit...</div>
           <div class="tags"><span class="tag pro">+ Дешево: 1,333/м2</span><span class="tag pro">+ Большая: 210 м2</span><span class="tag pro">+ T3</span></div>
@@ -35391,7 +35407,7 @@ html, body { overflow-x: hidden; }
              data-is-fresh="0"
              data-price-drop-eur="0"
              data-hidden-gem="0"
-             data-days-on-market="25"
+             data-days-on-market="26"
              data-has-video="0"
              data-new-build="0">
           <div class="card-header">
@@ -35405,7 +35421,7 @@ html, body { overflow-x: hidden; }
               <button class="note-btn" onclick="openNote('34743599')" title="Комментарий">&#9998;</button>
             </div>
           </div>
-          <div class="edge-badges"><span class="edge-badge edge-seller" title="Агентство — с комиссией">🏢 АГЕНТСТВО</span><span class="edge-badge dom-fresh" title="Дней на рынке">🟢 25 дн</span></div>
+          <div class="edge-badges"><span class="edge-badge edge-seller" title="Агентство — с комиссией">🏢 АГЕНТСТВО</span><span class="edge-badge dom-fresh" title="Дней на рынке">🟢 26 дн</span></div>
           
           <div class="photos"><img src="https://pub-cdcf65e04720413aaa6bb1ccc89ec675.r2.dev/35944b90cfe0_0.jpg" loading="lazy" referrerpolicy="no-referrer" alt="" onerror="this.style.display='none'"><img src="https://pub-cdcf65e04720413aaa6bb1ccc89ec675.r2.dev/35944b90cfe0_1.jpg" loading="lazy" referrerpolicy="no-referrer" alt="" onerror="this.style.display='none'"></div>
           <h3>Flat in rua da Ponte de Anta, 142</h3>
@@ -35418,7 +35434,7 @@ html, body { overflow-x: hidden; }
           <div class="location">
             <a href="https://www.google.com/maps/search/rua%20da%20Ponte%20de%20Anta%2C%20142%2C%20Anta%2C%20Aveiro%2C%20Portugal" target="_blank" class="map-link">Aveiro / Anta</a>
           </div>
-          <div class="tracking"><span>На рынке: <b>25 дн</b></span><span>Найдено: 25.03.2026</span></div>
+          <div class="tracking"><span>На рынке: <b>26 дн</b></span><span>Найдено: 25.03.2026</span></div>
           
           <div class="desc">Two-bedroom flat in the parish of Anta e Guetim, municipality of Espinho. It is in good condition and ready to welcome your family! Located on the 1st floor, this property stands out for its excellent East/West/North sun exposure, which guarantees na...</div>
           <div class="tags"><span class="tag pro">+ Большая: 107 м2</span></div>
@@ -49995,6 +50011,24 @@ function initTop50() {
 }
 
 // Session-cookie sync then init
+function logout() {
+  fetch('/api/logout', {
+    method: 'POST',
+    credentials: 'include',
+    headers: {'X-CSRF-Token': CSRF_TOKEN}
+  }).catch(function(){}).then(function(){
+    window.location.href = '/login';
+  });
+}
+
+function showUserBar(username) {
+  var bar = document.getElementById('user-bar');
+  var nameEl = document.getElementById('user-name');
+  if (!bar || !nameEl) return;
+  nameEl.textContent = username || '';
+  bar.classList.add('visible');
+}
+
 function initSync() {
   return fetch('/api/me', {credentials: 'same-origin'}).then(function(r) {
     if (!r.ok) throw 'no session';
@@ -50002,6 +50036,8 @@ function initSync() {
   }).then(function(me) {
     CSRF_TOKEN = me.csrf_token || '';
     API_HEADERS = {'X-CSRF-Token': CSRF_TOKEN, 'Content-Type': 'application/json'};
+    window.CURRENT_USER = me.username || '';
+    showUserBar(window.CURRENT_USER);
     return fetch('/api/state', {credentials: 'same-origin'});
   }).then(function(r) {
     if (!r.ok) throw 'no state';

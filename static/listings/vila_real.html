@@ -141,9 +141,25 @@ body { font-size: var(--fs-body); }
 }
 html, body { overflow-x: hidden; }
 .card { word-wrap: break-word; overflow-wrap: break-word; }
+
+/* User bar — fixed top-right, shown only when logged into server */
+#user-bar { position: fixed; top: 10px; right: 14px; z-index: 300; display: none; align-items: center; gap: 8px; background: rgba(255,255,255,0.95); padding: 6px 12px; border-radius: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.2); font-size: 12px; color: #555; }
+#user-bar.visible { display: inline-flex; }
+#user-bar .user-name { font-weight: 600; color: #1a237e; }
+#user-bar .logout-btn { background: #c62828; color: #fff; border: none; border-radius: 14px; padding: 5px 12px; font-size: 11px; font-weight: 600; cursor: pointer; transition: 0.15s; }
+#user-bar .logout-btn:hover { background: #8e0000; }
+@media (max-width: 480px) {
+  #user-bar { top: 6px; right: 6px; padding: 4px 8px; font-size: 11px; }
+  #user-bar .logout-btn { padding: 3px 8px; font-size: 10px; }
+}
 </style>
 </head>
 <body>
+<!-- User bar — fixed top-right, shown only when logged into server -->
+<div id="user-bar">
+  <span>👤 <span class="user-name" id="user-name"></span></span>
+  <button class="logout-btn" onclick="logout()">Выйти</button>
+</div>
 <div id="app-content">
 <a href="index.html" class="back-link">← Все районы</a>
 <div class="header">
@@ -849,7 +865,7 @@ html, body { overflow-x: hidden; }
              data-is-fresh="0"
              data-price-drop-eur="1000"
              data-hidden-gem="0"
-             data-days-on-market="25"
+             data-days-on-market="26"
              data-has-video="0"
              data-new-build="0">
           <div class="card-header">
@@ -863,7 +879,7 @@ html, body { overflow-x: hidden; }
               <button class="note-btn" onclick="openNote('34586602')" title="Комментарий">&#9998;</button>
             </div>
           </div>
-          <div class="edge-badges"><span class="edge-badge edge-seller" title="Агентство — с комиссией">🏢 АГЕНТСТВО</span><span class="edge-badge dom-fresh" title="Дней на рынке">🟢 25 дн</span></div>
+          <div class="edge-badges"><span class="edge-badge edge-seller" title="Агентство — с комиссией">🏢 АГЕНТСТВО</span><span class="edge-badge dom-fresh" title="Дней на рынке">🟢 26 дн</span></div>
           
           <div class="photos"><img src="https://pub-cdcf65e04720413aaa6bb1ccc89ec675.r2.dev/4bccdf9e5654_0.jpg" loading="lazy" referrerpolicy="no-referrer" alt="" onerror="this.style.display='none'"><img src="https://pub-cdcf65e04720413aaa6bb1ccc89ec675.r2.dev/4bccdf9e5654_1.jpg" loading="lazy" referrerpolicy="no-referrer" alt="" onerror="this.style.display='none'"></div>
           <h3>Quinta in Pereira de veiga, 12</h3>
@@ -876,7 +892,7 @@ html, body { overflow-x: hidden; }
           <div class="location">
             <a href="https://www.google.com/maps/search/Pereira%20de%20veiga%2C%2012%2C%20S%C3%A3o%20Pedro%20de%20Agostem%2C%20Vila%20Real%2C%20Portugal" target="_blank" class="map-link">Vila Real / São Pedro de Agostem</a>
           </div>
-          <div class="tracking"><span>На рынке: <b>25 дн</b></span><span>Найдено: 25.03.2026</span></div>
+          <div class="tracking"><span>На рынке: <b>26 дн</b></span><span>Найдено: 25.03.2026</span></div>
           <div class="price-history"><b>История цен:</b><div>25.03.2026 - 57,500 EUR</div><div>19.04.2026 - 56,500 EUR</div></div>
           <div class="desc">**Charming Farm for Sale in Chaves** Discover this charming stone house, situated on a farm with immense potential for restoration. With a gross area of 1,500 m² and available land of 1,000 m², this generous space is perfect for creating the dream ho...</div>
           <div class="tags"><span class="tag alert">СУПЕР ДЕШЕВО -96% от медианы района (941/м2)</span><span class="tag pro">+ Цена снижалась</span><span class="tag pro">+ Дешево: 38/м2</span><span class="tag pro">+ Большая: 1500 м2</span><span class="tag pro">+ T3</span></div>
@@ -2787,7 +2803,7 @@ html, body { overflow-x: hidden; }
              data-is-fresh="0"
              data-price-drop-eur="0"
              data-hidden-gem="0"
-             data-days-on-market="25"
+             data-days-on-market="26"
              data-has-video="0"
              data-new-build="0">
           <div class="card-header">
@@ -2801,7 +2817,7 @@ html, body { overflow-x: hidden; }
               <button class="note-btn" onclick="openNote('34186894')" title="Комментарий">&#9998;</button>
             </div>
           </div>
-          <div class="edge-badges"><span class="edge-badge edge-seller" title="Агентство — с комиссией">🏢 АГЕНТСТВО</span><span class="edge-badge dom-fresh" title="Дней на рынке">🟢 25 дн</span></div>
+          <div class="edge-badges"><span class="edge-badge edge-seller" title="Агентство — с комиссией">🏢 АГЕНТСТВО</span><span class="edge-badge dom-fresh" title="Дней на рынке">🟢 26 дн</span></div>
           
           <div class="photos"><img src="https://pub-cdcf65e04720413aaa6bb1ccc89ec675.r2.dev/24a15ebe56b3_0.jpg" loading="lazy" referrerpolicy="no-referrer" alt="" onerror="this.style.display='none'"><img src="https://pub-cdcf65e04720413aaa6bb1ccc89ec675.r2.dev/24a15ebe56b3_1.jpg" loading="lazy" referrerpolicy="no-referrer" alt="" onerror="this.style.display='none'"></div>
           <h3>Detached house in largo Outeiro, 22</h3>
@@ -2814,7 +2830,7 @@ html, body { overflow-x: hidden; }
           <div class="location">
             <a href="https://www.google.com/maps/search/largo%20Outeiro%2C%2022%2C%20Tour%C3%A9m%2C%20Vila%20Real%2C%20Portugal" target="_blank" class="map-link">Vila Real / Tourém</a>
           </div>
-          <div class="tracking"><span>На рынке: <b>25 дн</b></span><span>Найдено: 25.03.2026</span></div>
+          <div class="tracking"><span>На рынке: <b>26 дн</b></span><span>Найдено: 25.03.2026</span></div>
           
           <div class="desc">Property Identification: ZMPT576477 If you are looking for a house for your own home, holidays, or investment... this is your opportunity! - Located in a region of great natural beauty, with stunning landscapes and excellent conditions for hiking, le...</div>
           <div class="tags"><span class="tag pro">+ Дешево: 938/м2</span></div>
@@ -6036,7 +6052,7 @@ html, body { overflow-x: hidden; }
              data-is-fresh="0"
              data-price-drop-eur="0"
              data-hidden-gem="0"
-             data-days-on-market="25"
+             data-days-on-market="26"
              data-has-video="0"
              data-new-build="0">
           <div class="card-header">
@@ -6050,7 +6066,7 @@ html, body { overflow-x: hidden; }
               <button class="note-btn" onclick="openNote('33811474')" title="Комментарий">&#9998;</button>
             </div>
           </div>
-          <div class="edge-badges"><span class="edge-badge edge-seller" title="Агентство — с комиссией">🏢 АГЕНТСТВО</span><span class="edge-badge dom-fresh" title="Дней на рынке">🟢 25 дн</span></div>
+          <div class="edge-badges"><span class="edge-badge edge-seller" title="Агентство — с комиссией">🏢 АГЕНТСТВО</span><span class="edge-badge dom-fresh" title="Дней на рынке">🟢 26 дн</span></div>
           
           <div class="photos"><img src="https://pub-cdcf65e04720413aaa6bb1ccc89ec675.r2.dev/0f80af433741_0.jpg" loading="lazy" referrerpolicy="no-referrer" alt="" onerror="this.style.display='none'"><img src="https://pub-cdcf65e04720413aaa6bb1ccc89ec675.r2.dev/0f80af433741_1.jpg" loading="lazy" referrerpolicy="no-referrer" alt="" onerror="this.style.display='none'"></div>
           <h3>Village house in Borbelinha no number</h3>
@@ -6063,7 +6079,7 @@ html, body { overflow-x: hidden; }
           <div class="location">
             <a href="https://www.google.com/maps/search/Borbelinha%20no%20number%2C%20Adoufe%20e%20Vilarinho%20de%20Samard%C3%A3%2C%20Vila%20Real%2C%20Portugal" target="_blank" class="map-link">Vila Real / Adoufe e Vilarinho de Samardã</a>
           </div>
-          <div class="tracking"><span>На рынке: <b>25 дн</b></span><span>Найдено: 25.03.2026</span></div>
+          <div class="tracking"><span>На рынке: <b>26 дн</b></span><span>Найдено: 25.03.2026</span></div>
           
           <div class="desc">Excellent opportunity for investment or housing in Borbelinha, just 5 minutes from the center of Vila Real, consisting of: - Set of 3 contiguous stone houses for rehabilitation; - Two-story house with a shop and annex on the ground floor, and a T2 ap...</div>
           <div class="tags"><span class="tag alert">СУПЕР ДЕШЕВО -55% от медианы района (941/м2)</span><span class="tag pro">+ Дешево: 421/м2</span><span class="tag pro">+ Большая: 285 м2</span><span class="tag pro">+ T6</span></div>
@@ -7290,7 +7306,7 @@ html, body { overflow-x: hidden; }
              data-is-fresh="0"
              data-price-drop-eur="0"
              data-hidden-gem="0"
-             data-days-on-market="25"
+             data-days-on-market="26"
              data-has-video="0"
              data-new-build="0">
           <div class="card-header">
@@ -7304,7 +7320,7 @@ html, body { overflow-x: hidden; }
               <button class="note-btn" onclick="openNote('33283209')" title="Комментарий">&#9998;</button>
             </div>
           </div>
-          <div class="edge-badges"><span class="edge-badge edge-seller" title="Агентство — с комиссией">🏢 АГЕНТСТВО</span><span class="edge-badge dom-fresh" title="Дней на рынке">🟢 25 дн</span></div>
+          <div class="edge-badges"><span class="edge-badge edge-seller" title="Агентство — с комиссией">🏢 АГЕНТСТВО</span><span class="edge-badge dom-fresh" title="Дней на рынке">🟢 26 дн</span></div>
           
           <div class="photos"><img src="https://pub-cdcf65e04720413aaa6bb1ccc89ec675.r2.dev/82dc8f9b459c_0.jpg" loading="lazy" referrerpolicy="no-referrer" alt="" onerror="this.style.display='none'"><img src="https://pub-cdcf65e04720413aaa6bb1ccc89ec675.r2.dev/82dc8f9b459c_1.jpg" loading="lazy" referrerpolicy="no-referrer" alt="" onerror="this.style.display='none'"></div>
           <h3>Village house in rua Fundo da Rua, 7</h3>
@@ -7317,7 +7333,7 @@ html, body { overflow-x: hidden; }
           <div class="location">
             <a href="https://www.google.com/maps/search/rua%20Fundo%20da%20Rua%2C%207%2C%20Santo%20Aleixo%20de%20Al%C3%A9m-Tamega%2C%20Vila%20Real%2C%20Portugal" target="_blank" class="map-link">Vila Real / Santo Aleixo de Além-Tamega</a>
           </div>
-          <div class="tracking"><span>На рынке: <b>25 дн</b></span><span>Найдено: 25.03.2026</span></div>
+          <div class="tracking"><span>На рынке: <b>26 дн</b></span><span>Найдено: 25.03.2026</span></div>
           
           <div class="desc">Rustic 4-bedroom villa completely restored inside with a cosy atmosphere. Located close to the River Tâmega, this property offers not only a charming retreat, but also quick access to various natural attractions, 9 km from the &quot;PARQUE AMBIENTAL DO BU...</div>
           <div class="tags"><span class="tag pro">+ Дешево: 2,031/м2</span><span class="tag pro">+ T4</span><span class="tag con">- Дорого: +116% от медианы района</span></div>
@@ -9627,7 +9643,7 @@ html, body { overflow-x: hidden; }
              data-is-fresh="0"
              data-price-drop-eur="0"
              data-hidden-gem="0"
-             data-days-on-market="25"
+             data-days-on-market="26"
              data-has-video="0"
              data-new-build="0">
           <div class="card-header">
@@ -9641,7 +9657,7 @@ html, body { overflow-x: hidden; }
               <button class="note-btn" onclick="openNote('34479261')" title="Комментарий">&#9998;</button>
             </div>
           </div>
-          <div class="edge-badges"><span class="edge-badge edge-seller" title="Агентство — с комиссией">🏢 АГЕНТСТВО</span><span class="edge-badge dom-fresh" title="Дней на рынке">🟢 25 дн</span></div>
+          <div class="edge-badges"><span class="edge-badge edge-seller" title="Агентство — с комиссией">🏢 АГЕНТСТВО</span><span class="edge-badge dom-fresh" title="Дней на рынке">🟢 26 дн</span></div>
           
           <div class="photos"><img src="https://pub-cdcf65e04720413aaa6bb1ccc89ec675.r2.dev/f2cb2b482eb4_0.jpg" loading="lazy" referrerpolicy="no-referrer" alt="" onerror="this.style.display='none'"><img src="https://pub-cdcf65e04720413aaa6bb1ccc89ec675.r2.dev/f2cb2b482eb4_1.jpg" loading="lazy" referrerpolicy="no-referrer" alt="" onerror="this.style.display='none'"></div>
           <h3>House in travessa de São Fraústo C no number</h3>
@@ -9654,7 +9670,7 @@ html, body { overflow-x: hidden; }
           <div class="location">
             <a href="https://www.google.com/maps/search/travessa%20de%20S%C3%A3o%20Fra%C3%BAsto%20C%20no%20number%2C%20Vale%20de%20Anta%2C%20Vila%20Real%2C%20Portugal" target="_blank" class="map-link">Vila Real / Vale de Anta</a>
           </div>
-          <div class="tracking"><span>На рынке: <b>25 дн</b></span><span>Найдено: 25.03.2026</span></div>
+          <div class="tracking"><span>На рынке: <b>26 дн</b></span><span>Найдено: 25.03.2026</span></div>
           
           <div class="desc">T4 HOUSE 4 MINUTES FROM THE CENTER OF CHAVES ✨ Prime Location - Just 4 minutes from the city center; - Tranquility and privacy, but with quick access to all services; -Excellent for those looking to live close to the city without sacrificing peace an...</div>
           <div class="tags"><span class="tag pro">+ Дешево: 1,000/м2</span><span class="tag pro">+ Большая: 160 м2</span><span class="tag pro">+ T4</span></div>
@@ -12990,7 +13006,7 @@ html, body { overflow-x: hidden; }
              data-is-fresh="0"
              data-price-drop-eur="0"
              data-hidden-gem="0"
-             data-days-on-market="25"
+             data-days-on-market="26"
              data-has-video="0"
              data-new-build="0">
           <div class="card-header">
@@ -13004,7 +13020,7 @@ html, body { overflow-x: hidden; }
               <button class="note-btn" onclick="openNote('34709650')" title="Комментарий">&#9998;</button>
             </div>
           </div>
-          <div class="edge-badges"><span class="edge-badge edge-seller" title="Агентство — с комиссией">🏢 АГЕНТСТВО</span><span class="edge-badge dom-fresh" title="Дней на рынке">🟢 25 дн</span></div>
+          <div class="edge-badges"><span class="edge-badge edge-seller" title="Агентство — с комиссией">🏢 АГЕНТСТВО</span><span class="edge-badge dom-fresh" title="Дней на рынке">🟢 26 дн</span></div>
           
           <div class="photos"><img src="https://pub-cdcf65e04720413aaa6bb1ccc89ec675.r2.dev/b60400f42e08_0.jpg" loading="lazy" referrerpolicy="no-referrer" alt="" onerror="this.style.display='none'"><img src="https://pub-cdcf65e04720413aaa6bb1ccc89ec675.r2.dev/b60400f42e08_1.jpg" loading="lazy" referrerpolicy="no-referrer" alt="" onerror="this.style.display='none'"></div>
           <h3>Detached house in Santa leocadia, 29</h3>
@@ -13017,7 +13033,7 @@ html, body { overflow-x: hidden; }
           <div class="location">
             <a href="https://www.google.com/maps/search/Santa%20leocadia%2C%2029%2C%20Santa%20Leoc%C3%A1dia%2C%20Vila%20Real%2C%20Portugal" target="_blank" class="map-link">Vila Real / Santa Leocádia</a>
           </div>
-          <div class="tracking"><span>На рынке: <b>25 дн</b></span><span>Найдено: 25.03.2026</span></div>
+          <div class="tracking"><span>На рынке: <b>26 дн</b></span><span>Найдено: 25.03.2026</span></div>
           
           <div class="desc">**Detached House for Sale in a Quiet Location** Discover this charming detached house, located in a peaceful location surrounded by nature, perfect for those seeking a haven of peace. With a generous plot of 900 square meters and a gross area of 319 ...</div>
           <div class="tags"><span class="tag alert">СУПЕР ДЕШЕВО -32% от медианы района (941/м2)</span><span class="tag pro">+ Дешево: 636/м2</span><span class="tag pro">+ Большая: 319 м2</span><span class="tag pro">+ T3</span></div>
@@ -15783,7 +15799,7 @@ html, body { overflow-x: hidden; }
              data-is-fresh="0"
              data-price-drop-eur="0"
              data-hidden-gem="0"
-             data-days-on-market="25"
+             data-days-on-market="26"
              data-has-video="0"
              data-new-build="0">
           <div class="card-header">
@@ -15797,7 +15813,7 @@ html, body { overflow-x: hidden; }
               <button class="note-btn" onclick="openNote('33213600')" title="Комментарий">&#9998;</button>
             </div>
           </div>
-          <div class="edge-badges"><span class="edge-badge edge-seller" title="Агентство — с комиссией">🏢 АГЕНТСТВО</span><span class="edge-badge dom-fresh" title="Дней на рынке">🟢 25 дн</span></div>
+          <div class="edge-badges"><span class="edge-badge edge-seller" title="Агентство — с комиссией">🏢 АГЕНТСТВО</span><span class="edge-badge dom-fresh" title="Дней на рынке">🟢 26 дн</span></div>
           
           <div class="photos"><img src="https://pub-cdcf65e04720413aaa6bb1ccc89ec675.r2.dev/5dfd1a5b4feb_0.jpg" loading="lazy" referrerpolicy="no-referrer" alt="" onerror="this.style.display='none'"><img src="https://pub-cdcf65e04720413aaa6bb1ccc89ec675.r2.dev/5dfd1a5b4feb_1.jpg" loading="lazy" referrerpolicy="no-referrer" alt="" onerror="this.style.display='none'"></div>
           <h3>House in avenida Engenheiro Duarte Pacheco no number</h3>
@@ -15810,7 +15826,7 @@ html, body { overflow-x: hidden; }
           <div class="location">
             <a href="https://www.google.com/maps/search/avenida%20Engenheiro%20Duarte%20Pacheco%20no%20number%2C%20Madalena%20e%20Samai%C3%B5es%2C%20Vila%20Real%2C%20Portugal" target="_blank" class="map-link">Vila Real / Madalena e Samaiões</a>
           </div>
-          <div class="tracking"><span>На рынке: <b>25 дн</b></span><span>Найдено: 25.03.2026</span></div>
+          <div class="tracking"><span>На рынке: <b>26 дн</b></span><span>Найдено: 25.03.2026</span></div>
           
           <div class="desc">Bi-family house T3 + T1 with warehouse, in a privileged area, next to the emblematic roundabout of KM 0 of the National Road 2. An excellent investment or own housing opportunity, ideal for those looking for a renovation project with enormous potenti...</div>
           <div class="tags"><span class="tag pro">+ Дешево: 1,089/м2</span><span class="tag pro">+ Большая: 225 м2</span><span class="tag pro">+ T4</span></div>
@@ -16353,7 +16369,7 @@ html, body { overflow-x: hidden; }
              data-is-fresh="0"
              data-price-drop-eur="0"
              data-hidden-gem="70"
-             data-days-on-market="25"
+             data-days-on-market="26"
              data-has-video="0"
              data-new-build="0">
           <div class="card-header">
@@ -16367,7 +16383,7 @@ html, body { overflow-x: hidden; }
               <button class="note-btn" onclick="openNote('34569484')" title="Комментарий">&#9998;</button>
             </div>
           </div>
-          <div class="edge-badges"><span class="edge-badge edge-gem" title="Цена сильно ниже медианы муниципалитета">💎 НАХОДКА −70%</span><span class="edge-badge edge-seller" title="Агентство — с комиссией">🏢 АГЕНТСТВО</span><span class="edge-badge dom-fresh" title="Дней на рынке">🟢 25 дн</span></div>
+          <div class="edge-badges"><span class="edge-badge edge-gem" title="Цена сильно ниже медианы муниципалитета">💎 НАХОДКА −70%</span><span class="edge-badge edge-seller" title="Агентство — с комиссией">🏢 АГЕНТСТВО</span><span class="edge-badge dom-fresh" title="Дней на рынке">🟢 26 дн</span></div>
           
           <div class="photos"><img src="https://pub-cdcf65e04720413aaa6bb1ccc89ec675.r2.dev/1fa2da9e4957_0.jpg" loading="lazy" referrerpolicy="no-referrer" alt="" onerror="this.style.display='none'"><img src="https://pub-cdcf65e04720413aaa6bb1ccc89ec675.r2.dev/1fa2da9e4957_1.jpg" loading="lazy" referrerpolicy="no-referrer" alt="" onerror="this.style.display='none'"></div>
           <h3>Detached house in rua Casas dos Montes, 12</h3>
@@ -16380,7 +16396,7 @@ html, body { overflow-x: hidden; }
           <div class="location">
             <a href="https://www.google.com/maps/search/rua%20Casas%20dos%20Montes%2C%2012%2C%20Santa%20Maria%20Maior%2C%20Vila%20Real%2C%20Portugal" target="_blank" class="map-link">Vila Real / Santa Maria Maior</a>
           </div>
-          <div class="tracking"><span>На рынке: <b>25 дн</b></span><span>Найдено: 25.03.2026</span></div>
+          <div class="tracking"><span>На рынке: <b>26 дн</b></span><span>Найдено: 25.03.2026</span></div>
           
           <div class="desc">**Independent House for Sale in Chaves** Discover the perfect opportunity to live in Chaves, in an independent house just 2 minutes from the city center. This villa, with a gross area of 160 m² and 140 m² of usable space, offers a peaceful environmen...</div>
           <div class="tags"><span class="tag alert">СУПЕР ДЕШЕВО -70% от медианы района (5,298/м2)</span><span class="tag pro">+ Дешево: 1,594/м2</span><span class="tag pro">+ Большая: 160 м2</span><span class="tag pro">+ T4</span></div>
@@ -16467,7 +16483,7 @@ html, body { overflow-x: hidden; }
              data-is-fresh="0"
              data-price-drop-eur="0"
              data-hidden-gem="0"
-             data-days-on-market="25"
+             data-days-on-market="26"
              data-has-video="0"
              data-new-build="0">
           <div class="card-header">
@@ -16481,7 +16497,7 @@ html, body { overflow-x: hidden; }
               <button class="note-btn" onclick="openNote('34301050')" title="Комментарий">&#9998;</button>
             </div>
           </div>
-          <div class="edge-badges"><span class="edge-badge edge-seller" title="Агентство — с комиссией">🏢 АГЕНТСТВО</span><span class="edge-badge dom-fresh" title="Дней на рынке">🟢 25 дн</span></div>
+          <div class="edge-badges"><span class="edge-badge edge-seller" title="Агентство — с комиссией">🏢 АГЕНТСТВО</span><span class="edge-badge dom-fresh" title="Дней на рынке">🟢 26 дн</span></div>
           
           <div class="photos"><img src="https://pub-cdcf65e04720413aaa6bb1ccc89ec675.r2.dev/3e016af3dfcc_0.jpg" loading="lazy" referrerpolicy="no-referrer" alt="" onerror="this.style.display='none'"><img src="https://pub-cdcf65e04720413aaa6bb1ccc89ec675.r2.dev/3e016af3dfcc_1.jpg" loading="lazy" referrerpolicy="no-referrer" alt="" onerror="this.style.display='none'"></div>
           <h3>Detached house in estrada Nacional 206</h3>
@@ -16494,7 +16510,7 @@ html, body { overflow-x: hidden; }
           <div class="location">
             <a href="https://www.google.com/maps/search/estrada%20Nacional%20206%2C%20Valpa%C3%A7os%2C%20Vila%20Real%2C%20Portugal" target="_blank" class="map-link">Vila Real / Valpaços</a>
           </div>
-          <div class="tracking"><span>На рынке: <b>25 дн</b></span><span>Найдено: 25.03.2026</span></div>
+          <div class="tracking"><span>На рынке: <b>26 дн</b></span><span>Найдено: 25.03.2026</span></div>
           
           <div class="desc">V5 House a few minutes from the center of Valpaços We present this excellent investment opportunity, located just a few minutes from the center of Valpaços. It is a spacious house with unique characteristics, ideal for own housing and/or profitabilit...</div>
           <div class="tags"><span class="tag pro">+ Дешево: 1,079/м2</span><span class="tag pro">+ Большая: 240 м2</span><span class="tag pro">+ T5</span></div>
@@ -23148,6 +23164,24 @@ function initTop50() {
 }
 
 // Session-cookie sync then init
+function logout() {
+  fetch('/api/logout', {
+    method: 'POST',
+    credentials: 'include',
+    headers: {'X-CSRF-Token': CSRF_TOKEN}
+  }).catch(function(){}).then(function(){
+    window.location.href = '/login';
+  });
+}
+
+function showUserBar(username) {
+  var bar = document.getElementById('user-bar');
+  var nameEl = document.getElementById('user-name');
+  if (!bar || !nameEl) return;
+  nameEl.textContent = username || '';
+  bar.classList.add('visible');
+}
+
 function initSync() {
   return fetch('/api/me', {credentials: 'same-origin'}).then(function(r) {
     if (!r.ok) throw 'no session';
@@ -23155,6 +23189,8 @@ function initSync() {
   }).then(function(me) {
     CSRF_TOKEN = me.csrf_token || '';
     API_HEADERS = {'X-CSRF-Token': CSRF_TOKEN, 'Content-Type': 'application/json'};
+    window.CURRENT_USER = me.username || '';
+    showUserBar(window.CURRENT_USER);
     return fetch('/api/state', {credentials: 'same-origin'});
   }).then(function(r) {
     if (!r.ok) throw 'no state';

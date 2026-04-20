@@ -141,9 +141,25 @@ body { font-size: var(--fs-body); }
 }
 html, body { overflow-x: hidden; }
 .card { word-wrap: break-word; overflow-wrap: break-word; }
+
+/* User bar — fixed top-right, shown only when logged into server */
+#user-bar { position: fixed; top: 10px; right: 14px; z-index: 300; display: none; align-items: center; gap: 8px; background: rgba(255,255,255,0.95); padding: 6px 12px; border-radius: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.2); font-size: 12px; color: #555; }
+#user-bar.visible { display: inline-flex; }
+#user-bar .user-name { font-weight: 600; color: #1a237e; }
+#user-bar .logout-btn { background: #c62828; color: #fff; border: none; border-radius: 14px; padding: 5px 12px; font-size: 11px; font-weight: 600; cursor: pointer; transition: 0.15s; }
+#user-bar .logout-btn:hover { background: #8e0000; }
+@media (max-width: 480px) {
+  #user-bar { top: 6px; right: 6px; padding: 4px 8px; font-size: 11px; }
+  #user-bar .logout-btn { padding: 3px 8px; font-size: 10px; }
+}
 </style>
 </head>
 <body>
+<!-- User bar — fixed top-right, shown only when logged into server -->
+<div id="user-bar">
+  <span>👤 <span class="user-name" id="user-name"></span></span>
+  <button class="logout-btn" onclick="logout()">Выйти</button>
+</div>
 <div id="app-content">
 <a href="index.html" class="back-link">← Все районы</a>
 <div class="header">
@@ -3642,7 +3658,7 @@ html, body { overflow-x: hidden; }
              data-is-fresh="0"
              data-price-drop-eur="0"
              data-hidden-gem="0"
-             data-days-on-market="25"
+             data-days-on-market="26"
              data-has-video="0"
              data-new-build="0">
           <div class="card-header">
@@ -3656,7 +3672,7 @@ html, body { overflow-x: hidden; }
               <button class="note-btn" onclick="openNote('34729761')" title="Комментарий">&#9998;</button>
             </div>
           </div>
-          <div class="edge-badges"><span class="edge-badge edge-seller" title="Агентство — с комиссией">🏢 АГЕНТСТВО</span><span class="edge-badge dom-fresh" title="Дней на рынке">🟢 25 дн</span></div>
+          <div class="edge-badges"><span class="edge-badge edge-seller" title="Агентство — с комиссией">🏢 АГЕНТСТВО</span><span class="edge-badge dom-fresh" title="Дней на рынке">🟢 26 дн</span></div>
           
           <div class="photos"><img src="https://pub-cdcf65e04720413aaa6bb1ccc89ec675.r2.dev/fccd8e2f7ddd_0.jpg" loading="lazy" referrerpolicy="no-referrer" alt="" onerror="this.style.display='none'"><img src="https://pub-cdcf65e04720413aaa6bb1ccc89ec675.r2.dev/fccd8e2f7ddd_1.jpg" loading="lazy" referrerpolicy="no-referrer" alt="" onerror="this.style.display='none'"></div>
           <h3>Andar de moradia in rua de São Gregorio, 13</h3>
@@ -3669,7 +3685,7 @@ html, body { overflow-x: hidden; }
           <div class="location">
             <a href="https://www.google.com/maps/search/rua%20de%20S%C3%A3o%20Gregorio%2C%2013%2C%20Santiago%20Maior%20e%20S%C3%A3o%20Jo%C3%A3o%20Baptista%2C%20Beja%2C%20Portugal" target="_blank" class="map-link">Beja / Santiago Maior e São João Baptista</a>
           </div>
-          <div class="tracking"><span>На рынке: <b>25 дн</b></span><span>Найдено: 25.03.2026</span></div>
+          <div class="tracking"><span>На рынке: <b>26 дн</b></span><span>Найдено: 25.03.2026</span></div>
           
           <div class="desc">One-bedroom flat in Beja. Located on the ground floor, this 41 m² flat comprises a living room, kitchen with pantry, one bedroom and one bathroom.   The property is in good condition and benefits from eastern exposure, providing good natural light. L...</div>
           <div class="tags"><span class="tag con">- Дорого: +42% от медианы района</span></div>
@@ -4155,7 +4171,7 @@ html, body { overflow-x: hidden; }
              data-is-fresh="0"
              data-price-drop-eur="0"
              data-hidden-gem="0"
-             data-days-on-market="25"
+             data-days-on-market="26"
              data-has-video="0"
              data-new-build="0">
           <div class="card-header">
@@ -4169,7 +4185,7 @@ html, body { overflow-x: hidden; }
               <button class="note-btn" onclick="openNote('34349971')" title="Комментарий">&#9998;</button>
             </div>
           </div>
-          <div class="edge-badges"><span class="edge-badge edge-seller" title="Агентство — с комиссией">🏢 АГЕНТСТВО</span><span class="edge-badge dom-fresh" title="Дней на рынке">🟢 25 дн</span></div>
+          <div class="edge-badges"><span class="edge-badge edge-seller" title="Агентство — с комиссией">🏢 АГЕНТСТВО</span><span class="edge-badge dom-fresh" title="Дней на рынке">🟢 26 дн</span></div>
           
           <div class="photos"><img src="https://pub-cdcf65e04720413aaa6bb1ccc89ec675.r2.dev/6a3ffb976773_0.jpg" loading="lazy" referrerpolicy="no-referrer" alt="" onerror="this.style.display='none'"><img src="https://pub-cdcf65e04720413aaa6bb1ccc89ec675.r2.dev/6a3ffb976773_1.jpg" loading="lazy" referrerpolicy="no-referrer" alt="" onerror="this.style.display='none'"></div>
           <h3>Detached house in rua do Barranco</h3>
@@ -4182,7 +4198,7 @@ html, body { overflow-x: hidden; }
           <div class="location">
             <a href="https://www.google.com/maps/search/rua%20do%20Barranco%2C%20Corte%20do%20Pinto%2C%20Beja%2C%20Portugal" target="_blank" class="map-link">Beja / Corte do Pinto</a>
           </div>
-          <div class="tracking"><span>На рынке: <b>25 дн</b></span><span>Найдено: 25.03.2026</span></div>
+          <div class="tracking"><span>На рынке: <b>26 дн</b></span><span>Найдено: 25.03.2026</span></div>
           
           <div class="desc">If you are looking for a holiday home in Alentejo to provide unique leisure moments for you and your family, this is the ideal opportunity. Located in Corte do Pinto, a village with history and charm, this property is located 3 minutes from the Mina ...</div>
           <div class="tags"><span class="tag pro">+ Дешево: 2,396/м2</span><span class="tag con">- Дорого: +84% от медианы района</span></div>
@@ -4497,7 +4513,7 @@ html, body { overflow-x: hidden; }
              data-is-fresh="0"
              data-price-drop-eur="0"
              data-hidden-gem="0"
-             data-days-on-market="25"
+             data-days-on-market="26"
              data-has-video="0"
              data-new-build="0">
           <div class="card-header">
@@ -4511,7 +4527,7 @@ html, body { overflow-x: hidden; }
               <button class="note-btn" onclick="openNote('34667389')" title="Комментарий">&#9998;</button>
             </div>
           </div>
-          <div class="edge-badges"><span class="edge-badge edge-seller" title="Агентство — с комиссией">🏢 АГЕНТСТВО</span><span class="edge-badge dom-fresh" title="Дней на рынке">🟢 25 дн</span></div>
+          <div class="edge-badges"><span class="edge-badge edge-seller" title="Агентство — с комиссией">🏢 АГЕНТСТВО</span><span class="edge-badge dom-fresh" title="Дней на рынке">🟢 26 дн</span></div>
           
           <div class="photos"><img src="https://pub-cdcf65e04720413aaa6bb1ccc89ec675.r2.dev/d07b674c2913_0.jpg" loading="lazy" referrerpolicy="no-referrer" alt="" onerror="this.style.display='none'"><img src="https://pub-cdcf65e04720413aaa6bb1ccc89ec675.r2.dev/d07b674c2913_1.jpg" loading="lazy" referrerpolicy="no-referrer" alt="" onerror="this.style.display='none'"></div>
           <h3>Semi-detached house</h3>
@@ -4524,7 +4540,7 @@ html, body { overflow-x: hidden; }
           <div class="location">
             <a href="https://www.google.com/maps/search/Santa%20Cruz%2C%20Santa%20Cruz%2C%20Beja%2C%20Portugal" target="_blank" class="map-link">Beja / Santa Cruz</a>
           </div>
-          <div class="tracking"><span>На рынке: <b>25 дн</b></span><span>Найдено: 25.03.2026</span></div>
+          <div class="tracking"><span>На рынке: <b>26 дн</b></span><span>Найдено: 25.03.2026</span></div>
           
           <div class="desc">The property is located in Corte Pinheiro, in the parish of Santa Cruz, municipality of Almodôvar, district of Beja, in the Baixo Alentejo region. The house, with a total area of 154 m², is located on a plot of land with 3,500 m², allowing a function...</div>
           <div class="tags"><span class="tag pro">+ Дешево: 779/м2</span><span class="tag pro">+ Большая: 154 м2</span><span class="tag pro">+ T3</span></div>
@@ -5409,7 +5425,7 @@ html, body { overflow-x: hidden; }
              data-is-fresh="0"
              data-price-drop-eur="0"
              data-hidden-gem="63"
-             data-days-on-market="25"
+             data-days-on-market="26"
              data-has-video="0"
              data-new-build="0">
           <div class="card-header">
@@ -5423,7 +5439,7 @@ html, body { overflow-x: hidden; }
               <button class="note-btn" onclick="openNote('34120091')" title="Комментарий">&#9998;</button>
             </div>
           </div>
-          <div class="edge-badges"><span class="edge-badge edge-gem" title="Цена сильно ниже медианы муниципалитета">💎 НАХОДКА −63%</span><span class="edge-badge edge-seller" title="Агентство — с комиссией">🏢 АГЕНТСТВО</span><span class="edge-badge dom-fresh" title="Дней на рынке">🟢 25 дн</span></div>
+          <div class="edge-badges"><span class="edge-badge edge-gem" title="Цена сильно ниже медианы муниципалитета">💎 НАХОДКА −63%</span><span class="edge-badge edge-seller" title="Агентство — с комиссией">🏢 АГЕНТСТВО</span><span class="edge-badge dom-fresh" title="Дней на рынке">🟢 26 дн</span></div>
           
           <div class="photos"><img src="https://pub-cdcf65e04720413aaa6bb1ccc89ec675.r2.dev/5ebe24b311d2_0.jpg" loading="lazy" referrerpolicy="no-referrer" alt="" onerror="this.style.display='none'"><img src="https://pub-cdcf65e04720413aaa6bb1ccc89ec675.r2.dev/5ebe24b311d2_1.jpg" loading="lazy" referrerpolicy="no-referrer" alt="" onerror="this.style.display='none'"></div>
           <h3>Semi-detached house</h3>
@@ -5436,7 +5452,7 @@ html, body { overflow-x: hidden; }
           <div class="location">
             <a href="https://www.google.com/maps/search/Castro%20Verde%20e%20Cas%C3%A9vel%2C%20Castro%20Verde%20e%20Cas%C3%A9vel%2C%20Beja%2C%20Portugal" target="_blank" class="map-link">Beja / Castro Verde e Casével</a>
           </div>
-          <div class="tracking"><span>На рынке: <b>25 дн</b></span><span>Найдено: 25.03.2026</span></div>
+          <div class="tracking"><span>На рынке: <b>26 дн</b></span><span>Найдено: 25.03.2026</span></div>
           
           <div class="desc">Property in Monte das Picarras – Castro Verde Located in Monte das Picarras, União das Freguesias de Castro Verde e Casevel, Castro Verde council, Beja district, Baixo Alentejo, this property features a built complex with two houses and several outbu...</div>
           <div class="tags"><span class="tag alert">СУПЕР ДЕШЕВО -63% от медианы района (1,747/м2)</span><span class="tag pro">+ Дешево: 641/м2</span><span class="tag pro">+ Большая: 206 м2</span></div>
@@ -6036,7 +6052,7 @@ html, body { overflow-x: hidden; }
              data-is-fresh="0"
              data-price-drop-eur="0"
              data-hidden-gem="0"
-             data-days-on-market="25"
+             data-days-on-market="26"
              data-has-video="0"
              data-new-build="0">
           <div class="card-header">
@@ -6050,7 +6066,7 @@ html, body { overflow-x: hidden; }
               <button class="note-btn" onclick="openNote('34692682')" title="Комментарий">&#9998;</button>
             </div>
           </div>
-          <div class="edge-badges"><span class="edge-badge edge-seller" title="Агентство — с комиссией">🏢 АГЕНТСТВО</span><span class="edge-badge dom-fresh" title="Дней на рынке">🟢 25 дн</span></div>
+          <div class="edge-badges"><span class="edge-badge edge-seller" title="Агентство — с комиссией">🏢 АГЕНТСТВО</span><span class="edge-badge dom-fresh" title="Дней на рынке">🟢 26 дн</span></div>
           
           <div class="photos"><img src="https://pub-cdcf65e04720413aaa6bb1ccc89ec675.r2.dev/0410335986c1_0.jpg" loading="lazy" referrerpolicy="no-referrer" alt="" onerror="this.style.display='none'"><img src="https://pub-cdcf65e04720413aaa6bb1ccc89ec675.r2.dev/0410335986c1_1.jpg" loading="lazy" referrerpolicy="no-referrer" alt="" onerror="this.style.display='none'"></div>
           <h3>Detached house</h3>
@@ -6063,7 +6079,7 @@ html, body { overflow-x: hidden; }
           <div class="location">
             <a href="https://www.google.com/maps/search/Almod%C3%B4var%2C%20Almod%C3%B4var%2C%20Beja%2C%20Portugal" target="_blank" class="map-link">Beja / Almodôvar</a>
           </div>
-          <div class="tracking"><span>На рынке: <b>25 дн</b></span><span>Найдено: 25.03.2026</span></div>
+          <div class="tracking"><span>На рынке: <b>26 дн</b></span><span>Найдено: 25.03.2026</span></div>
           
           <div class="desc">Property located in Monte das Guedelhas, parish and municipality of Almodôvar, district of Beja, inserted in the Baixo Alentejo region. It is a traditional Alentejo house, with a total area of 817.1 m², with 117.1 m² of construction area and 700 m² c...</div>
           <div class="tags"><span class="tag pro">+ Дешево: 1,162/м2</span><span class="tag pro">+ Большая: 117 м2</span><span class="tag pro">+ T3</span></div>
@@ -6378,7 +6394,7 @@ html, body { overflow-x: hidden; }
              data-is-fresh="0"
              data-price-drop-eur="0"
              data-hidden-gem="0"
-             data-days-on-market="25"
+             data-days-on-market="26"
              data-has-video="0"
              data-new-build="0">
           <div class="card-header">
@@ -6392,7 +6408,7 @@ html, body { overflow-x: hidden; }
               <button class="note-btn" onclick="openNote('34426833')" title="Комментарий">&#9998;</button>
             </div>
           </div>
-          <div class="edge-badges"><span class="edge-badge edge-seller" title="Агентство — с комиссией">🏢 АГЕНТСТВО</span><span class="edge-badge dom-fresh" title="Дней на рынке">🟢 25 дн</span></div>
+          <div class="edge-badges"><span class="edge-badge edge-seller" title="Агентство — с комиссией">🏢 АГЕНТСТВО</span><span class="edge-badge dom-fresh" title="Дней на рынке">🟢 26 дн</span></div>
           
           <div class="photos"><img src="https://pub-cdcf65e04720413aaa6bb1ccc89ec675.r2.dev/4040f16fd1cd_0.jpg" loading="lazy" referrerpolicy="no-referrer" alt="" onerror="this.style.display='none'"><img src="https://pub-cdcf65e04720413aaa6bb1ccc89ec675.r2.dev/4040f16fd1cd_1.jpg" loading="lazy" referrerpolicy="no-referrer" alt="" onerror="this.style.display='none'"></div>
           <h3>House in rua do Estazão no number</h3>
@@ -6405,7 +6421,7 @@ html, body { overflow-x: hidden; }
           <div class="location">
             <a href="https://www.google.com/maps/search/rua%20do%20Estaz%C3%A3o%20no%20number%2C%20Aldeia%20dos%20Fernandes%2C%20Beja%2C%20Portugal" target="_blank" class="map-link">Beja / Aldeia dos Fernandes</a>
           </div>
-          <div class="tracking"><span>На рынке: <b>25 дн</b></span><span>Найдено: 25.03.2026</span></div>
+          <div class="tracking"><span>На рынке: <b>26 дн</b></span><span>Найдено: 25.03.2026</span></div>
           
           <div class="desc">We present this 261 m² villa, located in the peaceful parish of Aldeia dos Fernandes, in the municipality of Almodôvar. The property is in need of renovations, but stands out for its enormous potential to become your dream project. With typical regio...</div>
           <div class="tags"><span class="tag alert">СУПЕР ДЕШЕВО -59% от медианы района (1,301/м2)</span><span class="tag pro">+ Дешево: 536/м2</span><span class="tag pro">+ Большая: 261 м2</span><span class="tag pro">+ T3</span></div>
@@ -9570,7 +9586,7 @@ html, body { overflow-x: hidden; }
              data-is-fresh="0"
              data-price-drop-eur="0"
              data-hidden-gem="0"
-             data-days-on-market="25"
+             data-days-on-market="26"
              data-has-video="0"
              data-new-build="0">
           <div class="card-header">
@@ -9584,7 +9600,7 @@ html, body { overflow-x: hidden; }
               <button class="note-btn" onclick="openNote('34277001')" title="Комментарий">&#9998;</button>
             </div>
           </div>
-          <div class="edge-badges"><span class="edge-badge edge-seller" title="Агентство — с комиссией">🏢 АГЕНТСТВО</span><span class="edge-badge dom-fresh" title="Дней на рынке">🟢 25 дн</span></div>
+          <div class="edge-badges"><span class="edge-badge edge-seller" title="Агентство — с комиссией">🏢 АГЕНТСТВО</span><span class="edge-badge dom-fresh" title="Дней на рынке">🟢 26 дн</span></div>
           
           <div class="photos"><img src="https://pub-cdcf65e04720413aaa6bb1ccc89ec675.r2.dev/d609f30467f1_0.jpg" loading="lazy" referrerpolicy="no-referrer" alt="" onerror="this.style.display='none'"><img src="https://pub-cdcf65e04720413aaa6bb1ccc89ec675.r2.dev/d609f30467f1_1.jpg" loading="lazy" referrerpolicy="no-referrer" alt="" onerror="this.style.display='none'"></div>
           <h3>Terraced house in rua Nova de São Miguel</h3>
@@ -9597,7 +9613,7 @@ html, body { overflow-x: hidden; }
           <div class="location">
             <a href="https://www.google.com/maps/search/rua%20Nova%20de%20S%C3%A3o%20Miguel%2C%20S%C3%A3o%20Teot%C3%B3nio%2C%20Beja%2C%20Portugal" target="_blank" class="map-link">Beja / São Teotónio</a>
           </div>
-          <div class="tracking"><span>На рынке: <b>25 дн</b></span><span>Найдено: 25.03.2026</span></div>
+          <div class="tracking"><span>На рынке: <b>26 дн</b></span><span>Найдено: 25.03.2026</span></div>
           
           <div class="desc">**Typical single-storey village house, located in Costa Vicentina** Discover the charm of village life in this typical single-storey townhouse, nestled in the serene village of São Miguel on the stunning Costa Vicentina. Just a few minutes away from ...</div>
           <div class="tags"><span class="tag con">- Дорого: +160% от медианы района</span></div>
@@ -9855,7 +9871,7 @@ html, body { overflow-x: hidden; }
              data-is-fresh="0"
              data-price-drop-eur="0"
              data-hidden-gem="0"
-             data-days-on-market="25"
+             data-days-on-market="26"
              data-has-video="0"
              data-new-build="0">
           <div class="card-header">
@@ -9869,7 +9885,7 @@ html, body { overflow-x: hidden; }
               <button class="note-btn" onclick="openNote('34632493')" title="Комментарий">&#9998;</button>
             </div>
           </div>
-          <div class="edge-badges"><span class="edge-badge edge-seller" title="Агентство — с комиссией">🏢 АГЕНТСТВО</span><span class="edge-badge dom-fresh" title="Дней на рынке">🟢 25 дн</span></div>
+          <div class="edge-badges"><span class="edge-badge edge-seller" title="Агентство — с комиссией">🏢 АГЕНТСТВО</span><span class="edge-badge dom-fresh" title="Дней на рынке">🟢 26 дн</span></div>
           
           <div class="photos"><img src="https://pub-cdcf65e04720413aaa6bb1ccc89ec675.r2.dev/8ee139a45ba3_0.jpg" loading="lazy" referrerpolicy="no-referrer" alt="" onerror="this.style.display='none'"><img src="https://pub-cdcf65e04720413aaa6bb1ccc89ec675.r2.dev/8ee139a45ba3_1.jpg" loading="lazy" referrerpolicy="no-referrer" alt="" onerror="this.style.display='none'"></div>
           <h3>Detached house</h3>
@@ -9882,7 +9898,7 @@ html, body { overflow-x: hidden; }
           <div class="location">
             <a href="https://www.google.com/maps/search/Santa%20B%C3%A1rbara%20de%20Padr%C3%B5es%2C%20Santa%20B%C3%A1rbara%20de%20Padr%C3%B5es%2C%20Beja%2C%20Portugal" target="_blank" class="map-link">Beja / Santa Bárbara de Padrões</a>
           </div>
-          <div class="tracking"><span>На рынке: <b>25 дн</b></span><span>Найдено: 25.03.2026</span></div>
+          <div class="tracking"><span>На рынке: <b>26 дн</b></span><span>Найдено: 25.03.2026</span></div>
           
           <div class="desc">Property located in Beringelinho, parish of Santa Bárbara dos Padrões, municipality of Castro Verde, district of Beja, situated in the Baixo Alentejo region. With a total area of 124 m², the property consists of two independent residential units, cur...</div>
           <div class="tags"><span class="tag pro">+ Дешево: 1,730/м2</span><span class="tag pro">+ Большая: 111 м2</span><span class="tag pro">+ T3</span></div>
@@ -10311,7 +10327,7 @@ html, body { overflow-x: hidden; }
              data-is-fresh="0"
              data-price-drop-eur="0"
              data-hidden-gem="0"
-             data-days-on-market="25"
+             data-days-on-market="26"
              data-has-video="0"
              data-new-build="0">
           <div class="card-header">
@@ -10325,7 +10341,7 @@ html, body { overflow-x: hidden; }
               <button class="note-btn" onclick="openNote('34703846')" title="Комментарий">&#9998;</button>
             </div>
           </div>
-          <div class="edge-badges"><span class="edge-badge edge-seller" title="Агентство — с комиссией">🏢 АГЕНТСТВО</span><span class="edge-badge dom-fresh" title="Дней на рынке">🟢 25 дн</span></div>
+          <div class="edge-badges"><span class="edge-badge edge-seller" title="Агентство — с комиссией">🏢 АГЕНТСТВО</span><span class="edge-badge dom-fresh" title="Дней на рынке">🟢 26 дн</span></div>
           
           <div class="photos"><img src="https://pub-cdcf65e04720413aaa6bb1ccc89ec675.r2.dev/155b09825c3b_0.jpg" loading="lazy" referrerpolicy="no-referrer" alt="" onerror="this.style.display='none'"><img src="https://pub-cdcf65e04720413aaa6bb1ccc89ec675.r2.dev/155b09825c3b_1.jpg" loading="lazy" referrerpolicy="no-referrer" alt="" onerror="this.style.display='none'"></div>
           <h3>Detached house</h3>
@@ -10338,7 +10354,7 @@ html, body { overflow-x: hidden; }
           <div class="location">
             <a href="https://www.google.com/maps/search/Almod%C3%B4var%2C%20Almod%C3%B4var%2C%20Beja%2C%20Portugal" target="_blank" class="map-link">Beja / Almodôvar</a>
           </div>
-          <div class="tracking"><span>На рынке: <b>25 дн</b></span><span>Найдено: 25.03.2026</span></div>
+          <div class="tracking"><span>На рынке: <b>26 дн</b></span><span>Найдено: 25.03.2026</span></div>
           
           <div class="desc">Property identification: ZMPT583676 4-bedroom villa in Gorazes, Almodôvar, with two floors and private garage. The villa is detached and consists of a garage on the ground floor, with capacity for one car and storage. It has a kitchen with fireplace,...</div>
           <div class="tags"><span class="tag pro">+ Дешево: 1,092/м2</span><span class="tag pro">+ Большая: 183 м2</span><span class="tag pro">+ T4</span></div>
@@ -16581,7 +16597,7 @@ html, body { overflow-x: hidden; }
              data-is-fresh="0"
              data-price-drop-eur="0"
              data-hidden-gem="29"
-             data-days-on-market="25"
+             data-days-on-market="26"
              data-has-video="0"
              data-new-build="0">
           <div class="card-header">
@@ -16595,7 +16611,7 @@ html, body { overflow-x: hidden; }
               <button class="note-btn" onclick="openNote('34796155')" title="Комментарий">&#9998;</button>
             </div>
           </div>
-          <div class="edge-badges"><span class="edge-badge edge-gem" title="Цена сильно ниже медианы муниципалитета">💎 НАХОДКА −29%</span><span class="edge-badge edge-seller" title="Агентство — с комиссией">🏢 АГЕНТСТВО</span><span class="edge-badge dom-fresh" title="Дней на рынке">🟢 25 дн</span></div>
+          <div class="edge-badges"><span class="edge-badge edge-gem" title="Цена сильно ниже медианы муниципалитета">💎 НАХОДКА −29%</span><span class="edge-badge edge-seller" title="Агентство — с комиссией">🏢 АГЕНТСТВО</span><span class="edge-badge dom-fresh" title="Дней на рынке">🟢 26 дн</span></div>
           
           <div class="photos"><img src="https://pub-cdcf65e04720413aaa6bb1ccc89ec675.r2.dev/e428bb09072e_0.jpg" loading="lazy" referrerpolicy="no-referrer" alt="" onerror="this.style.display='none'"><img src="https://pub-cdcf65e04720413aaa6bb1ccc89ec675.r2.dev/e428bb09072e_1.jpg" loading="lazy" referrerpolicy="no-referrer" alt="" onerror="this.style.display='none'"></div>
           <h3>Flat in Cerca do Barreiro, 32</h3>
@@ -16608,7 +16624,7 @@ html, body { overflow-x: hidden; }
           <div class="location">
             <a href="https://www.google.com/maps/search/Cerca%20do%20Barreiro%2C%2032%2C%20Vila%20Nova%20de%20Milfontes%2C%20Beja%2C%20Portugal" target="_blank" class="map-link">Beja / Vila Nova de Milfontes</a>
           </div>
-          <div class="tracking"><span>На рынке: <b>25 дн</b></span><span>Найдено: 25.03.2026</span></div>
+          <div class="tracking"><span>На рынке: <b>26 дн</b></span><span>Найдено: 25.03.2026</span></div>
           
           <div class="desc">Ground floor property in a central area of Vila Nova de Milfontes. The property comprises a bright and welcoming living room, where natural light creates the perfect atmosphere for relaxing at the end of the day. The fully equipped, practical, and fu...</div>
           <div class="tags"><span class="tag pro">+ Ниже рынка на 29% (медиана 3,258/м2)</span><span class="tag pro">+ Дешево: 2,324/м2</span><span class="tag pro">+ Большая: 142 м2</span></div>
@@ -17790,6 +17806,24 @@ function initTop50() {
 }
 
 // Session-cookie sync then init
+function logout() {
+  fetch('/api/logout', {
+    method: 'POST',
+    credentials: 'include',
+    headers: {'X-CSRF-Token': CSRF_TOKEN}
+  }).catch(function(){}).then(function(){
+    window.location.href = '/login';
+  });
+}
+
+function showUserBar(username) {
+  var bar = document.getElementById('user-bar');
+  var nameEl = document.getElementById('user-name');
+  if (!bar || !nameEl) return;
+  nameEl.textContent = username || '';
+  bar.classList.add('visible');
+}
+
 function initSync() {
   return fetch('/api/me', {credentials: 'same-origin'}).then(function(r) {
     if (!r.ok) throw 'no session';
@@ -17797,6 +17831,8 @@ function initSync() {
   }).then(function(me) {
     CSRF_TOKEN = me.csrf_token || '';
     API_HEADERS = {'X-CSRF-Token': CSRF_TOKEN, 'Content-Type': 'application/json'};
+    window.CURRENT_USER = me.username || '';
+    showUserBar(window.CURRENT_USER);
     return fetch('/api/state', {credentials: 'same-origin'});
   }).then(function(r) {
     if (!r.ok) throw 'no state';

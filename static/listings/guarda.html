@@ -141,9 +141,25 @@ body { font-size: var(--fs-body); }
 }
 html, body { overflow-x: hidden; }
 .card { word-wrap: break-word; overflow-wrap: break-word; }
+
+/* User bar — fixed top-right, shown only when logged into server */
+#user-bar { position: fixed; top: 10px; right: 14px; z-index: 300; display: none; align-items: center; gap: 8px; background: rgba(255,255,255,0.95); padding: 6px 12px; border-radius: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.2); font-size: 12px; color: #555; }
+#user-bar.visible { display: inline-flex; }
+#user-bar .user-name { font-weight: 600; color: #1a237e; }
+#user-bar .logout-btn { background: #c62828; color: #fff; border: none; border-radius: 14px; padding: 5px 12px; font-size: 11px; font-weight: 600; cursor: pointer; transition: 0.15s; }
+#user-bar .logout-btn:hover { background: #8e0000; }
+@media (max-width: 480px) {
+  #user-bar { top: 6px; right: 6px; padding: 4px 8px; font-size: 11px; }
+  #user-bar .logout-btn { padding: 3px 8px; font-size: 10px; }
+}
 </style>
 </head>
 <body>
+<!-- User bar — fixed top-right, shown only when logged into server -->
+<div id="user-bar">
+  <span>👤 <span class="user-name" id="user-name"></span></span>
+  <button class="logout-btn" onclick="logout()">Выйти</button>
+</div>
 <div id="app-content">
 <a href="index.html" class="back-link">← Все районы</a>
 <div class="header">
@@ -7917,7 +7933,7 @@ html, body { overflow-x: hidden; }
              data-is-fresh="0"
              data-price-drop-eur="0"
              data-hidden-gem="0"
-             data-days-on-market="25"
+             data-days-on-market="26"
              data-has-video="0"
              data-new-build="0">
           <div class="card-header">
@@ -7931,7 +7947,7 @@ html, body { overflow-x: hidden; }
               <button class="note-btn" onclick="openNote('34664917')" title="Комментарий">&#9998;</button>
             </div>
           </div>
-          <div class="edge-badges"><span class="edge-badge edge-seller" title="Агентство — с комиссией">🏢 АГЕНТСТВО</span><span class="edge-badge dom-fresh" title="Дней на рынке">🟢 25 дн</span></div>
+          <div class="edge-badges"><span class="edge-badge edge-seller" title="Агентство — с комиссией">🏢 АГЕНТСТВО</span><span class="edge-badge dom-fresh" title="Дней на рынке">🟢 26 дн</span></div>
           
           <div class="photos"><img src="https://pub-cdcf65e04720413aaa6bb1ccc89ec675.r2.dev/8eeaedab263a_0.jpg" loading="lazy" referrerpolicy="no-referrer" alt="" onerror="this.style.display='none'"><img src="https://pub-cdcf65e04720413aaa6bb1ccc89ec675.r2.dev/8eeaedab263a_1.jpg" loading="lazy" referrerpolicy="no-referrer" alt="" onerror="this.style.display='none'"></div>
           <h3>Detached house</h3>
@@ -7944,7 +7960,7 @@ html, body { overflow-x: hidden; }
           <div class="location">
             <a href="https://www.google.com/maps/search/Cativelos%2C%20Cativelos%2C%20Guarda%2C%20Portugal" target="_blank" class="map-link">Guarda / Cativelos</a>
           </div>
-          <div class="tracking"><span>На рынке: <b>25 дн</b></span><span>Найдено: 25.03.2026</span></div>
+          <div class="tracking"><span>На рынке: <b>26 дн</b></span><span>Найдено: 25.03.2026</span></div>
           
           <div class="desc">House for Sale in Cativelos – Excellent Opportunity! We present this charming house located in the welcoming and peaceful parish of Cativelos, surrounded by nature, just minutes from the city of Gouveia, in the heart of Serra da Estrela. Property Fea...</div>
           <div class="tags"><span class="tag alert">СУПЕР ДЕШЕВО -42% от медианы района (793/м2)</span><span class="tag pro">+ Дешево: 463/м2</span><span class="tag pro">+ Большая: 270 м2</span><span class="tag pro">+ T5</span></div>
@@ -10026,7 +10042,7 @@ html, body { overflow-x: hidden; }
              data-is-fresh="0"
              data-price-drop-eur="0"
              data-hidden-gem="0"
-             data-days-on-market="25"
+             data-days-on-market="26"
              data-has-video="0"
              data-new-build="0">
           <div class="card-header">
@@ -10040,7 +10056,7 @@ html, body { overflow-x: hidden; }
               <button class="note-btn" onclick="openNote('34415402')" title="Комментарий">&#9998;</button>
             </div>
           </div>
-          <div class="edge-badges"><span class="edge-badge edge-seller" title="Агентство — с комиссией">🏢 АГЕНТСТВО</span><span class="edge-badge dom-fresh" title="Дней на рынке">🟢 25 дн</span></div>
+          <div class="edge-badges"><span class="edge-badge edge-seller" title="Агентство — с комиссией">🏢 АГЕНТСТВО</span><span class="edge-badge dom-fresh" title="Дней на рынке">🟢 26 дн</span></div>
           
           <div class="photos"><img src="https://pub-cdcf65e04720413aaa6bb1ccc89ec675.r2.dev/f48cebbfb19e_0.jpg" loading="lazy" referrerpolicy="no-referrer" alt="" onerror="this.style.display='none'"><img src="https://pub-cdcf65e04720413aaa6bb1ccc89ec675.r2.dev/f48cebbfb19e_1.jpg" loading="lazy" referrerpolicy="no-referrer" alt="" onerror="this.style.display='none'"></div>
           <h3>Semi-detached house in avenida do Adro</h3>
@@ -10053,7 +10069,7 @@ html, body { overflow-x: hidden; }
           <div class="location">
             <a href="https://www.google.com/maps/search/avenida%20do%20Adro%2C%20Corujeira%20e%20Trinta%2C%20Guarda%2C%20Portugal" target="_blank" class="map-link">Guarda / Corujeira e Trinta</a>
           </div>
-          <div class="tracking"><span>На рынке: <b>25 дн</b></span><span>Найдено: 25.03.2026</span></div>
+          <div class="tracking"><span>На рынке: <b>26 дн</b></span><span>Найдено: 25.03.2026</span></div>
           
           <div class="desc">Completely renovated house, with 2 bedrooms, 2 bathrooms, 2 modern kitchens and 2 spacious living rooms, the downstairs living room being equipped with a built-in bar, perfect for social gatherings. The entire house has air conditioning in all rooms,...</div>
           <div class="tags"><span class="tag pro">+ Дешево: 969/м2</span><span class="tag pro">+ Большая: 160 м2</span></div>
@@ -10824,7 +10840,7 @@ html, body { overflow-x: hidden; }
              data-is-fresh="0"
              data-price-drop-eur="0"
              data-hidden-gem="0"
-             data-days-on-market="25"
+             data-days-on-market="26"
              data-has-video="0"
              data-new-build="0">
           <div class="card-header">
@@ -10838,7 +10854,7 @@ html, body { overflow-x: hidden; }
               <button class="note-btn" onclick="openNote('34132151')" title="Комментарий">&#9998;</button>
             </div>
           </div>
-          <div class="edge-badges"><span class="edge-badge edge-seller" title="Агентство — с комиссией">🏢 АГЕНТСТВО</span><span class="edge-badge dom-fresh" title="Дней на рынке">🟢 25 дн</span></div>
+          <div class="edge-badges"><span class="edge-badge edge-seller" title="Агентство — с комиссией">🏢 АГЕНТСТВО</span><span class="edge-badge dom-fresh" title="Дней на рынке">🟢 26 дн</span></div>
           
           <div class="photos"><img src="https://pub-cdcf65e04720413aaa6bb1ccc89ec675.r2.dev/58a646944acf_0.jpg" loading="lazy" referrerpolicy="no-referrer" alt="" onerror="this.style.display='none'"><img src="https://pub-cdcf65e04720413aaa6bb1ccc89ec675.r2.dev/58a646944acf_1.jpg" loading="lazy" referrerpolicy="no-referrer" alt="" onerror="this.style.display='none'"></div>
           <h3>Detached house in Ladeira do Paixotão</h3>
@@ -10851,7 +10867,7 @@ html, body { overflow-x: hidden; }
           <div class="location">
             <a href="https://www.google.com/maps/search/Ladeira%20do%20Paixot%C3%A3o%2C%20S%C3%A3o%20Pedro%2C%20Guarda%2C%20Portugal" target="_blank" class="map-link">Guarda / São Pedro</a>
           </div>
-          <div class="tracking"><span>На рынке: <b>25 дн</b></span><span>Найдено: 25.03.2026</span></div>
+          <div class="tracking"><span>На рынке: <b>26 дн</b></span><span>Найдено: 25.03.2026</span></div>
           
           <div class="desc">Excellent furnished T5 house, located in the city of Gouveia, next to the Mata da Cerca with a showground and leisure areas, 5 minutes from the Curral do Negro campsite located in the Serra Natural Park. Ground floor consisting of open-plan kitchen/l...</div>
           <div class="tags"><span class="tag pro">+ Дешево: 2,063/м2</span><span class="tag pro">+ T5</span></div>
@@ -14016,7 +14032,7 @@ html, body { overflow-x: hidden; }
              data-is-fresh="0"
              data-price-drop-eur="0"
              data-hidden-gem="0"
-             data-days-on-market="25"
+             data-days-on-market="26"
              data-has-video="0"
              data-new-build="0">
           <div class="card-header">
@@ -14030,7 +14046,7 @@ html, body { overflow-x: hidden; }
               <button class="note-btn" onclick="openNote('34897938')" title="Комментарий">&#9998;</button>
             </div>
           </div>
-          <div class="edge-badges"><span class="edge-badge edge-seller" title="Агентство — с комиссией">🏢 АГЕНТСТВО</span><span class="edge-badge dom-fresh" title="Дней на рынке">🟢 25 дн</span></div>
+          <div class="edge-badges"><span class="edge-badge edge-seller" title="Агентство — с комиссией">🏢 АГЕНТСТВО</span><span class="edge-badge dom-fresh" title="Дней на рынке">🟢 26 дн</span></div>
           
           <div class="photos"><img src="https://pub-cdcf65e04720413aaa6bb1ccc89ec675.r2.dev/9497491274fb_0.jpg" loading="lazy" referrerpolicy="no-referrer" alt="" onerror="this.style.display='none'"><img src="https://pub-cdcf65e04720413aaa6bb1ccc89ec675.r2.dev/9497491274fb_1.jpg" loading="lazy" referrerpolicy="no-referrer" alt="" onerror="this.style.display='none'"></div>
           <h3>Flat</h3>
@@ -14043,7 +14059,7 @@ html, body { overflow-x: hidden; }
           <div class="location">
             <a href="https://www.google.com/maps/search/Guarda%2C%20Guarda%2C%20Guarda%2C%20Portugal" target="_blank" class="map-link">Guarda</a>
           </div>
-          <div class="tracking"><span>На рынке: <b>25 дн</b></span><span>Найдено: 25.03.2026</span></div>
+          <div class="tracking"><span>На рынке: <b>26 дн</b></span><span>Найдено: 25.03.2026</span></div>
           
           <div class="desc">We present this excellent 3-bedroom apartment, located in the lower part of Guarda city, in an area of clear expansion and appreciation, next to the main hypermarkets, commerce, and services. A strategic location, with great access and increasingly s...</div>
           <div class="tags"><span class="tag pro">+ Дешево: 1,974/м2</span><span class="tag pro">+ Большая: 114 м2</span><span class="tag pro">+ T3</span></div>
@@ -14472,7 +14488,7 @@ html, body { overflow-x: hidden; }
              data-is-fresh="0"
              data-price-drop-eur="0"
              data-hidden-gem="0"
-             data-days-on-market="25"
+             data-days-on-market="26"
              data-has-video="0"
              data-new-build="0">
           <div class="card-header">
@@ -14486,7 +14502,7 @@ html, body { overflow-x: hidden; }
               <button class="note-btn" onclick="openNote('34323310')" title="Комментарий">&#9998;</button>
             </div>
           </div>
-          <div class="edge-badges"><span class="edge-badge edge-seller" title="Агентство — с комиссией">🏢 АГЕНТСТВО</span><span class="edge-badge dom-fresh" title="Дней на рынке">🟢 25 дн</span></div>
+          <div class="edge-badges"><span class="edge-badge edge-seller" title="Агентство — с комиссией">🏢 АГЕНТСТВО</span><span class="edge-badge dom-fresh" title="Дней на рынке">🟢 26 дн</span></div>
           
           <div class="photos"><img src="https://pub-cdcf65e04720413aaa6bb1ccc89ec675.r2.dev/1c44b0c43961_0.jpg" loading="lazy" referrerpolicy="no-referrer" alt="" onerror="this.style.display='none'"><img src="https://pub-cdcf65e04720413aaa6bb1ccc89ec675.r2.dev/1c44b0c43961_1.jpg" loading="lazy" referrerpolicy="no-referrer" alt="" onerror="this.style.display='none'"></div>
           <h3>Detached house in rua da fonte pipa</h3>
@@ -14499,7 +14515,7 @@ html, body { overflow-x: hidden; }
           <div class="location">
             <a href="https://www.google.com/maps/search/rua%20da%20fonte%20pipa%2C%20S%C3%A3o%20Pedro%2C%20Guarda%2C%20Portugal" target="_blank" class="map-link">Guarda / São Pedro</a>
           </div>
-          <div class="tracking"><span>На рынке: <b>25 дн</b></span><span>Найдено: 25.03.2026</span></div>
+          <div class="tracking"><span>На рынке: <b>26 дн</b></span><span>Найдено: 25.03.2026</span></div>
           
           <div class="desc">Small farm in Celorico da Beira with a bi-family house. Small farm located two minutes from the center of the village of Celorico da Beira. The property includes a house with two independent floors, ideal for bi-family housing or investment. On the -...</div>
           <div class="tags"><span class="tag pro">+ Дешево: 1,702/м2</span><span class="tag pro">+ Большая: 141 м2</span><span class="tag pro">+ T4</span></div>
@@ -15213,7 +15229,7 @@ html, body { overflow-x: hidden; }
              data-is-fresh="0"
              data-price-drop-eur="0"
              data-hidden-gem="0"
-             data-days-on-market="25"
+             data-days-on-market="26"
              data-has-video="0"
              data-new-build="0">
           <div class="card-header">
@@ -15227,7 +15243,7 @@ html, body { overflow-x: hidden; }
               <button class="note-btn" onclick="openNote('34037739')" title="Комментарий">&#9998;</button>
             </div>
           </div>
-          <div class="edge-badges"><span class="edge-badge edge-seller" title="Агентство — с комиссией">🏢 АГЕНТСТВО</span><span class="edge-badge dom-fresh" title="Дней на рынке">🟢 25 дн</span></div>
+          <div class="edge-badges"><span class="edge-badge edge-seller" title="Агентство — с комиссией">🏢 АГЕНТСТВО</span><span class="edge-badge dom-fresh" title="Дней на рынке">🟢 26 дн</span></div>
           
           <div class="photos"><img src="https://pub-cdcf65e04720413aaa6bb1ccc89ec675.r2.dev/9eaf65ed120a_0.jpg" loading="lazy" referrerpolicy="no-referrer" alt="" onerror="this.style.display='none'"><img src="https://pub-cdcf65e04720413aaa6bb1ccc89ec675.r2.dev/9eaf65ed120a_1.jpg" loading="lazy" referrerpolicy="no-referrer" alt="" onerror="this.style.display='none'"></div>
           <h3>Detached house</h3>
@@ -15240,7 +15256,7 @@ html, body { overflow-x: hidden; }
           <div class="location">
             <a href="https://www.google.com/maps/search/Vale%20de%20Estrela%2C%20Vale%20de%20Estrela%2C%20Guarda%2C%20Portugal" target="_blank" class="map-link">Guarda / Vale de Estrela</a>
           </div>
-          <div class="tracking"><span>На рынке: <b>25 дн</b></span><span>Найдено: 25.03.2026</span></div>
+          <div class="tracking"><span>На рынке: <b>26 дн</b></span><span>Найдено: 25.03.2026</span></div>
           
           <div class="desc">Just 10 minutes from the city center of Guarda, you&#x27;ll find this fully detached villa, where location, privacy, and views come together to create a truly distinct property. A home designed for those seeking exclusivity, space, and a unique natural se...</div>
           <div class="tags"><span class="tag pro">+ Дешево: 1,787/м2</span><span class="tag pro">+ Большая: 150 м2</span><span class="tag pro">+ T4</span><span class="tag con">- Дорого: +125% от медианы района</span></div>
@@ -16239,7 +16255,7 @@ html, body { overflow-x: hidden; }
              data-is-fresh="0"
              data-price-drop-eur="0"
              data-hidden-gem="0"
-             data-days-on-market="25"
+             data-days-on-market="26"
              data-has-video="0"
              data-new-build="0">
           <div class="card-header">
@@ -16253,7 +16269,7 @@ html, body { overflow-x: hidden; }
               <button class="note-btn" onclick="openNote('31915065')" title="Комментарий">&#9998;</button>
             </div>
           </div>
-          <div class="edge-badges"><span class="edge-badge edge-seller" title="Агентство — с комиссией">🏢 АГЕНТСТВО</span><span class="edge-badge dom-fresh" title="Дней на рынке">🟢 25 дн</span></div>
+          <div class="edge-badges"><span class="edge-badge edge-seller" title="Агентство — с комиссией">🏢 АГЕНТСТВО</span><span class="edge-badge dom-fresh" title="Дней на рынке">🟢 26 дн</span></div>
           
           <div class="photos"><img src="https://pub-cdcf65e04720413aaa6bb1ccc89ec675.r2.dev/7a5ceacdcb1b_0.jpg" loading="lazy" referrerpolicy="no-referrer" alt="" onerror="this.style.display='none'"><img src="https://pub-cdcf65e04720413aaa6bb1ccc89ec675.r2.dev/7a5ceacdcb1b_1.jpg" loading="lazy" referrerpolicy="no-referrer" alt="" onerror="this.style.display='none'"></div>
           <h3>House</h3>
@@ -16266,7 +16282,7 @@ html, body { overflow-x: hidden; }
           <div class="location">
             <a href="https://www.google.com/maps/search/Santa%20Marinha%2C%20Santa%20Marinha%2C%20Guarda%2C%20Portugal" target="_blank" class="map-link">Guarda / Santa Marinha</a>
           </div>
-          <div class="tracking"><span>На рынке: <b>25 дн</b></span><span>Найдено: 25.03.2026</span></div>
+          <div class="tracking"><span>На рынке: <b>26 дн</b></span><span>Найдено: 25.03.2026</span></div>
           
           <div class="desc">House with approximately 2 hectares with 3 bedroom house and annex to support agriculture. R/C: Kitchen and pantry, full bathroom, living room with fireplace. Garage. 1st floor: 3 Bedrooms and full bathroom. Wood and gas central heating, solar panels...</div>
           <div class="tags"><span class="tag pro">+ Дешево: 2,313/м2</span><span class="tag pro">+ Большая: 134 м2</span><span class="tag pro">+ T3</span><span class="tag con">- Дорого: +192% от медианы района</span></div>
@@ -16467,7 +16483,7 @@ html, body { overflow-x: hidden; }
              data-is-fresh="0"
              data-price-drop-eur="0"
              data-hidden-gem="0"
-             data-days-on-market="25"
+             data-days-on-market="26"
              data-has-video="0"
              data-new-build="0">
           <div class="card-header">
@@ -16481,7 +16497,7 @@ html, body { overflow-x: hidden; }
               <button class="note-btn" onclick="openNote('34405131')" title="Комментарий">&#9998;</button>
             </div>
           </div>
-          <div class="edge-badges"><span class="edge-badge edge-seller" title="Агентство — с комиссией">🏢 АГЕНТСТВО</span><span class="edge-badge dom-fresh" title="Дней на рынке">🟢 25 дн</span></div>
+          <div class="edge-badges"><span class="edge-badge edge-seller" title="Агентство — с комиссией">🏢 АГЕНТСТВО</span><span class="edge-badge dom-fresh" title="Дней на рынке">🟢 26 дн</span></div>
           
           <div class="photos"><img src="https://pub-cdcf65e04720413aaa6bb1ccc89ec675.r2.dev/7c42cd55c082_0.jpg" loading="lazy" referrerpolicy="no-referrer" alt="" onerror="this.style.display='none'"><img src="https://pub-cdcf65e04720413aaa6bb1ccc89ec675.r2.dev/7c42cd55c082_1.jpg" loading="lazy" referrerpolicy="no-referrer" alt="" onerror="this.style.display='none'"></div>
           <h3>Detached house in rua da Guerreira no number</h3>
@@ -16494,7 +16510,7 @@ html, body { overflow-x: hidden; }
           <div class="location">
             <a href="https://www.google.com/maps/search/rua%20da%20Guerreira%20no%20number%2C%20Almeida%2C%20Guarda%2C%20Portugal" target="_blank" class="map-link">Guarda / Almeida</a>
           </div>
-          <div class="tracking"><span>На рынке: <b>25 дн</b></span><span>Найдено: 25.03.2026</span></div>
+          <div class="tracking"><span>На рынке: <b>26 дн</b></span><span>Найдено: 25.03.2026</span></div>
           
           <div class="desc">The property is approximately 1 hectare, completely walled, with four separate entrances. It has several fruit trees and 50 olive trees in full production, a house and an annex with several outbuildings, and two large garages. The house features: 4 b...</div>
           <div class="tags"><span class="tag pro">+ Дешево: 1,912/м2</span><span class="tag pro">+ Большая: 170 м2</span><span class="tag pro">+ T4</span><span class="tag con">- Дорого: +141% от медианы района</span></div>
@@ -16524,7 +16540,7 @@ html, body { overflow-x: hidden; }
              data-is-fresh="0"
              data-price-drop-eur="0"
              data-hidden-gem="0"
-             data-days-on-market="25"
+             data-days-on-market="26"
              data-has-video="0"
              data-new-build="0">
           <div class="card-header">
@@ -16538,7 +16554,7 @@ html, body { overflow-x: hidden; }
               <button class="note-btn" onclick="openNote('34664918')" title="Комментарий">&#9998;</button>
             </div>
           </div>
-          <div class="edge-badges"><span class="edge-badge edge-seller" title="Агентство — с комиссией">🏢 АГЕНТСТВО</span><span class="edge-badge dom-fresh" title="Дней на рынке">🟢 25 дн</span></div>
+          <div class="edge-badges"><span class="edge-badge edge-seller" title="Агентство — с комиссией">🏢 АГЕНТСТВО</span><span class="edge-badge dom-fresh" title="Дней на рынке">🟢 26 дн</span></div>
           
           <div class="photos"><img src="https://pub-cdcf65e04720413aaa6bb1ccc89ec675.r2.dev/1601bd53b637_0.jpg" loading="lazy" referrerpolicy="no-referrer" alt="" onerror="this.style.display='none'"><img src="https://pub-cdcf65e04720413aaa6bb1ccc89ec675.r2.dev/1601bd53b637_1.jpg" loading="lazy" referrerpolicy="no-referrer" alt="" onerror="this.style.display='none'"></div>
           <h3>Detached house</h3>
@@ -16551,7 +16567,7 @@ html, body { overflow-x: hidden; }
           <div class="location">
             <a href="https://www.google.com/maps/search/Ribamondego%2C%20Ribamondego%2C%20Guarda%2C%20Portugal" target="_blank" class="map-link">Guarda / Ribamondego</a>
           </div>
-          <div class="tracking"><span>На рынке: <b>25 дн</b></span><span>Найдено: 25.03.2026</span></div>
+          <div class="tracking"><span>На рынке: <b>26 дн</b></span><span>Найдено: 25.03.2026</span></div>
           
           <div class="desc">Magnificent detached 3-bedroom villa in Ribamondego, Gouveia, set in a calm and natural environment. In excellent condition, with three bedrooms (one en suite), a large and bright living room, a spacious kitchen, and modern bathrooms. Land of 3,372 m...</div>
           <div class="tags"><span class="tag pro">+ Дешево: 1,413/м2</span><span class="tag pro">+ Большая: 230 м2</span><span class="tag pro">+ T3</span><span class="tag con">- Дорого: +78% от медианы района</span></div>
@@ -16809,7 +16825,7 @@ html, body { overflow-x: hidden; }
              data-is-fresh="0"
              data-price-drop-eur="10000"
              data-hidden-gem="0"
-             data-days-on-market="25"
+             data-days-on-market="26"
              data-has-video="0"
              data-new-build="0">
           <div class="card-header">
@@ -16823,7 +16839,7 @@ html, body { overflow-x: hidden; }
               <button class="note-btn" onclick="openNote('34402524')" title="Комментарий">&#9998;</button>
             </div>
           </div>
-          <div class="edge-badges"><span class="edge-badge edge-pricedrop" title="Падение цены за 90 дней">💰 ЦЕНА СНИЖЕНА −10,000 EUR</span><span class="edge-badge edge-seller" title="Агентство — с комиссией">🏢 АГЕНТСТВО</span><span class="edge-badge dom-fresh" title="Дней на рынке">🟢 25 дн</span></div>
+          <div class="edge-badges"><span class="edge-badge edge-pricedrop" title="Падение цены за 90 дней">💰 ЦЕНА СНИЖЕНА −10,000 EUR</span><span class="edge-badge edge-seller" title="Агентство — с комиссией">🏢 АГЕНТСТВО</span><span class="edge-badge dom-fresh" title="Дней на рынке">🟢 26 дн</span></div>
           
           <div class="photos"><img src="https://pub-cdcf65e04720413aaa6bb1ccc89ec675.r2.dev/e131f3b6de7e_0.jpg" loading="lazy" referrerpolicy="no-referrer" alt="" onerror="this.style.display='none'"><img src="https://pub-cdcf65e04720413aaa6bb1ccc89ec675.r2.dev/e131f3b6de7e_1.jpg" loading="lazy" referrerpolicy="no-referrer" alt="" onerror="this.style.display='none'"></div>
           <h3>Detached house in largo da Feira</h3>
@@ -16836,7 +16852,7 @@ html, body { overflow-x: hidden; }
           <div class="location">
             <a href="https://www.google.com/maps/search/largo%20da%20Feira%2C%20Carrapichana%2C%20Guarda%2C%20Portugal" target="_blank" class="map-link">Guarda / Carrapichana</a>
           </div>
-          <div class="tracking"><span>На рынке: <b>25 дн</b></span><span>Найдено: 25.03.2026</span></div>
+          <div class="tracking"><span>На рынке: <b>26 дн</b></span><span>Найдено: 25.03.2026</span></div>
           <div class="price-history"><b>История цен:</b><div>25.03.2026 - 350,000 EUR</div><div>19.04.2026 - 340,000 EUR</div></div>
           <div class="desc">This fantastic detached villa, surrounded by nature and self-sufficient is the perfect refuge for your privacy and security. With magnificent views of the Serra, it is walled land with 4,000 m2 with various types of fruit trees. It is located between...</div>
           <div class="tags"><span class="tag pro">+ Цена снижалась</span><span class="tag pro">+ Дешево: 1,030/м2</span><span class="tag pro">+ Большая: 330 м2</span><span class="tag pro">+ T3</span><span class="tag pro">+ Бассейн</span></div>
@@ -17562,6 +17578,24 @@ function initTop50() {
 }
 
 // Session-cookie sync then init
+function logout() {
+  fetch('/api/logout', {
+    method: 'POST',
+    credentials: 'include',
+    headers: {'X-CSRF-Token': CSRF_TOKEN}
+  }).catch(function(){}).then(function(){
+    window.location.href = '/login';
+  });
+}
+
+function showUserBar(username) {
+  var bar = document.getElementById('user-bar');
+  var nameEl = document.getElementById('user-name');
+  if (!bar || !nameEl) return;
+  nameEl.textContent = username || '';
+  bar.classList.add('visible');
+}
+
 function initSync() {
   return fetch('/api/me', {credentials: 'same-origin'}).then(function(r) {
     if (!r.ok) throw 'no session';
@@ -17569,6 +17603,8 @@ function initSync() {
   }).then(function(me) {
     CSRF_TOKEN = me.csrf_token || '';
     API_HEADERS = {'X-CSRF-Token': CSRF_TOKEN, 'Content-Type': 'application/json'};
+    window.CURRENT_USER = me.username || '';
+    showUserBar(window.CURRENT_USER);
     return fetch('/api/state', {credentials: 'same-origin'});
   }).then(function(r) {
     if (!r.ok) throw 'no state';

@@ -141,9 +141,25 @@ body { font-size: var(--fs-body); }
 }
 html, body { overflow-x: hidden; }
 .card { word-wrap: break-word; overflow-wrap: break-word; }
+
+/* User bar — fixed top-right, shown only when logged into server */
+#user-bar { position: fixed; top: 10px; right: 14px; z-index: 300; display: none; align-items: center; gap: 8px; background: rgba(255,255,255,0.95); padding: 6px 12px; border-radius: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.2); font-size: 12px; color: #555; }
+#user-bar.visible { display: inline-flex; }
+#user-bar .user-name { font-weight: 600; color: #1a237e; }
+#user-bar .logout-btn { background: #c62828; color: #fff; border: none; border-radius: 14px; padding: 5px 12px; font-size: 11px; font-weight: 600; cursor: pointer; transition: 0.15s; }
+#user-bar .logout-btn:hover { background: #8e0000; }
+@media (max-width: 480px) {
+  #user-bar { top: 6px; right: 6px; padding: 4px 8px; font-size: 11px; }
+  #user-bar .logout-btn { padding: 3px 8px; font-size: 10px; }
+}
 </style>
 </head>
 <body>
+<!-- User bar — fixed top-right, shown only when logged into server -->
+<div id="user-bar">
+  <span>👤 <span class="user-name" id="user-name"></span></span>
+  <button class="logout-btn" onclick="logout()">Выйти</button>
+</div>
 <div id="app-content">
 <a href="index.html" class="back-link">← Все районы</a>
 <div class="header">
@@ -2673,7 +2689,7 @@ html, body { overflow-x: hidden; }
              data-is-fresh="0"
              data-price-drop-eur="0"
              data-hidden-gem="34"
-             data-days-on-market="25"
+             data-days-on-market="26"
              data-has-video="0"
              data-new-build="0">
           <div class="card-header">
@@ -2687,7 +2703,7 @@ html, body { overflow-x: hidden; }
               <button class="note-btn" onclick="openNote('34844728')" title="Комментарий">&#9998;</button>
             </div>
           </div>
-          <div class="edge-badges"><span class="edge-badge edge-gem" title="Цена сильно ниже медианы муниципалитета">💎 НАХОДКА −34%</span><span class="edge-badge edge-seller" title="Агентство — с комиссией">🏢 АГЕНТСТВО</span><span class="edge-badge dom-fresh" title="Дней на рынке">🟢 25 дн</span></div>
+          <div class="edge-badges"><span class="edge-badge edge-gem" title="Цена сильно ниже медианы муниципалитета">💎 НАХОДКА −34%</span><span class="edge-badge edge-seller" title="Агентство — с комиссией">🏢 АГЕНТСТВО</span><span class="edge-badge dom-fresh" title="Дней на рынке">🟢 26 дн</span></div>
           
           <div class="photos"><img src="https://pub-cdcf65e04720413aaa6bb1ccc89ec675.r2.dev/a40455227181_0.jpg" loading="lazy" referrerpolicy="no-referrer" alt="" onerror="this.style.display='none'"><img src="https://pub-cdcf65e04720413aaa6bb1ccc89ec675.r2.dev/a40455227181_1.jpg" loading="lazy" referrerpolicy="no-referrer" alt="" onerror="this.style.display='none'"></div>
           <h3>Semi-detached house in rua do Botafogo</h3>
@@ -2700,7 +2716,7 @@ html, body { overflow-x: hidden; }
           <div class="location">
             <a href="https://www.google.com/maps/search/rua%20do%20Botafogo%2C%20Assun%C3%A7%C3%A3o%20-%20Ajuda%20-%20Salvador%20-%20Santo%20Ildefonso%2C%20Portalegre%2C%20Portugal" target="_blank" class="map-link">Portalegre / Assunção - Ajuda - Salvador - Santo Ildefonso</a>
           </div>
-          <div class="tracking"><span>На рынке: <b>25 дн</b></span><span>Найдено: 25.03.2026</span></div>
+          <div class="tracking"><span>На рынке: <b>26 дн</b></span><span>Найдено: 25.03.2026</span></div>
           
           <div class="desc">There are houses that tell stories — and this is one of them. Located on the legendary Rua do Botafogo, one of the most emblematic arteries of the historic center, this residence invites you to live surrounded by tradition, authenticity, and Alentejo...</div>
           <div class="tags"><span class="tag alert">СУПЕР ДЕШЕВО -34% от медианы района (1,313/м2)</span><span class="tag pro">+ Дешево: 862/м2</span><span class="tag pro">+ T3</span></div>
@@ -4782,7 +4798,7 @@ html, body { overflow-x: hidden; }
              data-is-fresh="0"
              data-price-drop-eur="0"
              data-hidden-gem="0"
-             data-days-on-market="25"
+             data-days-on-market="26"
              data-has-video="0"
              data-new-build="0">
           <div class="card-header">
@@ -4796,7 +4812,7 @@ html, body { overflow-x: hidden; }
               <button class="note-btn" onclick="openNote('34878389')" title="Комментарий">&#9998;</button>
             </div>
           </div>
-          <div class="edge-badges"><span class="edge-badge edge-seller" title="Агентство — с комиссией">🏢 АГЕНТСТВО</span><span class="edge-badge dom-fresh" title="Дней на рынке">🟢 25 дн</span></div>
+          <div class="edge-badges"><span class="edge-badge edge-seller" title="Агентство — с комиссией">🏢 АГЕНТСТВО</span><span class="edge-badge dom-fresh" title="Дней на рынке">🟢 26 дн</span></div>
           
           <div class="photos"><img src="https://pub-cdcf65e04720413aaa6bb1ccc89ec675.r2.dev/81ab9e73fbb5_0.jpg" loading="lazy" referrerpolicy="no-referrer" alt="" onerror="this.style.display='none'"><img src="https://pub-cdcf65e04720413aaa6bb1ccc89ec675.r2.dev/81ab9e73fbb5_1.jpg" loading="lazy" referrerpolicy="no-referrer" alt="" onerror="this.style.display='none'"></div>
           <h3>Semi-detached house in rua dos Telheiros, 26</h3>
@@ -4809,7 +4825,7 @@ html, body { overflow-x: hidden; }
           <div class="location">
             <a href="https://www.google.com/maps/search/rua%20dos%20Telheiros%2C%2026%2C%20Santo%20Amaro%2C%20Portalegre%2C%20Portugal" target="_blank" class="map-link">Portalegre / Santo Amaro</a>
           </div>
-          <div class="tracking"><span>На рынке: <b>25 дн</b></span><span>Найдено: 25.03.2026</span></div>
+          <div class="tracking"><span>На рынке: <b>26 дн</b></span><span>Найдено: 25.03.2026</span></div>
           
           <div class="desc">Semi-detached 2-storey T2 house located in Santo Amaro, municipality of Sousel, district of Portalegre. This charming house has a backyard at the rear, bordering a stream at the back. On the ground floor, next to the road, we have a good common room ...</div>
           <div class="tags"><span class="tag pro">+ Дешево: 1,203/м2</span><span class="tag pro">+ T3</span></div>
@@ -6891,7 +6907,7 @@ html, body { overflow-x: hidden; }
              data-is-fresh="0"
              data-price-drop-eur="65000"
              data-hidden-gem="0"
-             data-days-on-market="25"
+             data-days-on-market="26"
              data-has-video="0"
              data-new-build="0">
           <div class="card-header">
@@ -6905,7 +6921,7 @@ html, body { overflow-x: hidden; }
               <button class="note-btn" onclick="openNote('33974645')" title="Комментарий">&#9998;</button>
             </div>
           </div>
-          <div class="edge-badges"><span class="edge-badge edge-pricedrop" title="Падение цены за 90 дней">💰 ЦЕНА СНИЖЕНА −65,000 EUR</span><span class="edge-badge edge-seller" title="Агентство — с комиссией">🏢 АГЕНТСТВО</span><span class="edge-badge dom-fresh" title="Дней на рынке">🟢 25 дн</span></div>
+          <div class="edge-badges"><span class="edge-badge edge-pricedrop" title="Падение цены за 90 дней">💰 ЦЕНА СНИЖЕНА −65,000 EUR</span><span class="edge-badge edge-seller" title="Агентство — с комиссией">🏢 АГЕНТСТВО</span><span class="edge-badge dom-fresh" title="Дней на рынке">🟢 26 дн</span></div>
           
           <div class="photos"><img src="https://pub-cdcf65e04720413aaa6bb1ccc89ec675.r2.dev/3bc0f4c7502c_0.jpg" loading="lazy" referrerpolicy="no-referrer" alt="" onerror="this.style.display='none'"><img src="https://pub-cdcf65e04720413aaa6bb1ccc89ec675.r2.dev/3bc0f4c7502c_1.jpg" loading="lazy" referrerpolicy="no-referrer" alt="" onerror="this.style.display='none'"></div>
           <h3>Quinta in largo do Espírito Santo, 26</h3>
@@ -6918,7 +6934,7 @@ html, body { overflow-x: hidden; }
           <div class="location">
             <a href="https://www.google.com/maps/search/largo%20do%20Esp%C3%ADrito%20Santo%2C%2026%2C%20Nossa%20Senhora%20Gra%C3%A7a%20P%C3%B3voa%20Meadas%2C%20Portalegre%2C%20Portugal" target="_blank" class="map-link">Portalegre / Nossa Senhora Graça Póvoa Meadas</a>
           </div>
-          <div class="tracking"><span>На рынке: <b>25 дн</b></span><span>Найдено: 25.03.2026</span></div>
+          <div class="tracking"><span>На рынке: <b>26 дн</b></span><span>Найдено: 25.03.2026</span></div>
           <div class="price-history"><b>История цен:</b><div>25.03.2026 - 190,000 EUR</div><div>19.04.2026 - 125,000 EUR</div></div>
           <div class="desc">Historic house in Castelo de Vide, where the parish&#x27;s first community oven was inaugurated. This villa, set on a 120 m2 plot, with 156 m2 (gross construction area) and 114 m2 (usable area), located near the Póvoa e Meadas dam, comprises: Ground floor...</div>
           <div class="tags"><span class="tag pro">+ Ниже рынка на 25% (медиана 1,061/м2)</span><span class="tag pro">+ Цена снижалась</span><span class="tag pro">+ Дешево: 801/м2</span><span class="tag pro">+ Большая: 156 м2</span><span class="tag pro">+ T6</span></div>
@@ -8658,7 +8674,7 @@ html, body { overflow-x: hidden; }
              data-is-fresh="0"
              data-price-drop-eur="0"
              data-hidden-gem="39"
-             data-days-on-market="25"
+             data-days-on-market="26"
              data-has-video="0"
              data-new-build="0">
           <div class="card-header">
@@ -8672,7 +8688,7 @@ html, body { overflow-x: hidden; }
               <button class="note-btn" onclick="openNote('33401112')" title="Комментарий">&#9998;</button>
             </div>
           </div>
-          <div class="edge-badges"><span class="edge-badge edge-gem" title="Цена сильно ниже медианы муниципалитета">💎 НАХОДКА −39%</span><span class="edge-badge edge-seller" title="Агентство — с комиссией">🏢 АГЕНТСТВО</span><span class="edge-badge dom-fresh" title="Дней на рынке">🟢 25 дн</span></div>
+          <div class="edge-badges"><span class="edge-badge edge-gem" title="Цена сильно ниже медианы муниципалитета">💎 НАХОДКА −39%</span><span class="edge-badge edge-seller" title="Агентство — с комиссией">🏢 АГЕНТСТВО</span><span class="edge-badge dom-fresh" title="Дней на рынке">🟢 26 дн</span></div>
           
           <div class="photos"><img src="https://pub-cdcf65e04720413aaa6bb1ccc89ec675.r2.dev/6a9121eb3a53_0.jpg" loading="lazy" referrerpolicy="no-referrer" alt="" onerror="this.style.display='none'"><img src="https://pub-cdcf65e04720413aaa6bb1ccc89ec675.r2.dev/6a9121eb3a53_1.jpg" loading="lazy" referrerpolicy="no-referrer" alt="" onerror="this.style.display='none'"></div>
           <h3>Detached house in rua Dona Efigénia de Sá Nogueira, 4</h3>
@@ -8685,7 +8701,7 @@ html, body { overflow-x: hidden; }
           <div class="location">
             <a href="https://www.google.com/maps/search/rua%20Dona%20Efig%C3%A9nia%20de%20S%C3%A1%20Nogueira%2C%204%2C%20Crato%20e%20M%C3%A1rtires%2C%20Portalegre%2C%20Portugal" target="_blank" class="map-link">Portalegre / Crato e Mártires</a>
           </div>
-          <div class="tracking"><span>На рынке: <b>25 дн</b></span><span>Найдено: 25.03.2026</span></div>
+          <div class="tracking"><span>На рынке: <b>26 дн</b></span><span>Найдено: 25.03.2026</span></div>
           
           <div class="desc">Villa for rehabilitation with 450 m2 of gross construction area and terrace with 74 m2, located in the historic center of Crato village. The property offers ten rooms including two kitchens and three bathrooms distributed across the three-story build...</div>
           <div class="tags"><span class="tag alert">СУПЕР ДЕШЕВО -39% от медианы района (545/м2)</span><span class="tag pro">+ Дешево: 333/м2</span><span class="tag pro">+ Большая: 450 м2</span><span class="tag pro">+ T10</span></div>
@@ -10368,7 +10384,7 @@ html, body { overflow-x: hidden; }
              data-is-fresh="0"
              data-price-drop-eur="0"
              data-hidden-gem="0"
-             data-days-on-market="25"
+             data-days-on-market="26"
              data-has-video="0"
              data-new-build="0">
           <div class="card-header">
@@ -10382,7 +10398,7 @@ html, body { overflow-x: hidden; }
               <button class="note-btn" onclick="openNote('34250604')" title="Комментарий">&#9998;</button>
             </div>
           </div>
-          <div class="edge-badges"><span class="edge-badge edge-seller" title="Агентство — с комиссией">🏢 АГЕНТСТВО</span><span class="edge-badge dom-fresh" title="Дней на рынке">🟢 25 дн</span></div>
+          <div class="edge-badges"><span class="edge-badge edge-seller" title="Агентство — с комиссией">🏢 АГЕНТСТВО</span><span class="edge-badge dom-fresh" title="Дней на рынке">🟢 26 дн</span></div>
           
           <div class="photos"><img src="https://pub-cdcf65e04720413aaa6bb1ccc89ec675.r2.dev/a4b4e8fa6259_0.jpg" loading="lazy" referrerpolicy="no-referrer" alt="" onerror="this.style.display='none'"><img src="https://pub-cdcf65e04720413aaa6bb1ccc89ec675.r2.dev/a4b4e8fa6259_1.jpg" loading="lazy" referrerpolicy="no-referrer" alt="" onerror="this.style.display='none'"></div>
           <h3>Detached house in rua Almirante Cândido dos Reis</h3>
@@ -10395,7 +10411,7 @@ html, body { overflow-x: hidden; }
           <div class="location">
             <a href="https://www.google.com/maps/search/rua%20Almirante%20C%C3%A2ndido%20dos%20Reis%2C%20Benavila%2C%20Portalegre%2C%20Portugal" target="_blank" class="map-link">Portalegre / Benavila</a>
           </div>
-          <div class="tracking"><span>На рынке: <b>25 дн</b></span><span>Найдено: 25.03.2026</span></div>
+          <div class="tracking"><span>На рынке: <b>26 дн</b></span><span>Найдено: 25.03.2026</span></div>
           
           <div class="desc">Unique House with Character and Modern Comfort a few meters from the Maranhão Dam, this magnificent house, consisting of two articles, combines the charm of the past with contemporary comfort. Every detail has been carefully thought out to provide a ...</div>
           <div class="tags"><span class="tag pro">+ Ниже рынка на 25% (медиана 1,061/м2)</span><span class="tag pro">+ Дешево: 793/м2</span><span class="tag pro">+ Большая: 213 м2</span><span class="tag pro">+ T7</span></div>
@@ -10710,7 +10726,7 @@ html, body { overflow-x: hidden; }
              data-is-fresh="0"
              data-price-drop-eur="0"
              data-hidden-gem="0"
-             data-days-on-market="25"
+             data-days-on-market="26"
              data-has-video="0"
              data-new-build="0">
           <div class="card-header">
@@ -10724,7 +10740,7 @@ html, body { overflow-x: hidden; }
               <button class="note-btn" onclick="openNote('34360865')" title="Комментарий">&#9998;</button>
             </div>
           </div>
-          <div class="edge-badges"><span class="edge-badge edge-seller" title="Агентство — с комиссией">🏢 АГЕНТСТВО</span><span class="edge-badge dom-fresh" title="Дней на рынке">🟢 25 дн</span></div>
+          <div class="edge-badges"><span class="edge-badge edge-seller" title="Агентство — с комиссией">🏢 АГЕНТСТВО</span><span class="edge-badge dom-fresh" title="Дней на рынке">🟢 26 дн</span></div>
           
           <div class="photos"><img src="https://pub-cdcf65e04720413aaa6bb1ccc89ec675.r2.dev/02b019314454_0.jpg" loading="lazy" referrerpolicy="no-referrer" alt="" onerror="this.style.display='none'"><img src="https://pub-cdcf65e04720413aaa6bb1ccc89ec675.r2.dev/02b019314454_1.jpg" loading="lazy" referrerpolicy="no-referrer" alt="" onerror="this.style.display='none'"></div>
           <h3>Quinta</h3>
@@ -10737,7 +10753,7 @@ html, body { overflow-x: hidden; }
           <div class="location">
             <a href="https://www.google.com/maps/search/S%C3%A3o%20Jo%C3%A3o%20Batista%2C%20S%C3%A3o%20Jo%C3%A3o%20Batista%2C%20Portalegre%2C%20Portugal" target="_blank" class="map-link">Portalegre / São João Batista</a>
           </div>
-          <div class="tracking"><span>На рынке: <b>25 дн</b></span><span>Найдено: 25.03.2026</span></div>
+          <div class="tracking"><span>На рынке: <b>26 дн</b></span><span>Найдено: 25.03.2026</span></div>
           
           <div class="desc">Quinta da Fazendinha is located in one of the most exclusive places in Portugal, Castelo de Vide, considered the Sintra of Alentejo, privileged area of unparalleled beauty on the Alentejo plain. This farm has approximately 4 200 hectares, with 4 rust...</div>
           <div class="tags"><span class="tag pro">+ Дешево: 875/м2</span><span class="tag pro">+ Большая: 200 м2</span></div>
@@ -10881,7 +10897,7 @@ html, body { overflow-x: hidden; }
              data-is-fresh="0"
              data-price-drop-eur="0"
              data-hidden-gem="0"
-             data-days-on-market="25"
+             data-days-on-market="26"
              data-has-video="0"
              data-new-build="0">
           <div class="card-header">
@@ -10895,7 +10911,7 @@ html, body { overflow-x: hidden; }
               <button class="note-btn" onclick="openNote('32769379')" title="Комментарий">&#9998;</button>
             </div>
           </div>
-          <div class="edge-badges"><span class="edge-badge edge-seller" title="Агентство — с комиссией">🏢 АГЕНТСТВО</span><span class="edge-badge dom-fresh" title="Дней на рынке">🟢 25 дн</span></div>
+          <div class="edge-badges"><span class="edge-badge edge-seller" title="Агентство — с комиссией">🏢 АГЕНТСТВО</span><span class="edge-badge dom-fresh" title="Дней на рынке">🟢 26 дн</span></div>
           
           <div class="photos"><img src="https://pub-cdcf65e04720413aaa6bb1ccc89ec675.r2.dev/a57b1e598c1f_0.jpg" loading="lazy" referrerpolicy="no-referrer" alt="" onerror="this.style.display='none'"><img src="https://pub-cdcf65e04720413aaa6bb1ccc89ec675.r2.dev/a57b1e598c1f_1.jpg" loading="lazy" referrerpolicy="no-referrer" alt="" onerror="this.style.display='none'"></div>
           <h3>Detached house in rua Manuel Nunes Marques Adegas</h3>
@@ -10908,7 +10924,7 @@ html, body { overflow-x: hidden; }
           <div class="location">
             <a href="https://www.google.com/maps/search/rua%20Manuel%20Nunes%20Marques%20Adegas%2C%20Longomel%2C%20Portalegre%2C%20Portugal" target="_blank" class="map-link">Portalegre / Longomel</a>
           </div>
-          <div class="tracking"><span>На рынке: <b>25 дн</b></span><span>Найдено: 25.03.2026</span></div>
+          <div class="tracking"><span>На рынке: <b>26 дн</b></span><span>Найдено: 25.03.2026</span></div>
           
           <div class="desc">**Spacious and Well-Located House in Longomel - Unmissable Opportunity! ** We present this charming terraced house, located in a quiet area of Longomel, just 5 minutes from Ponte de Sor. With a gross area of 262 m2 and 235 m2 of useful area, this pro...</div>
           <div class="tags"><span class="tag alert">СУПЕР ДЕШЕВО -35% от медианы района (1,061/м2)</span><span class="tag pro">+ Дешево: 687/м2</span><span class="tag pro">+ Большая: 262 м2</span><span class="tag pro">+ T9</span></div>
@@ -13503,7 +13519,7 @@ html, body { overflow-x: hidden; }
              data-is-fresh="0"
              data-price-drop-eur="0"
              data-hidden-gem="0"
-             data-days-on-market="25"
+             data-days-on-market="26"
              data-has-video="0"
              data-new-build="0">
           <div class="card-header">
@@ -13517,7 +13533,7 @@ html, body { overflow-x: hidden; }
               <button class="note-btn" onclick="openNote('34456877')" title="Комментарий">&#9998;</button>
             </div>
           </div>
-          <div class="edge-badges"><span class="edge-badge edge-seller" title="Агентство — с комиссией">🏢 АГЕНТСТВО</span><span class="edge-badge dom-fresh" title="Дней на рынке">🟢 25 дн</span></div>
+          <div class="edge-badges"><span class="edge-badge edge-seller" title="Агентство — с комиссией">🏢 АГЕНТСТВО</span><span class="edge-badge dom-fresh" title="Дней на рынке">🟢 26 дн</span></div>
           
           <div class="photos"><img src="https://pub-cdcf65e04720413aaa6bb1ccc89ec675.r2.dev/38c6ae45c13c_0.jpg" loading="lazy" referrerpolicy="no-referrer" alt="" onerror="this.style.display='none'"><img src="https://pub-cdcf65e04720413aaa6bb1ccc89ec675.r2.dev/38c6ae45c13c_1.jpg" loading="lazy" referrerpolicy="no-referrer" alt="" onerror="this.style.display='none'"></div>
           <h3>Detached house</h3>
@@ -13530,7 +13546,7 @@ html, body { overflow-x: hidden; }
           <div class="location">
             <a href="https://www.google.com/maps/search/S%C3%A3o%20Jo%C3%A3o%20Batista%2C%20S%C3%A3o%20Jo%C3%A3o%20Batista%2C%20Portalegre%2C%20Portugal" target="_blank" class="map-link">Portalegre / São João Batista</a>
           </div>
-          <div class="tracking"><span>На рынке: <b>25 дн</b></span><span>Найдено: 25.03.2026</span></div>
+          <div class="tracking"><span>На рынке: <b>26 дн</b></span><span>Найдено: 25.03.2026</span></div>
           
           <div class="desc">Space, comfort, and tranquility are at your disposal. Located in Vila Raiana de Campo Maior, a town with a history and tradition in the processing and sale of coffee, it&#x27;s located in one of the most important and modernized areas of the village, clos...</div>
           <div class="tags"><span class="tag pro">+ Дешево: 1,193/м2</span><span class="tag pro">+ Большая: 207 м2</span><span class="tag pro">+ T4</span></div>
@@ -14529,7 +14545,7 @@ html, body { overflow-x: hidden; }
              data-is-fresh="0"
              data-price-drop-eur="0"
              data-hidden-gem="0"
-             data-days-on-market="25"
+             data-days-on-market="26"
              data-has-video="0"
              data-new-build="0">
           <div class="card-header">
@@ -14543,7 +14559,7 @@ html, body { overflow-x: hidden; }
               <button class="note-btn" onclick="openNote('34511344')" title="Комментарий">&#9998;</button>
             </div>
           </div>
-          <div class="edge-badges"><span class="edge-badge edge-seller" title="Агентство — с комиссией">🏢 АГЕНТСТВО</span><span class="edge-badge dom-fresh" title="Дней на рынке">🟢 25 дн</span></div>
+          <div class="edge-badges"><span class="edge-badge edge-seller" title="Агентство — с комиссией">🏢 АГЕНТСТВО</span><span class="edge-badge dom-fresh" title="Дней на рынке">🟢 26 дн</span></div>
           
           <div class="photos"><img src="https://pub-cdcf65e04720413aaa6bb1ccc89ec675.r2.dev/bdb5b6957c27_0.jpg" loading="lazy" referrerpolicy="no-referrer" alt="" onerror="this.style.display='none'"><img src="https://pub-cdcf65e04720413aaa6bb1ccc89ec675.r2.dev/bdb5b6957c27_1.jpg" loading="lazy" referrerpolicy="no-referrer" alt="" onerror="this.style.display='none'"></div>
           <h3>Detached house</h3>
@@ -14556,7 +14572,7 @@ html, body { overflow-x: hidden; }
           <div class="location">
             <a href="https://www.google.com/maps/search/Vila%20Boim%2C%20Vila%20Boim%2C%20Portalegre%2C%20Portugal" target="_blank" class="map-link">Portalegre / Vila Boim</a>
           </div>
-          <div class="tracking"><span>На рынке: <b>25 дн</b></span><span>Найдено: 25.03.2026</span></div>
+          <div class="tracking"><span>На рынке: <b>26 дн</b></span><span>Найдено: 25.03.2026</span></div>
           
           <div class="desc">Charming Two-Bedroom House in the Heart of Alentejo We present this exquisite two-bedroom house, located in the heart of Alentejo, where the charm of the region combines with a high standard of quality and comfort. Tastefully decorated with attention...</div>
           <div class="tags"><span class="tag pro">+ Дешево: 1,985/м2</span><span class="tag pro">+ Большая: 132 м2</span></div>
@@ -17607,7 +17623,7 @@ html, body { overflow-x: hidden; }
              data-is-fresh="0"
              data-price-drop-eur="0"
              data-hidden-gem="0"
-             data-days-on-market="25"
+             data-days-on-market="26"
              data-has-video="0"
              data-new-build="0">
           <div class="card-header">
@@ -17621,7 +17637,7 @@ html, body { overflow-x: hidden; }
               <button class="note-btn" onclick="openNote('34756071')" title="Комментарий">&#9998;</button>
             </div>
           </div>
-          <div class="edge-badges"><span class="edge-badge edge-seller" title="Агентство — с комиссией">🏢 АГЕНТСТВО</span><span class="edge-badge dom-fresh" title="Дней на рынке">🟢 25 дн</span></div>
+          <div class="edge-badges"><span class="edge-badge edge-seller" title="Агентство — с комиссией">🏢 АГЕНТСТВО</span><span class="edge-badge dom-fresh" title="Дней на рынке">🟢 26 дн</span></div>
           
           <div class="photos"><img src="https://pub-cdcf65e04720413aaa6bb1ccc89ec675.r2.dev/fe617b91db41_0.jpg" loading="lazy" referrerpolicy="no-referrer" alt="" onerror="this.style.display='none'"><img src="https://pub-cdcf65e04720413aaa6bb1ccc89ec675.r2.dev/fe617b91db41_1.jpg" loading="lazy" referrerpolicy="no-referrer" alt="" onerror="this.style.display='none'"></div>
           <h3>Terraced house in rua João Travanca Rêgo</h3>
@@ -17634,7 +17650,7 @@ html, body { overflow-x: hidden; }
           <div class="location">
             <a href="https://www.google.com/maps/search/rua%20Jo%C3%A3o%20Travanca%20R%C3%AAgo%2C%20Caia%20-%20S%C3%A3o%20Pedro%20-%20Alc%C3%A1%C3%A7ova%2C%20Portalegre%2C%20Portugal" target="_blank" class="map-link">Portalegre / Caia - São Pedro - Alcáçova</a>
           </div>
-          <div class="tracking"><span>На рынке: <b>25 дн</b></span><span>Найдено: 25.03.2026</span></div>
+          <div class="tracking"><span>На рынке: <b>26 дн</b></span><span>Найдено: 25.03.2026</span></div>
           
           <div class="desc">If you are looking for a residence where thermal comfort and quality of life are a priority, this T4 townhouse in the prestigious Olival do Moreno, in Elvas, is the ideal choice. Located in one of the most exclusive and tranquil residential areas of ...</div>
           <div class="tags"><span class="tag pro">+ Дешево: 1,641/м2</span><span class="tag pro">+ Большая: 198 м2</span><span class="tag pro">+ T4</span></div>
@@ -18531,6 +18547,24 @@ function initTop50() {
 }
 
 // Session-cookie sync then init
+function logout() {
+  fetch('/api/logout', {
+    method: 'POST',
+    credentials: 'include',
+    headers: {'X-CSRF-Token': CSRF_TOKEN}
+  }).catch(function(){}).then(function(){
+    window.location.href = '/login';
+  });
+}
+
+function showUserBar(username) {
+  var bar = document.getElementById('user-bar');
+  var nameEl = document.getElementById('user-name');
+  if (!bar || !nameEl) return;
+  nameEl.textContent = username || '';
+  bar.classList.add('visible');
+}
+
 function initSync() {
   return fetch('/api/me', {credentials: 'same-origin'}).then(function(r) {
     if (!r.ok) throw 'no session';
@@ -18538,6 +18572,8 @@ function initSync() {
   }).then(function(me) {
     CSRF_TOKEN = me.csrf_token || '';
     API_HEADERS = {'X-CSRF-Token': CSRF_TOKEN, 'Content-Type': 'application/json'};
+    window.CURRENT_USER = me.username || '';
+    showUserBar(window.CURRENT_USER);
     return fetch('/api/state', {credentials: 'same-origin'});
   }).then(function(r) {
     if (!r.ok) throw 'no state';

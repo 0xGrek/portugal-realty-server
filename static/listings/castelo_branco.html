@@ -141,9 +141,25 @@ body { font-size: var(--fs-body); }
 }
 html, body { overflow-x: hidden; }
 .card { word-wrap: break-word; overflow-wrap: break-word; }
+
+/* User bar — fixed top-right, shown only when logged into server */
+#user-bar { position: fixed; top: 10px; right: 14px; z-index: 300; display: none; align-items: center; gap: 8px; background: rgba(255,255,255,0.95); padding: 6px 12px; border-radius: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.2); font-size: 12px; color: #555; }
+#user-bar.visible { display: inline-flex; }
+#user-bar .user-name { font-weight: 600; color: #1a237e; }
+#user-bar .logout-btn { background: #c62828; color: #fff; border: none; border-radius: 14px; padding: 5px 12px; font-size: 11px; font-weight: 600; cursor: pointer; transition: 0.15s; }
+#user-bar .logout-btn:hover { background: #8e0000; }
+@media (max-width: 480px) {
+  #user-bar { top: 6px; right: 6px; padding: 4px 8px; font-size: 11px; }
+  #user-bar .logout-btn { padding: 3px 8px; font-size: 10px; }
+}
 </style>
 </head>
 <body>
+<!-- User bar — fixed top-right, shown only when logged into server -->
+<div id="user-bar">
+  <span>👤 <span class="user-name" id="user-name"></span></span>
+  <button class="logout-btn" onclick="logout()">Выйти</button>
+</div>
 <div id="app-content">
 <a href="index.html" class="back-link">← Все районы</a>
 <div class="header">
@@ -279,7 +295,7 @@ html, body { overflow-x: hidden; }
              data-is-fresh="0"
              data-price-drop-eur="0"
              data-hidden-gem="0"
-             data-days-on-market="25"
+             data-days-on-market="26"
              data-has-video="0"
              data-new-build="0">
           <div class="card-header">
@@ -293,7 +309,7 @@ html, body { overflow-x: hidden; }
               <button class="note-btn" onclick="openNote('34265521')" title="Комментарий">&#9998;</button>
             </div>
           </div>
-          <div class="edge-badges"><span class="edge-badge edge-seller" title="Агентство — с комиссией">🏢 АГЕНТСТВО</span><span class="edge-badge dom-fresh" title="Дней на рынке">🟢 25 дн</span></div>
+          <div class="edge-badges"><span class="edge-badge edge-seller" title="Агентство — с комиссией">🏢 АГЕНТСТВО</span><span class="edge-badge dom-fresh" title="Дней на рынке">🟢 26 дн</span></div>
           
           <div class="photos"><img src="https://pub-cdcf65e04720413aaa6bb1ccc89ec675.r2.dev/12cf3e29ce61_0.jpg" loading="lazy" referrerpolicy="no-referrer" alt="" onerror="this.style.display='none'"><img src="https://pub-cdcf65e04720413aaa6bb1ccc89ec675.r2.dev/12cf3e29ce61_1.jpg" loading="lazy" referrerpolicy="no-referrer" alt="" onerror="this.style.display='none'"></div>
           <h3>Detached house</h3>
@@ -306,7 +322,7 @@ html, body { overflow-x: hidden; }
           <div class="location">
             <a href="https://www.google.com/maps/search/Peso%2C%20Peso%2C%20Castelo%20Branco%2C%20Portugal" target="_blank" class="map-link">Castelo Branco / Peso</a>
           </div>
-          <div class="tracking"><span>На рынке: <b>25 дн</b></span><span>Найдено: 25.03.2026</span></div>
+          <div class="tracking"><span>На рынке: <b>26 дн</b></span><span>Найдено: 25.03.2026</span></div>
           
           <div class="desc">***EXCLUSIVO MONTEPIO - Neste período não será aceite mediação remunerada. Moradia no centro do Peso, a cerca de 260 m dos CTT. A 10 km da Covilhã. Inserida num terreno de 110 m2, com 60 m2 de área de implantação e 120 m2 de área de construção. Morad...</div>
           <div class="tags"><span class="tag alert">СУПЕР ДЕШЕВО -63% от медианы района (1,120/м2)</span><span class="tag pro">+ Дешево: 417/м2</span><span class="tag pro">+ Большая: 120 м2</span><span class="tag pro">+ T3</span></div>
@@ -4155,7 +4171,7 @@ html, body { overflow-x: hidden; }
              data-is-fresh="0"
              data-price-drop-eur="0"
              data-hidden-gem="55"
-             data-days-on-market="25"
+             data-days-on-market="26"
              data-has-video="0"
              data-new-build="0">
           <div class="card-header">
@@ -4169,7 +4185,7 @@ html, body { overflow-x: hidden; }
               <button class="note-btn" onclick="openNote('34167139')" title="Комментарий">&#9998;</button>
             </div>
           </div>
-          <div class="edge-badges"><span class="edge-badge edge-gem" title="Цена сильно ниже медианы муниципалитета">💎 НАХОДКА −55%</span><span class="edge-badge edge-seller" title="Агентство — с комиссией">🏢 АГЕНТСТВО</span><span class="edge-badge dom-fresh" title="Дней на рынке">🟢 25 дн</span></div>
+          <div class="edge-badges"><span class="edge-badge edge-gem" title="Цена сильно ниже медианы муниципалитета">💎 НАХОДКА −55%</span><span class="edge-badge edge-seller" title="Агентство — с комиссией">🏢 АГЕНТСТВО</span><span class="edge-badge dom-fresh" title="Дней на рынке">🟢 26 дн</span></div>
           
           <div class="photos"><img src="https://pub-cdcf65e04720413aaa6bb1ccc89ec675.r2.dev/ad5b7da50928_0.jpg" loading="lazy" referrerpolicy="no-referrer" alt="" onerror="this.style.display='none'"><img src="https://pub-cdcf65e04720413aaa6bb1ccc89ec675.r2.dev/ad5b7da50928_1.jpg" loading="lazy" referrerpolicy="no-referrer" alt="" onerror="this.style.display='none'"></div>
           <h3>Detached house in rua do Outeiro</h3>
@@ -4182,7 +4198,7 @@ html, body { overflow-x: hidden; }
           <div class="location">
             <a href="https://www.google.com/maps/search/rua%20do%20Outeiro%2C%20Lousa%2C%20Castelo%20Branco%2C%20Portugal" target="_blank" class="map-link">Castelo Branco / Lousa</a>
           </div>
-          <div class="tracking"><span>На рынке: <b>25 дн</b></span><span>Найдено: 25.03.2026</span></div>
+          <div class="tracking"><span>На рынке: <b>26 дн</b></span><span>Найдено: 25.03.2026</span></div>
           
           <div class="desc">T2 +1 house composed of: Ground Floor, 1st Floor, and Attic. On the Ground Floor, it has a Kitchen with a Fireplace and a Bathroom. On the 1st Floor, we find 2 Bedrooms, 1 of them with a balcony and access to the Attic. At the rear of the house, we f...</div>
           <div class="tags"><span class="tag alert">СУПЕР ДЕШЕВО -55% от медианы района (2,326/м2)</span><span class="tag pro">+ Дешево: 1,043/м2</span></div>
@@ -6093,7 +6109,7 @@ html, body { overflow-x: hidden; }
              data-is-fresh="0"
              data-price-drop-eur="0"
              data-hidden-gem="32"
-             data-days-on-market="25"
+             data-days-on-market="26"
              data-has-video="0"
              data-new-build="0">
           <div class="card-header">
@@ -6107,7 +6123,7 @@ html, body { overflow-x: hidden; }
               <button class="note-btn" onclick="openNote('34507790')" title="Комментарий">&#9998;</button>
             </div>
           </div>
-          <div class="edge-badges"><span class="edge-badge edge-gem" title="Цена сильно ниже медианы муниципалитета">💎 НАХОДКА −32%</span><span class="edge-badge edge-seller" title="Агентство — с комиссией">🏢 АГЕНТСТВО</span><span class="edge-badge dom-fresh" title="Дней на рынке">🟢 25 дн</span></div>
+          <div class="edge-badges"><span class="edge-badge edge-gem" title="Цена сильно ниже медианы муниципалитета">💎 НАХОДКА −32%</span><span class="edge-badge edge-seller" title="Агентство — с комиссией">🏢 АГЕНТСТВО</span><span class="edge-badge dom-fresh" title="Дней на рынке">🟢 26 дн</span></div>
           
           <div class="photos"><img src="https://pub-cdcf65e04720413aaa6bb1ccc89ec675.r2.dev/0022e6f93991_0.jpg" loading="lazy" referrerpolicy="no-referrer" alt="" onerror="this.style.display='none'"><img src="https://pub-cdcf65e04720413aaa6bb1ccc89ec675.r2.dev/0022e6f93991_1.jpg" loading="lazy" referrerpolicy="no-referrer" alt="" onerror="this.style.display='none'"></div>
           <h3>Detached house</h3>
@@ -6120,7 +6136,7 @@ html, body { overflow-x: hidden; }
           <div class="location">
             <a href="https://www.google.com/maps/search/Aldeia%20do%20Bispo%20-%20%C3%81guas%20-%20Aldeia%20de%20Jo%C3%A3o%20Pires%2C%20Aldeia%20do%20Bispo%20-%20%C3%81guas%20-%20Aldeia%20de%20Jo%C3%A3o%20Pires%2C%20Castelo%20Branco%2C%20Portugal" target="_blank" class="map-link">Castelo Branco / Aldeia do Bispo - Águas - Aldeia de João Pires</a>
           </div>
-          <div class="tracking"><span>На рынке: <b>25 дн</b></span><span>Найдено: 25.03.2026</span></div>
+          <div class="tracking"><span>На рынке: <b>26 дн</b></span><span>Найдено: 25.03.2026</span></div>
           
           <div class="desc">Opportunity in Aldeia do Bispo, exclusive Ling. Comprising two houses and a yard, it also has storage annexes. The first house, T1, is divided into a ground floor and first floor. Kitchen and living room, with external access to the first floor. Ther...</div>
           <div class="tags"><span class="tag alert">СУПЕР ДЕШЕВО -32% от медианы района (712/м2)</span><span class="tag pro">+ Дешево: 482/м2</span><span class="tag pro">+ Большая: 228 м2</span></div>
@@ -15213,7 +15229,7 @@ html, body { overflow-x: hidden; }
              data-is-fresh="0"
              data-price-drop-eur="0"
              data-hidden-gem="27"
-             data-days-on-market="25"
+             data-days-on-market="26"
              data-has-video="0"
              data-new-build="0">
           <div class="card-header">
@@ -15227,7 +15243,7 @@ html, body { overflow-x: hidden; }
               <button class="note-btn" onclick="openNote('34823255')" title="Комментарий">&#9998;</button>
             </div>
           </div>
-          <div class="edge-badges"><span class="edge-badge edge-gem" title="Цена сильно ниже медианы муниципалитета">💎 НАХОДКА −27%</span><span class="edge-badge edge-seller" title="Агентство — с комиссией">🏢 АГЕНТСТВО</span><span class="edge-badge dom-fresh" title="Дней на рынке">🟢 25 дн</span></div>
+          <div class="edge-badges"><span class="edge-badge edge-gem" title="Цена сильно ниже медианы муниципалитета">💎 НАХОДКА −27%</span><span class="edge-badge edge-seller" title="Агентство — с комиссией">🏢 АГЕНТСТВО</span><span class="edge-badge dom-fresh" title="Дней на рынке">🟢 26 дн</span></div>
           
           <div class="photos"><img src="https://pub-cdcf65e04720413aaa6bb1ccc89ec675.r2.dev/b83abdd41a50_0.jpg" loading="lazy" referrerpolicy="no-referrer" alt="" onerror="this.style.display='none'"><img src="https://pub-cdcf65e04720413aaa6bb1ccc89ec675.r2.dev/b83abdd41a50_1.jpg" loading="lazy" referrerpolicy="no-referrer" alt="" onerror="this.style.display='none'"></div>
           <h3>Flat in rua Conselheiro Albuquerque</h3>
@@ -15240,7 +15256,7 @@ html, body { overflow-x: hidden; }
           <div class="location">
             <a href="https://www.google.com/maps/search/rua%20Conselheiro%20Albuquerque%2C%20Castelo%20Branco%2C%20Castelo%20Branco%2C%20Portugal" target="_blank" class="map-link">Castelo Branco</a>
           </div>
-          <div class="tracking"><span>На рынке: <b>25 дн</b></span><span>Найдено: 25.03.2026</span></div>
+          <div class="tracking"><span>На рынке: <b>26 дн</b></span><span>Найдено: 25.03.2026</span></div>
           
           <div class="desc">INVESTMENT OPPORTUNITY - ROOM RENTAL T4 apartment converted into T6 located opposite the Castelo Branco School of Education, one of the most sought-after areas for student rentals in the city, offering high profitability potential. Comprising a furni...</div>
           <div class="tags"><span class="tag pro">+ Ниже рынка на 27% (медиана 1,754/м2)</span><span class="tag pro">+ Дешево: 1,280/м2</span><span class="tag pro">+ Большая: 182 м2</span><span class="tag pro">+ T6</span></div>
@@ -18120,7 +18136,7 @@ html, body { overflow-x: hidden; }
              data-is-fresh="0"
              data-price-drop-eur="0"
              data-hidden-gem="0"
-             data-days-on-market="25"
+             data-days-on-market="26"
              data-has-video="0"
              data-new-build="0">
           <div class="card-header">
@@ -18134,7 +18150,7 @@ html, body { overflow-x: hidden; }
               <button class="note-btn" onclick="openNote('34248959')" title="Комментарий">&#9998;</button>
             </div>
           </div>
-          <div class="edge-badges"><span class="edge-badge edge-seller" title="Агентство — с комиссией">🏢 АГЕНТСТВО</span><span class="edge-badge dom-fresh" title="Дней на рынке">🟢 25 дн</span></div>
+          <div class="edge-badges"><span class="edge-badge edge-seller" title="Агентство — с комиссией">🏢 АГЕНТСТВО</span><span class="edge-badge dom-fresh" title="Дней на рынке">🟢 26 дн</span></div>
           
           <div class="photos"><img src="https://pub-cdcf65e04720413aaa6bb1ccc89ec675.r2.dev/f10cae8f5a98_0.jpg" loading="lazy" referrerpolicy="no-referrer" alt="" onerror="this.style.display='none'"><img src="https://pub-cdcf65e04720413aaa6bb1ccc89ec675.r2.dev/f10cae8f5a98_1.jpg" loading="lazy" referrerpolicy="no-referrer" alt="" onerror="this.style.display='none'"></div>
           <h3>Detached house in rua Principal</h3>
@@ -18147,7 +18163,7 @@ html, body { overflow-x: hidden; }
           <div class="location">
             <a href="https://www.google.com/maps/search/rua%20Principal%2C%20Cambas%2C%20Castelo%20Branco%2C%20Portugal" target="_blank" class="map-link">Castelo Branco / Cambas</a>
           </div>
-          <div class="tracking"><span>На рынке: <b>25 дн</b></span><span>Найдено: 25.03.2026</span></div>
+          <div class="tracking"><span>На рынке: <b>26 дн</b></span><span>Найдено: 25.03.2026</span></div>
           
           <div class="desc">Identificação do imóvel: ZMPT576237 6-Bedroom Villa in Brejas do Barco – Prime Location Near the Santa Luzia Dam We present this magnificent 6-bedroom villa located in Brejas do Barco, a unique location that combines tranquility, nature and accessibi...</div>
           <div class="tags"><span class="tag alert">СУПЕР ДЕШЕВО -30% от медианы района (1,120/м2)</span><span class="tag pro">+ Дешево: 781/м2</span><span class="tag pro">+ Большая: 340 м2</span><span class="tag pro">+ T8</span></div>
@@ -20115,7 +20131,7 @@ html, body { overflow-x: hidden; }
              data-is-fresh="0"
              data-price-drop-eur="0"
              data-hidden-gem="0"
-             data-days-on-market="25"
+             data-days-on-market="26"
              data-has-video="0"
              data-new-build="0">
           <div class="card-header">
@@ -20129,7 +20145,7 @@ html, body { overflow-x: hidden; }
               <button class="note-btn" onclick="openNote('33588643')" title="Комментарий">&#9998;</button>
             </div>
           </div>
-          <div class="edge-badges"><span class="edge-badge edge-seller" title="Агентство — с комиссией">🏢 АГЕНТСТВО</span><span class="edge-badge dom-fresh" title="Дней на рынке">🟢 25 дн</span></div>
+          <div class="edge-badges"><span class="edge-badge edge-seller" title="Агентство — с комиссией">🏢 АГЕНТСТВО</span><span class="edge-badge dom-fresh" title="Дней на рынке">🟢 26 дн</span></div>
           
           <div class="photos"><img src="https://pub-cdcf65e04720413aaa6bb1ccc89ec675.r2.dev/27bbd3797b61_0.jpg" loading="lazy" referrerpolicy="no-referrer" alt="" onerror="this.style.display='none'"><img src="https://pub-cdcf65e04720413aaa6bb1ccc89ec675.r2.dev/27bbd3797b61_1.jpg" loading="lazy" referrerpolicy="no-referrer" alt="" onerror="this.style.display='none'"></div>
           <h3>Terraced house</h3>
@@ -20142,7 +20158,7 @@ html, body { overflow-x: hidden; }
           <div class="location">
             <a href="https://www.google.com/maps/search/Cortes%20do%20Meio%2C%20Cortes%20do%20Meio%2C%20Castelo%20Branco%2C%20Portugal" target="_blank" class="map-link">Castelo Branco / Cortes do Meio</a>
           </div>
-          <div class="tracking"><span>На рынке: <b>25 дн</b></span><span>Найдено: 25.03.2026</span></div>
+          <div class="tracking"><span>На рынке: <b>26 дн</b></span><span>Найдено: 25.03.2026</span></div>
           
           <div class="desc">Mountain Chalet Investment Opportunity in Serra da Estrela Mountain Chalet is located in an alpine resort, in the heart of Serra da Estrela, offers panoramic views of the mountains, ideal for relaxing, enjoying nature, fresh air and the tranquility o...</div>
           <div class="tags"><span class="tag pro">+ Дешево: 2,290/м2</span><span class="tag pro">+ Большая: 131 м2</span><span class="tag pro">+ T3</span><span class="tag con">- Дорого: +104% от медианы района</span></div>
@@ -21654,7 +21670,7 @@ html, body { overflow-x: hidden; }
              data-is-fresh="0"
              data-price-drop-eur="0"
              data-hidden-gem="0"
-             data-days-on-market="25"
+             data-days-on-market="26"
              data-has-video="0"
              data-new-build="0">
           <div class="card-header">
@@ -21668,7 +21684,7 @@ html, body { overflow-x: hidden; }
               <button class="note-btn" onclick="openNote('34840366')" title="Комментарий">&#9998;</button>
             </div>
           </div>
-          <div class="edge-badges"><span class="edge-badge edge-seller" title="Агентство — с комиссией">🏢 АГЕНТСТВО</span><span class="edge-badge dom-fresh" title="Дней на рынке">🟢 25 дн</span></div>
+          <div class="edge-badges"><span class="edge-badge edge-seller" title="Агентство — с комиссией">🏢 АГЕНТСТВО</span><span class="edge-badge dom-fresh" title="Дней на рынке">🟢 26 дн</span></div>
           
           <div class="photos"><img src="https://pub-cdcf65e04720413aaa6bb1ccc89ec675.r2.dev/71f61c4c0cc3_0.jpg" loading="lazy" referrerpolicy="no-referrer" alt="" onerror="this.style.display='none'"><img src="https://pub-cdcf65e04720413aaa6bb1ccc89ec675.r2.dev/71f61c4c0cc3_1.jpg" loading="lazy" referrerpolicy="no-referrer" alt="" onerror="this.style.display='none'"></div>
           <h3>Detached house in rua da Boavista</h3>
@@ -21681,7 +21697,7 @@ html, body { overflow-x: hidden; }
           <div class="location">
             <a href="https://www.google.com/maps/search/rua%20da%20Boavista%2C%20Boidobra%2C%20Castelo%20Branco%2C%20Portugal" target="_blank" class="map-link">Castelo Branco / Boidobra</a>
           </div>
-          <div class="tracking"><span>На рынке: <b>25 дн</b></span><span>Найдено: 25.03.2026</span></div>
+          <div class="tracking"><span>На рынке: <b>26 дн</b></span><span>Найдено: 25.03.2026</span></div>
           
           <div class="desc">Rural Tourism Property in Covilhã – Boi Dobra Discover a unique property, ideal for rural tourism, located in the charming town of Covilhã. This detached house consists of two dwellings, one built before 1951 and exempt from a usage license, and anot...</div>
           <div class="tags"><span class="tag alert">СУПЕР ДЕШЕВО -62% от медианы района (1,120/м2)</span><span class="tag pro">+ Дешево: 425/м2</span><span class="tag pro">+ Большая: 824 м2</span><span class="tag pro">+ T15</span></div>
@@ -21711,7 +21727,7 @@ html, body { overflow-x: hidden; }
              data-is-fresh="0"
              data-price-drop-eur="0"
              data-hidden-gem="0"
-             data-days-on-market="25"
+             data-days-on-market="26"
              data-has-video="0"
              data-new-build="0">
           <div class="card-header">
@@ -21725,7 +21741,7 @@ html, body { overflow-x: hidden; }
               <button class="note-btn" onclick="openNote('34731845')" title="Комментарий">&#9998;</button>
             </div>
           </div>
-          <div class="edge-badges"><span class="edge-badge edge-seller" title="Агентство — с комиссией">🏢 АГЕНТСТВО</span><span class="edge-badge dom-fresh" title="Дней на рынке">🟢 25 дн</span></div>
+          <div class="edge-badges"><span class="edge-badge edge-seller" title="Агентство — с комиссией">🏢 АГЕНТСТВО</span><span class="edge-badge dom-fresh" title="Дней на рынке">🟢 26 дн</span></div>
           
           <div class="photos"><img src="https://pub-cdcf65e04720413aaa6bb1ccc89ec675.r2.dev/3af2cad2999e_0.jpg" loading="lazy" referrerpolicy="no-referrer" alt="" onerror="this.style.display='none'"><img src="https://pub-cdcf65e04720413aaa6bb1ccc89ec675.r2.dev/3af2cad2999e_1.jpg" loading="lazy" referrerpolicy="no-referrer" alt="" onerror="this.style.display='none'"></div>
           <h3>Detached house in avenida da Liberdade</h3>
@@ -21738,7 +21754,7 @@ html, body { overflow-x: hidden; }
           <div class="location">
             <a href="https://www.google.com/maps/search/avenida%20da%20Liberdade%2C%20Escalos%20de%20Baixo%2C%20Castelo%20Branco%2C%20Portugal" target="_blank" class="map-link">Castelo Branco / Escalos de Baixo</a>
           </div>
-          <div class="tracking"><span>На рынке: <b>25 дн</b></span><span>Найдено: 25.03.2026</span></div>
+          <div class="tracking"><span>На рынке: <b>26 дн</b></span><span>Найдено: 25.03.2026</span></div>
           
           <div class="desc">We present this 5-bedroom villa, with 450m2 of construction and a magnificent plot of 5000 m2, located on the main street of the village of Escalos de Baixo, 10 minutes from the city of Castelo Branco. Here you can have the best of both worlds, enjoy...</div>
           <div class="tags"><span class="tag pro">+ Дешево: 778/м2</span><span class="tag pro">+ Большая: 450 м2</span><span class="tag pro">+ T5</span></div>
@@ -22635,6 +22651,24 @@ function initTop50() {
 }
 
 // Session-cookie sync then init
+function logout() {
+  fetch('/api/logout', {
+    method: 'POST',
+    credentials: 'include',
+    headers: {'X-CSRF-Token': CSRF_TOKEN}
+  }).catch(function(){}).then(function(){
+    window.location.href = '/login';
+  });
+}
+
+function showUserBar(username) {
+  var bar = document.getElementById('user-bar');
+  var nameEl = document.getElementById('user-name');
+  if (!bar || !nameEl) return;
+  nameEl.textContent = username || '';
+  bar.classList.add('visible');
+}
+
 function initSync() {
   return fetch('/api/me', {credentials: 'same-origin'}).then(function(r) {
     if (!r.ok) throw 'no session';
@@ -22642,6 +22676,8 @@ function initSync() {
   }).then(function(me) {
     CSRF_TOKEN = me.csrf_token || '';
     API_HEADERS = {'X-CSRF-Token': CSRF_TOKEN, 'Content-Type': 'application/json'};
+    window.CURRENT_USER = me.username || '';
+    showUserBar(window.CURRENT_USER);
     return fetch('/api/state', {credentials: 'same-origin'});
   }).then(function(r) {
     if (!r.ok) throw 'no state';
