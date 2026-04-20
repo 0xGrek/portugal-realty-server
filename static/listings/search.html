@@ -1,0 +1,1093 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Portugal Realty — Поиск по всем районам</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --brand:#1a237e;--brand2:#283593;--accent:#1a73e8;
+  --green:#4CAF50;--orange:#ff9800;--red:#c62828;--gold:#ffc107;
+  --bg:#f5f5f5;--card:#fff;--border:#e0e0e0;
+  --text:#333;--text2:#555;--text3:#888;
+  --radius:12px;--radius-sm:8px;--shadow:0 2px 8px rgba(0,0,0,.1);
+}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
+
+/* === LAYOUT === */
+.layout{display:grid;grid-template-columns:300px 1fr;grid-template-rows:auto 1fr;min-height:100vh}
+.topbar{grid-column:1/-1;background:linear-gradient(135deg,var(--brand),var(--brand2));color:#fff;padding:14px 20px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.topbar h1{font-size:18px;font-weight:700;flex:1}
+.topbar .back-link{color:rgba(255,255,255,.8);text-decoration:none;font-size:13px;padding:6px 12px;border:1px solid rgba(255,255,255,.4);border-radius:20px;white-space:nowrap}
+.topbar .back-link:hover{background:rgba(255,255,255,.15)}
+.sidebar{background:#fff;border-right:1px solid var(--border);overflow-y:auto;padding:14px;position:sticky;top:0;height:100vh;scrollbar-width:thin}
+.main{padding:14px;overflow-y:auto}
+
+/* === SIDEBAR FILTERS === */
+.filter-section{margin-bottom:14px;border:1px solid var(--border);border-radius:var(--radius-sm);overflow:hidden}
+.filter-title{background:#f8f9ff;padding:8px 12px;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--brand);cursor:pointer;display:flex;justify-content:space-between;align-items:center;user-select:none}
+.filter-title::after{content:'▲';font-size:10px;transition:.2s}
+.filter-section.collapsed .filter-title::after{content:'▼'}
+.filter-body{padding:10px 12px}
+.filter-section.collapsed .filter-body{display:none}
+
+/* Price inputs */
+.price-row{display:flex;gap:6px;align-items:center;margin-bottom:8px}
+.price-row input{flex:1;padding:7px 10px;border:1.5px solid var(--border);border-radius:var(--radius-sm);font-size:13px;width:0}
+.price-row span{font-size:12px;color:var(--text3);white-space:nowrap}
+.price-presets{display:flex;flex-wrap:wrap;gap:4px;margin-top:4px}
+.preset-btn{padding:4px 9px;border-radius:16px;border:1.5px solid #9fa8da;background:#fff;color:#3949ab;font-size:11px;cursor:pointer;font-weight:600}
+.preset-btn.active,.preset-btn:hover{background:#3949ab;color:#fff}
+
+/* Checkboxes & radios */
+.cb-group{display:flex;flex-direction:column;gap:6px}
+.cb-group label,.rb-group label{display:flex;align-items:center;gap:8px;cursor:pointer;font-size:13px;padding:3px 0}
+.cb-group input,.rb-group input{width:16px;height:16px;cursor:pointer;accent-color:var(--brand)}
+.cb-row{display:flex;flex-wrap:wrap;gap:4px}
+.cb-chip{padding:5px 10px;border-radius:16px;border:1.5px solid var(--border);background:#fff;color:var(--text);font-size:12px;cursor:pointer;user-select:none;transition:.15s}
+.cb-chip.active{background:var(--brand);color:#fff;border-color:var(--brand)}
+.cb-chip:hover:not(.active){background:#f0f0f0}
+
+/* Area/pm2 inputs */
+.range-row{display:flex;gap:6px;align-items:center}
+.range-row input{flex:1;padding:7px 8px;border:1.5px solid var(--border);border-radius:var(--radius-sm);font-size:12px;width:0}
+.range-row span{font-size:12px;color:var(--text3)}
+
+/* District list */
+.district-search{width:100%;padding:7px 10px;border:1.5px solid var(--border);border-radius:var(--radius-sm);font-size:13px;margin-bottom:8px}
+.district-list{max-height:200px;overflow-y:auto;scrollbar-width:thin}
+.district-list label{display:flex;align-items:center;gap:8px;padding:4px 2px;cursor:pointer;font-size:12px;border-radius:6px}
+.district-list label:hover{background:#f5f5f5}
+.district-list input{width:14px;height:14px;accent-color:var(--brand)}
+.district-bulk{display:flex;gap:6px;margin-bottom:8px}
+.district-bulk button{flex:1;padding:5px;border:1px solid var(--border);border-radius:var(--radius-sm);font-size:11px;cursor:pointer;background:#fff}
+.district-bulk button:hover{background:#f0f0f0}
+
+/* Apply/Reset bar */
+#action-bar{position:sticky;top:0;background:#fff;padding:10px 12px;border-bottom:1px solid var(--border);z-index:10;display:flex;gap:8px;margin:-14px -14px 14px -14px}
+#btn-apply{flex:2;background:var(--brand);color:#fff;border:none;border-radius:20px;padding:10px;font-size:14px;font-weight:700;cursor:pointer}
+#btn-apply:hover{background:var(--brand2)}
+#btn-reset{flex:1;background:#fff;color:var(--red);border:2px solid var(--red);border-radius:20px;padding:10px;font-size:13px;font-weight:700;cursor:pointer}
+#btn-reset:hover{background:#fce4ec}
+#preview-count{font-size:12px;color:var(--brand);font-weight:600;text-align:center;padding:4px 0}
+
+/* === MAIN AREA === */
+.sort-row{display:flex;align-items:center;gap:10px;margin-bottom:12px;flex-wrap:wrap}
+.sort-row label{font-size:13px;color:var(--text2)}
+#sort-select{padding:7px 12px;border:1.5px solid var(--border);border-radius:20px;font-size:13px;cursor:pointer;background:#fff;color:var(--brand);font-weight:600}
+.results-header{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px}
+#results-count{font-size:14px;font-weight:600;color:var(--brand)}
+.view-toggle{display:flex;gap:4px}
+.view-btn{padding:6px 10px;border:1.5px solid var(--border);border-radius:8px;background:#fff;cursor:pointer;font-size:14px}
+.view-btn.active{background:var(--brand);color:#fff;border-color:var(--brand)}
+
+/* === CARDS GRID === */
+#cards-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px;margin-top:12px;align-items:stretch}
+#cards-grid.list-view{grid-template-columns:1fr}
+
+/* === CARD === */
+.card{background:var(--card);border-radius:var(--radius);padding:14px;box-shadow:var(--shadow);display:flex;flex-direction:column;gap:0;min-height:640px}
+.card.fav{border-left:4px solid var(--gold)}
+.card.contacted{border-left:4px solid var(--green)}
+.card.maybe{border-left:4px solid var(--orange)}
+.card.blocked{display:none!important}
+.card-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+.type-badge{color:#fff;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:600}
+.seller-badge{color:#fff;padding:2px 8px;border-radius:12px;font-size:10px;font-weight:600}
+.card-actions{display:flex;gap:4px}
+.card-actions button{background:none;border:none;font-size:20px;cursor:pointer;padding:0 3px;color:#ccc;line-height:1}
+.card-actions button.active{color:var(--gold)}
+.card-actions .contacted-btn.active{color:var(--green)}
+.card-actions .maybe-btn.active{color:var(--orange)}
+.card-actions .block-btn.active{color:var(--red)}
+.card-actions .note-btn.active{color:var(--accent)}
+
+/* Edge badges */
+.edge-badges{display:flex;flex-wrap:wrap;gap:4px;margin-bottom:8px}
+.edge-badge{display:inline-flex;align-items:center;font-size:10px;padding:3px 8px;border-radius:12px;font-weight:600;color:#fff;white-space:nowrap}
+.eb-fresh{background:#00c853;animation:pulse 1.8s ease-in-out infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.7}}
+.eb-drop{background:#e53935}
+.eb-gem{background:#8e24aa}
+.eb-relisted{background:#ff9100}
+.eb-seller{background:#616161}
+.eb-video{background:#1976d2}
+.eb-new{background:#00838f}
+.eb-dom-fresh{background:#00c853}
+.eb-dom-normal{background:#fbc02d}
+.eb-dom-stale{background:#f57c00}
+.eb-dom-old{background:#d32f2f}
+.eb-dom-ancient{background:#212121}
+
+/* Photos — fixed height slot */
+.photos{height:140px;display:flex;gap:6px;overflow-x:auto;margin-bottom:10px;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;flex-shrink:0}
+.photos img{width:auto;min-width:180px;height:100%;object-fit:cover;border-radius:8px;flex-shrink:0;scroll-snap-align:start}
+.photos.no-photo{align-items:center;justify-content:center;background:#f0f2ff;border-radius:8px}
+.photo-placeholder{width:180px;height:130px;background:#e8eaf6;border-radius:8px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:40px}
+.photo-empty{width:100%;height:100%;background:#eeeff8;border-radius:8px;display:flex;flex-direction:column;align-items:center;justify-content:center;color:#9fa8da;font-size:12px;gap:6px;flex-shrink:0}
+.photo-empty::before{content:'📷';font-size:32px}
+
+/* Card body */
+.card h3{font-size:14px;margin-bottom:4px;line-height:1.3;color:var(--text)}
+.card .price{font-size:22px;font-weight:700;color:var(--brand);margin-bottom:6px}
+.details{display:flex;gap:6px;font-size:12px;color:var(--text2);margin-bottom:6px;flex-wrap:wrap}
+.details span{background:#f0f0f0;padding:2px 7px;border-radius:6px}
+.location{margin-bottom:6px}
+.location a{color:var(--accent);text-decoration:none;font-size:13px}
+.location a:hover{text-decoration:underline}
+.tracking{display:flex;gap:12px;font-size:12px;color:var(--text3);margin-bottom:6px;flex-wrap:wrap}
+
+/* Desc — fixed 3-line slot */
+.desc{font-size:12px;color:#666;margin-bottom:6px;line-height:1.4;
+  display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:3;
+  overflow:hidden;min-height:50px}
+.desc:empty,.desc-empty{min-height:50px}
+
+/* Tags — reserved space */
+.tags{display:flex;flex-wrap:wrap;gap:4px;margin-bottom:6px;min-height:28px;align-content:flex-start}
+.tag-alert{font-size:11px;padding:3px 9px;border-radius:6px;background:#ff6f00;color:#fff;font-weight:700}
+.tag-pro{font-size:11px;padding:2px 7px;border-radius:6px;background:#e8f5e9;color:#2e7d32}
+.tag-con{font-size:11px;padding:2px 7px;border-radius:6px;background:#fce4ec;color:var(--red)}
+
+/* IMT badge — reserved 28px slot */
+.imt-slot{min-height:28px;margin-bottom:4px;display:flex;align-items:center}
+.imt-badge{font-size:11px;padding:3px 9px;border-radius:6px;background:#e8f5e9;color:#1b5e20;font-weight:700;display:inline-block}
+
+/* LTV block — reserved 3-scenario slot */
+.ltv-block{display:flex;flex-direction:column;gap:3px;margin-bottom:8px;min-height:88px;justify-content:flex-start}
+.ltv-block:empty,.ltv-empty{min-height:88px}
+.ltv-tag{font-size:11px;padding:3px 8px;border-radius:6px}
+
+/* Buttons — always at bottom */
+.buttons{display:flex;gap:8px;margin-top:auto;padding-top:10px}
+.btn{flex:1;text-align:center;background:var(--brand);color:#fff;padding:10px;border-radius:8px;text-decoration:none;font-weight:600;font-size:13px;transition:.15s}
+.btn:hover{opacity:.9}
+.btn-map{background:var(--accent)}
+
+/* Card hover */
+.card{transition:transform .15s,box-shadow .15s}
+.card:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(0,0,0,.15)}
+
+/* Note */
+.note-display{font-size:12px;color:var(--accent);background:#e3f2fd;padding:6px 10px;border-radius:8px;margin-top:6px;display:none}
+.note-display.visible{display:block}
+.note-editor{display:none;margin-top:6px}
+.note-editor textarea{width:100%;border:1.5px solid var(--border);border-radius:8px;padding:8px;font-size:12px;resize:vertical;font-family:inherit}
+.note-editor button{background:var(--accent);color:#fff;border:none;border-radius:8px;padding:5px 12px;font-size:12px;cursor:pointer;margin-top:4px}
+
+/* Filter active badge */
+#filter-badge{background:var(--accent);color:#fff;border-radius:10px;font-size:11px;padding:2px 7px;font-weight:700;display:none;margin-left:4px}
+#filter-badge.visible{display:inline-block}
+
+/* === LOAD MORE & FOOTER === */
+#load-more-wrap{text-align:center;padding:20px}
+#btn-load-more{background:var(--brand);color:#fff;border:none;border-radius:20px;padding:12px 32px;font-size:14px;font-weight:700;cursor:pointer;display:none}
+#btn-load-more:hover{background:var(--brand2)}
+#footer-stats{text-align:center;font-size:12px;color:var(--text3);padding:10px}
+.counter-pill{position:fixed;bottom:14px;right:14px;background:var(--brand);color:#fff;padding:8px 16px;border-radius:20px;font-size:12px;font-weight:600;z-index:200;box-shadow:0 2px 10px rgba(0,0,0,.3)}
+
+/* === LOADING === */
+#loading{text-align:center;padding:60px;color:var(--text3)}
+.spinner{width:40px;height:40px;border:3px solid #e0e0e0;border-top-color:var(--brand);border-radius:50%;animation:spin .8s linear infinite;margin:0 auto 16px}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* === RESPONSIVE === */
+@media(max-width:768px){
+  .layout{grid-template-columns:1fr;grid-template-rows:auto auto 1fr}
+  .sidebar{position:static;height:auto;max-height:none;border-right:none;border-bottom:1px solid var(--border)}
+  .sidebar-toggle{display:flex}
+  #sidebar-wrap{display:none}
+  #sidebar-wrap.open{display:block}
+  #cards-grid{grid-template-columns:1fr}
+  .card{min-height:560px}
+  .photos{height:120px}
+}
+@media(max-width:480px){
+  #cards-grid{grid-template-columns:1fr}
+  .card{min-height:520px}
+  .photos{height:110px}
+}
+.sidebar-toggle{display:none;width:100%;padding:12px;background:var(--brand);color:#fff;border:none;font-size:14px;font-weight:700;cursor:pointer;align-items:center;justify-content:space-between}
+
+/* === NO RESULTS === */
+#no-results{display:none;text-align:center;padding:60px;color:var(--text3)}
+#no-results h2{font-size:18px;margin-bottom:8px}
+</style>
+</head>
+<body>
+
+<div class="layout">
+
+<!-- TOP BAR -->
+<div class="topbar">
+  <h1>🔍 Portugal Realty — Поиск по всем районам</h1>
+  <a href="index.html" class="back-link">← По районам</a>
+</div>
+
+<!-- SIDEBAR -->
+<aside class="sidebar">
+  <button class="sidebar-toggle" onclick="toggleSidebar(this)">
+    <span>⚙️ Фильтры</span><span id="sidebar-arrow">▼</span>
+  </button>
+  <div id="sidebar-wrap">
+
+  <!-- Action bar -->
+  <div id="action-bar">
+    <div style="flex:1;display:flex;flex-direction:column;gap:6px">
+      <div style="display:flex;gap:8px;align-items:center">
+        <button id="btn-apply" onclick="applyFilters()">Применить</button>
+        <button id="btn-reset" onclick="resetFilters()">Сбросить <span id="filter-badge"></span></button>
+      </div>
+      <div id="preview-count"></div>
+    </div>
+  </div>
+
+  <!-- PRICE -->
+  <div class="filter-section" id="sec-price">
+    <div class="filter-title" onclick="toggleSection('sec-price')">💰 Цена (EUR)</div>
+    <div class="filter-body">
+      <div class="price-row">
+        <input type="number" id="price-min" placeholder="от" step="5000">
+        <span>—</span>
+        <input type="number" id="price-max" placeholder="до" step="5000">
+      </div>
+      <div class="price-presets">
+        <button class="preset-btn" onclick="setPreset(0,200000)">–200k</button>
+        <button class="preset-btn" onclick="setPreset(200000,250000)">200–250k</button>
+        <button class="preset-btn" onclick="setPreset(250000,300000)">250–300k</button>
+        <button class="preset-btn" onclick="setPreset(300000,350000)">300–350k</button>
+        <button class="preset-btn" onclick="setPreset(350000,9999999)">350k+</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- DISTRICTS -->
+  <div class="filter-section" id="sec-districts">
+    <div class="filter-title" onclick="toggleSection('sec-districts')">📍 Районы</div>
+    <div class="filter-body">
+      <div class="district-bulk">
+        <button onclick="selectAllDistricts()">Все</button>
+        <button onclick="clearAllDistricts()">Очистить</button>
+      </div>
+      <input type="text" class="district-search" placeholder="Поиск района..." id="district-search" oninput="filterDistrictList(this.value)">
+      <div class="district-list" id="district-list">
+        <!-- populated by JS -->
+      </div>
+    </div>
+  </div>
+
+  <!-- TYPE -->
+  <div class="filter-section" id="sec-type">
+    <div class="filter-title" onclick="toggleSection('sec-type')">🏠 Тип недвижимости</div>
+    <div class="filter-body">
+      <div class="rb-group">
+        <label><input type="radio" name="prop-type" value="" checked> Все</label>
+        <label><input type="radio" name="prop-type" value="apartment"> Квартиры</label>
+        <label><input type="radio" name="prop-type" value="house"> Дома / Виллы</label>
+        <label><input type="radio" name="prop-type" value="land"> Участки</label>
+      </div>
+    </div>
+  </div>
+
+  <!-- TYPOLOGY -->
+  <div class="filter-section" id="sec-typo">
+    <div class="filter-title" onclick="toggleSection('sec-typo')">🛏 Типология</div>
+    <div class="filter-body">
+      <div class="cb-row" id="typo-chips">
+        <span class="cb-chip" onclick="toggleChip(this,'T0')">T0</span>
+        <span class="cb-chip" onclick="toggleChip(this,'T1')">T1</span>
+        <span class="cb-chip" onclick="toggleChip(this,'T2')">T2</span>
+        <span class="cb-chip" onclick="toggleChip(this,'T3')">T3</span>
+        <span class="cb-chip" onclick="toggleChip(this,'T4+')">T4+</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- AREA -->
+  <div class="filter-section" id="sec-area">
+    <div class="filter-title" onclick="toggleSection('sec-area')">📐 Площадь (м²)</div>
+    <div class="filter-body">
+      <div class="range-row">
+        <input type="number" id="area-min" placeholder="от" min="0">
+        <span>—</span>
+        <input type="number" id="area-max" placeholder="до" min="0">
+      </div>
+    </div>
+  </div>
+
+  <!-- EUR/M2 -->
+  <div class="filter-section" id="sec-pm2">
+    <div class="filter-title" onclick="toggleSection('sec-pm2')">📊 EUR/м²</div>
+    <div class="filter-body">
+      <div class="range-row">
+        <input type="number" id="pm2-min" placeholder="от" min="0">
+        <span>—</span>
+        <input type="number" id="pm2-max" placeholder="до" min="0">
+      </div>
+    </div>
+  </div>
+
+  <!-- SELLER -->
+  <div class="filter-section" id="sec-seller">
+    <div class="filter-title" onclick="toggleSection('sec-seller')">👤 Продавец</div>
+    <div class="filter-body">
+      <div class="cb-group">
+        <label><input type="checkbox" id="seller-private"> 🧑 Частник (без комиссии)</label>
+        <label><input type="checkbox" id="seller-agent"> 🏢 Агентство</label>
+        <label><input type="checkbox" id="seller-developer"> 🏗️ Застройщик</label>
+      </div>
+    </div>
+  </div>
+
+  <!-- BADGES -->
+  <div class="filter-section" id="sec-badges">
+    <div class="filter-title" onclick="toggleSection('sec-badges')">🏷️ Специальные</div>
+    <div class="filter-body">
+      <div class="cb-group">
+        <label><input type="checkbox" id="f-fresh"> 🆕 Новые &lt;24ч</label>
+        <label><input type="checkbox" id="f-drop"> 💰 Снижение цены</label>
+        <label><input type="checkbox" id="f-gem"> 💎 Находки (–15%+)</label>
+        <label><input type="checkbox" id="f-video"> 🎥 Есть видео</label>
+        <label><input type="checkbox" id="f-newbuild"> 🏗️ Новостройка</label>
+      </div>
+    </div>
+  </div>
+
+  <!-- BLACKLIST -->
+  <div class="filter-section" id="sec-black">
+    <div class="filter-title" onclick="toggleSection('sec-black')">🚫 Blacklist</div>
+    <div class="filter-body">
+      <div class="cb-group">
+        <label><input type="checkbox" id="f-hide-blocked" checked> Скрыть заблокированные</label>
+      </div>
+    </div>
+  </div>
+
+  </div><!-- end sidebar-wrap -->
+</aside>
+
+<!-- MAIN -->
+<main class="main">
+  <div class="sort-row results-header">
+    <span id="results-count">Загрузка...</span>
+    <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
+      <label>Сортировка:</label>
+      <select id="sort-select" onchange="applyFilters()">
+        <option value="price_asc">Дешевле → дороже</option>
+        <option value="price_desc">Дороже → дешевле</option>
+        <option value="pm2_asc">Дешевле EUR/м²</option>
+        <option value="days_asc">Новее (свежие)</option>
+        <option value="days_desc">Давно на рынке</option>
+        <option value="area_asc">Меньшая площадь</option>
+        <option value="area_desc">Большая площадь</option>
+      </select>
+      <div class="view-toggle">
+        <button class="view-btn active" onclick="setView('grid',this)" title="Grid">▦</button>
+        <button class="view-btn" onclick="setView('list',this)" title="List">☰</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Loading -->
+  <div id="loading">
+    <div class="spinner"></div>
+    <div>Загружаем данные...</div>
+  </div>
+
+  <!-- No results -->
+  <div id="no-results">
+    <h2>Ничего не найдено</h2>
+    <p>Попробуйте изменить фильтры</p>
+  </div>
+
+  <!-- Cards -->
+  <div id="cards-grid"></div>
+
+  <!-- Load more -->
+  <div id="load-more-wrap">
+    <button id="btn-load-more" onclick="loadMore()">Загрузить ещё 50</button>
+    <div id="footer-stats"></div>
+  </div>
+</main>
+
+</div><!-- end layout -->
+
+<!-- Counter pill -->
+<div class="counter-pill" id="counter-pill"></div>
+
+<!-- Note modal (simple inline) -->
+<script>
+// =====================================================================
+// STATE
+// =====================================================================
+let ALL_DATA = [];          // raw JSON from data.json
+let FILTERED = [];          // after filter+sort
+let PAGE_SIZE = 50;
+let rendered_count = 0;
+let active_typos = new Set();
+let blocked_ids = new Set();
+let _favs = new Set(), _contacted = new Set(), _maybe = new Set();
+
+const LS = {
+  favs:      'realty_favs',
+  contacted: 'realty_contacted',
+  maybe:     'realty_maybe',
+  blocked:   'realty_blocked',
+  notes:     'realty_notes',
+};
+
+function lsGet(key) {
+  try { return JSON.parse(localStorage.getItem(key) || 'null'); } catch(e) { return null; }
+}
+function lsSet(key, val) {
+  try { localStorage.setItem(key, JSON.stringify(val)); } catch(e) {}
+}
+
+// =====================================================================
+// SERVER SYNC
+// =====================================================================
+let SERVER_MODE = false;
+let CSRF_TOKEN = '';
+
+async function initSync() {
+  try {
+    const resp = await fetch('/api/me', {credentials: 'same-origin'});
+    if (resp.ok) {
+      const data = await resp.json();
+      SERVER_MODE = true;
+      CSRF_TOKEN = data.csrf_token || '';
+      try {
+        const stateResp = await fetch('/api/state', {credentials: 'same-origin'});
+        if (stateResp.ok) {
+          const state = await stateResp.json();
+          _favs      = new Set(state.favs || []);
+          _contacted = new Set(state.contacted || []);
+          _maybe     = new Set(state.maybe || []);
+          blocked_ids= new Set(state.blocked || []);
+          // Write server state to localStorage as cache
+          saveLS();
+          const noteMap = {};
+          if (state.notes) state.notes.forEach(function(n) { noteMap[n.listing_id] = n.note; });
+          lsSet(LS.notes, noteMap);
+        }
+      } catch(e) {}
+    } else {
+      loadLS();
+    }
+  } catch(e) {
+    loadLS();
+  }
+}
+
+function syncToggle(category, sid, adding) {
+  if (!SERVER_MODE) return;
+  fetch('/api/' + category + '/' + sid, {
+    method: adding ? 'POST' : 'DELETE',
+    headers: {'X-CSRF-Token': CSRF_TOKEN, 'Content-Type': 'application/json'},
+    credentials: 'same-origin'
+  }).catch(function(){});
+}
+
+function syncNote(sid, text) {
+  if (!SERVER_MODE) return;
+  fetch('/api/notes', {
+    method: 'POST',
+    headers: {'X-CSRF-Token': CSRF_TOKEN, 'Content-Type': 'application/json'},
+    credentials: 'same-origin',
+    body: JSON.stringify({listing_id: sid, note: text})
+  }).catch(function(){});
+}
+
+function loadLS() {
+  _favs      = new Set(lsGet(LS.favs) || []);
+  _contacted = new Set(lsGet(LS.contacted) || []);
+  _maybe     = new Set(lsGet(LS.maybe) || []);
+  blocked_ids= new Set(lsGet(LS.blocked) || []);
+}
+function saveLS() {
+  lsSet(LS.favs,      [..._favs]);
+  lsSet(LS.contacted, [..._contacted]);
+  lsSet(LS.maybe,     [..._maybe]);
+  lsSet(LS.blocked,   [...blocked_ids]);
+}
+
+// =====================================================================
+// FETCH DATA
+// =====================================================================
+async function loadData() {
+  try {
+    const resp = await fetch('data.json', {cache: 'default'});
+    if (!resp.ok) throw new Error('HTTP ' + resp.status);
+    ALL_DATA = await resp.json();
+    document.getElementById('loading').style.display = 'none';
+    buildDistrictList();
+    applyFilters();
+  } catch(e) {
+    document.getElementById('loading').innerHTML =
+      '<p style="color:red">Ошибка загрузки data.json: ' + e.message +
+      '</p><p style="margin-top:8px;font-size:12px">Запустите: <code>python -m portugal_realty.cli export-json</code></p>';
+  }
+}
+
+// =====================================================================
+// DISTRICT LIST BUILD
+// =====================================================================
+let allDistricts = [];
+function buildDistrictList() {
+  const counts = {};
+  for (const l of ALL_DATA) {
+    const d = l.district || '?';
+    counts[d] = (counts[d] || 0) + 1;
+  }
+  allDistricts = Object.entries(counts).sort((a,b) => b[1]-a[1]).map(([d,c]) => ({d,c}));
+  renderDistrictList(allDistricts);
+}
+
+function renderDistrictList(list) {
+  const wrap = document.getElementById('district-list');
+  wrap.innerHTML = list.map(({d,c}) =>
+    `<label><input type="checkbox" class="d-cb" value="${escHtml(d)}" checked> ${escHtml(d)} (${c})</label>`
+  ).join('');
+}
+
+function filterDistrictList(q) {
+  if (!q) { renderDistrictList(allDistricts); return; }
+  const filtered = allDistricts.filter(({d}) => d.toLowerCase().includes(q.toLowerCase()));
+  renderDistrictList(filtered);
+}
+
+function selectAllDistricts() {
+  document.querySelectorAll('.d-cb').forEach(cb => cb.checked = true);
+  updatePreviewCount();
+}
+function clearAllDistricts() {
+  document.querySelectorAll('.d-cb').forEach(cb => cb.checked = false);
+  updatePreviewCount();
+}
+
+// =====================================================================
+// FILTER LOGIC  (pure JS, runs on every applyFilters call)
+// =====================================================================
+function getFilters() {
+  const priceMin = parseInt(document.getElementById('price-min').value) || 0;
+  const priceMax = parseInt(document.getElementById('price-max').value) || Infinity;
+  const areaMin  = parseFloat(document.getElementById('area-min').value) || 0;
+  const areaMax  = parseFloat(document.getElementById('area-max').value) || Infinity;
+  const pm2Min   = parseFloat(document.getElementById('pm2-min').value) || 0;
+  const pm2Max   = parseFloat(document.getElementById('pm2-max').value) || Infinity;
+  const propType = document.querySelector('input[name="prop-type"]:checked')?.value || '';
+
+  const sellerPrivate   = document.getElementById('seller-private').checked;
+  const sellerAgent     = document.getElementById('seller-agent').checked;
+  const sellerDev       = document.getElementById('seller-developer').checked;
+  const anySeller = !sellerPrivate && !sellerAgent && !sellerDev;
+
+  const fFresh    = document.getElementById('f-fresh').checked;
+  const fDrop     = document.getElementById('f-drop').checked;
+  const fGem      = document.getElementById('f-gem').checked;
+  const fVideo    = document.getElementById('f-video').checked;
+  const fNewBuild = document.getElementById('f-newbuild').checked;
+  const fHideBlocked = document.getElementById('f-hide-blocked').checked;
+
+  const checkedDistricts = new Set(
+    [...document.querySelectorAll('.d-cb:checked')].map(cb => cb.value)
+  );
+
+  const checkedTypos = active_typos;  // Set from chip clicks
+
+  return {
+    priceMin, priceMax, areaMin, areaMax, pm2Min, pm2Max, propType,
+    sellerPrivate, sellerAgent, sellerDev, anySeller,
+    fFresh, fDrop, fGem, fVideo, fNewBuild, fHideBlocked,
+    checkedDistricts, checkedTypos,
+  };
+}
+
+function matchesFilter(l, f) {
+  // Blacklist
+  const sid = l.sid || l.id;
+  if (f.fHideBlocked && blocked_ids.has(sid)) return false;
+
+  // Price
+  if (l.price < f.priceMin || l.price > f.priceMax) return false;
+
+  // Area
+  if (f.areaMin > 0 && l.area < f.areaMin) return false;
+  if (f.areaMax < Infinity && l.area > f.areaMax) return false;
+
+  // PM2
+  if (f.pm2Min > 0 && l.pm2 < f.pm2Min) return false;
+  if (f.pm2Max < Infinity && l.pm2 > f.pm2Max) return false;
+
+  // Type
+  if (f.propType && l.type !== f.propType) return false;
+
+  // Typology
+  if (f.checkedTypos.size > 0) {
+    const typo = l.typo || '';
+    if (!f.checkedTypos.has(typo) && !f.checkedTypos.has(normalizeTypo(typo))) return false;
+  }
+
+  // District
+  if (f.checkedDistricts.size < allDistricts.length) {
+    if (!f.checkedDistricts.has(l.district || '?')) return false;
+  }
+
+  // Seller
+  if (!f.anySeller) {
+    const s = l.seller || '';
+    const sellerMatch =
+      (f.sellerPrivate && s === 'private') ||
+      (f.sellerAgent   && s === 'agent')   ||
+      (f.sellerDev     && s === 'developer');
+    if (!sellerMatch) return false;
+    // fall through — don't return true, continue to badge checks below
+  }
+
+  // Badges
+  if (f.fFresh    && !l.fresh)     return false;
+  if (f.fDrop     && !l.drop)      return false;
+  if (f.fGem      && !l.gem)       return false;
+  if (f.fVideo    && !l.video)     return false;
+  if (f.fNewBuild && !l.new_build) return false;
+
+  return true;
+}
+
+function normalizeTypo(t) {
+  if (!t) return '';
+  const m = t.match(/T(\d+)/i);
+  if (!m) return t;
+  const n = parseInt(m[1]);
+  return n >= 4 ? 'T4+' : `T${n}`;
+}
+
+function sortData(data, sortKey) {
+  const d = [...data];
+  switch (sortKey) {
+    case 'price_asc':  d.sort((a,b) => a.price - b.price); break;
+    case 'price_desc': d.sort((a,b) => b.price - a.price); break;
+    case 'pm2_asc':    d.sort((a,b) => (a.pm2||9e9) - (b.pm2||9e9)); break;
+    case 'days_asc':   d.sort((a,b) => a.days - b.days); break;
+    case 'days_desc':  d.sort((a,b) => b.days - a.days); break;
+    case 'area_asc':   d.sort((a,b) => (a.area||0) - (b.area||0)); break;
+    case 'area_desc':  d.sort((a,b) => (b.area||0) - (a.area||0)); break;
+  }
+  return d;
+}
+
+// =====================================================================
+// APPLY FILTERS — main entry point
+// =====================================================================
+function applyFilters() {
+  const f = getFilters();
+  const sortKey = document.getElementById('sort-select').value;
+
+  // Filter
+  const filtered = ALL_DATA.filter(l => matchesFilter(l, f));
+
+  // Sort
+  FILTERED = sortData(filtered, sortKey);
+
+  // Reset render
+  rendered_count = 0;
+  document.getElementById('cards-grid').innerHTML = '';
+  document.getElementById('no-results').style.display = FILTERED.length ? 'none' : 'block';
+
+  renderCards(FILTERED.slice(0, PAGE_SIZE));
+  rendered_count = Math.min(PAGE_SIZE, FILTERED.length);
+
+  updateResultsUI();
+}
+
+function updatePreviewCount() {
+  const f = getFilters();
+  const cnt = ALL_DATA.filter(l => matchesFilter(l, f)).length;
+  document.getElementById('preview-count').textContent = `Найдено: ${cnt.toLocaleString()} из ${ALL_DATA.length.toLocaleString()}`;
+  updateFilterBadge();
+}
+
+function countActiveFilters() {
+  let n = 0;
+  if (document.getElementById('price-min').value) n++;
+  if (document.getElementById('price-max').value) n++;
+  if (document.getElementById('area-min').value)  n++;
+  if (document.getElementById('area-max').value)  n++;
+  if (document.getElementById('pm2-min').value)   n++;
+  if (document.getElementById('pm2-max').value)   n++;
+  const propType = document.querySelector('input[name="prop-type"]:checked')?.value;
+  if (propType) n++;
+  if (document.getElementById('seller-private').checked) n++;
+  if (document.getElementById('seller-agent').checked)   n++;
+  if (document.getElementById('seller-developer').checked) n++;
+  if (document.getElementById('f-fresh').checked)    n++;
+  if (document.getElementById('f-drop').checked)     n++;
+  if (document.getElementById('f-gem').checked)      n++;
+  if (document.getElementById('f-video').checked)    n++;
+  if (document.getElementById('f-newbuild').checked) n++;
+  n += active_typos.size;
+  // District: count unchecked
+  const totalD = allDistricts.length;
+  const checkedD = document.querySelectorAll('.d-cb:checked').length;
+  if (totalD > 0 && checkedD < totalD) n++;
+  return n;
+}
+
+function updateFilterBadge() {
+  const n = countActiveFilters();
+  const badge = document.getElementById('filter-badge');
+  if (!badge) return;
+  if (n > 0) {
+    badge.textContent = n;
+    badge.classList.add('visible');
+  } else {
+    badge.classList.remove('visible');
+  }
+}
+
+// Add live preview on input changes
+document.addEventListener('DOMContentLoaded', () => {
+  document.querySelectorAll('#sidebar-wrap input, #sidebar-wrap select').forEach(el => {
+    el.addEventListener('change', updatePreviewCount);
+    el.addEventListener('input', updatePreviewCount);
+  });
+});
+
+function updateResultsUI() {
+  const total = FILTERED.length;
+  const showing = Math.min(rendered_count, total);
+  document.getElementById('results-count').textContent =
+    `Найдено: ${total.toLocaleString()} из ${ALL_DATA.length.toLocaleString()}`;
+  document.getElementById('footer-stats').textContent =
+    showing < total ? `Показано ${showing.toLocaleString()} из ${total.toLocaleString()}` : '';
+  document.getElementById('btn-load-more').style.display =
+    rendered_count < total ? 'inline-block' : 'none';
+  document.getElementById('counter-pill').textContent =
+    total.toLocaleString() + ' объектов';
+}
+
+// =====================================================================
+// CARD RENDERING
+// =====================================================================
+const TYPE_COLORS = {apartment:'#2196F3', house:'#4CAF50', land:'#FF9800'};
+const TYPE_LABELS = {apartment:'Квартира', house:'Дом / Вилла', land:'Участок'};
+const SELLER_LABELS = {private:['Частник','#66BB6A'], agent:['Агентство','#7986CB'], developer:['Застройщик','#FFA726']};
+
+function renderCards(items) {
+  const grid = document.getElementById('cards-grid');
+  const frag = document.createDocumentFragment();
+  for (const l of items) {
+    const el = buildCard(l);
+    frag.appendChild(el);
+  }
+  grid.appendChild(frag);
+  applyStorageStates();
+}
+
+function buildCard(l) {
+  const sid = l.sid || l.id;
+  const div = document.createElement('div');
+  div.className = 'card';
+  div.setAttribute('data-sid', sid);
+
+  const badgeColor = TYPE_COLORS[l.type] || '#9E9E9E';
+  const typeLabel  = TYPE_LABELS[l.type]  || l.type || '?';
+  const sellerInfo = SELLER_LABELS[l.seller];
+  const sellerBadge = sellerInfo
+    ? `<span class="seller-badge" style="background:${sellerInfo[1]}">${sellerInfo[0]}</span>`
+    : '';
+
+  // ── Edge badges ─────────────────────────────────────────────────────────
+  let edgeBadges = '';
+  if (l.fresh)     edgeBadges += '<span class="edge-badge eb-fresh">🆕 НОВОЕ</span>';
+  if (l.drop)      edgeBadges += '<span class="edge-badge eb-drop">💰 ЦЕНА СНИЖЕНА</span>';
+  if (l.gem)       edgeBadges += `<span class="edge-badge eb-gem">💎 НАХОДКА</span>`;
+  if (l.relisting) edgeBadges += '<span class="edge-badge eb-relisted">🔄 ПЕРЕЗАЛИВ</span>';
+  if (l.video)     edgeBadges += '<span class="edge-badge eb-video">🎥 ВИДЕО</span>';
+  if (l.new_build) edgeBadges += '<span class="edge-badge eb-new">🏗️ НОВОСТРОЙКА</span>';
+
+  // Seller badge in edge row
+  if (l.seller === 'private')   edgeBadges += '<span class="edge-badge eb-seller">🧑 ЧАСТНОЕ</span>';
+  else if (l.seller === 'agent') edgeBadges += '<span class="edge-badge eb-seller">🏢 АГЕНТСТВО</span>';
+  else if (l.seller === 'developer') edgeBadges += '<span class="edge-badge eb-seller">🏗️ ЗАСТРОЙЩИК</span>';
+
+  // DOM badge
+  const dom = l.days || 0;
+  let domClass = 'eb-dom-fresh';
+  if (dom >= 730)      domClass = 'eb-dom-ancient';
+  else if (dom >= 365) domClass = 'eb-dom-old';
+  else if (dom >= 180) domClass = 'eb-dom-stale';
+  else if (dom >= 30)  domClass = 'eb-dom-normal';
+  edgeBadges += `<span class="edge-badge ${domClass}">${domIcon(dom)} ${dom} дн</span>`;
+
+  // ── Photo ────────────────────────────────────────────────────────────────
+  const photoHtml = l.photo
+    ? `<div class="photos"><img src="${escAttr(l.photo)}" loading="lazy" referrerpolicy="no-referrer" alt="" onerror="this.parentElement.classList.add('no-photo');this.replaceWith(Object.assign(document.createElement('div'),{className:'photo-empty',textContent:'Без фото'}))"></div>`
+    : `<div class="photos no-photo"><div class="photo-empty">Без фото</div></div>`;
+
+  // ── Location + Maps URL ──────────────────────────────────────────────────
+  const locParts = [l.district, l.muni].filter(Boolean).join(' / ');
+  const mapsQuery = [(l.muni || l.district || ''), 'Portugal'].filter(Boolean).join(', ');
+  const mapsUrl = `https://www.google.com/maps/search/${encodeURIComponent(mapsQuery)}`;
+
+  // ── Tracking row ─────────────────────────────────────────────────────────
+  const foundDate = l.found ? `<span>Найдено: ${escHtml(l.found)}</span>` : '';
+  const trackingHtml = `<div class="tracking"><span>На рынке: <b>${dom} дн</b></span>${foundDate}</div>`;
+
+  // ── Description preview ──────────────────────────────────────────────────
+  // Always render the slot — CSS line-clamp keeps it 3 lines, min-height reserves space if empty
+  const descHtml = `<div class="desc">${escHtml(l.desc || '')}</div>`;
+
+  // ── Tags — always render slot, reserve min-height even if empty ──────────
+  let tagInner = '';
+  if (l.tags && l.tags.length > 0) {
+    tagInner = l.tags.map(t => {
+      if (t.startsWith('!')) return `<span class="tag-alert">${escHtml(t.slice(1))}</span>`;
+      if (t.startsWith('Дорого')) return `<span class="tag-con">- ${escHtml(t)}</span>`;
+      return `<span class="tag-pro">+ ${escHtml(t)}</span>`;
+    }).join('');
+  }
+  const tagsHtml = `<div class="tags">${tagInner}</div>`;
+
+  // ── IMT Jovem badge — always render slot ─────────────────────────────────
+  const imtHtml = `<div class="imt-slot">${l.imt_jovem ? '<span class="imt-badge">🎁 IMT Jovem 0%</span>' : ''}</div>`;
+
+  // ── LTV block — always render slot (min-height keeps row aligned) ─────────
+  let ltvHtml = '';
+  if (l.ltv && l.ltv.s && l.ltv.s.length > 0) {
+    const LTV_COLORS = ['#e53935', '#FB8C00', '#43A047'];
+    const ltvParts = l.ltv.s.map((sc, i) => {
+      const color = LTV_COLORS[i] || '#888';
+      const icon = sc.c <= 5000 ? '✓' : sc.c <= 30000 ? '~' : '✗';
+      const bg = sc.c <= 5000 ? '#e8f5e9' : sc.c <= 30000 ? '#fff8e1' : '#fce4ec';
+      const imtNote = l.imt_jovem ? ' (IMT=0)' : (l.ltv.imt > 0 ? ` (IMT=${l.ltv.imt.toLocaleString()})` : '');
+      return `<span class="ltv-tag" style="border-left:3px solid ${color};background:${bg}">${icon} ${escHtml(sc.l)}: ${sc.c.toLocaleString()} EUR своих${imtNote} | ${sc.m.toLocaleString()} EUR/мес</span>`;
+    }).join('');
+    ltvHtml = `<div class="ltv-block">${ltvParts}</div>`;
+  } else {
+    // Empty slot — reserve space so cards without LTV align to same height
+    ltvHtml = `<div class="ltv-block"></div>`;
+  }
+
+  div.innerHTML = `
+    <div class="card-header">
+      <span class="type-badge" style="background:${badgeColor}">${typeLabel}</span>
+      ${sellerBadge}
+      <div class="card-actions">
+        <button class="star-btn"      onclick="toggleFav('${sid}')"       title="Избранное">☆</button>
+        <button class="contacted-btn" onclick="toggleContacted('${sid}')" title="Связался">☎</button>
+        <button class="maybe-btn"     onclick="toggleMaybe('${sid}')"     title="Может быть">±</button>
+        <button class="block-btn"     onclick="toggleBlock('${sid}')"     title="Заблокировать">✕</button>
+        <button class="note-btn"      onclick="openNote('${sid}')"        title="Заметка">✎</button>
+      </div>
+    </div>
+    <div class="edge-badges">${edgeBadges}</div>
+    ${photoHtml}
+    <h3>${escHtml(l.title)}</h3>
+    <div class="price">${l.price ? l.price.toLocaleString() + ' EUR' : '—'}</div>
+    <div class="details">
+      ${l.area ? `<span>${l.area} м²</span>` : ''}
+      ${l.typo ? `<span>${escHtml(l.typo)}</span>` : ''}
+      ${l.pm2  ? `<span>${l.pm2.toLocaleString()} EUR/м²</span>` : ''}
+    </div>
+    <div class="location"><a href="${escAttr(mapsUrl)}" target="_blank">📍 ${escHtml(locParts)}</a></div>
+    ${trackingHtml}
+    ${descHtml}
+    ${tagsHtml}
+    ${imtHtml}
+    ${ltvHtml}
+    <div class="note-display" id="nd-${sid}"></div>
+    <div class="note-editor" id="ne-${sid}">
+      <textarea id="nt-${sid}" placeholder="Заметка..." rows="2"></textarea>
+      <button onclick="saveNote('${sid}')">Сохранить</button>
+    </div>
+    <div class="buttons">
+      <a href="${escAttr(l.url)}" target="_blank" class="btn">Смотреть</a>
+      <a href="${escAttr(mapsUrl)}" target="_blank" class="btn btn-map">Карта</a>
+    </div>`;
+
+  return div;
+}
+
+function domIcon(d) {
+  if (d < 30)  return '🟢';
+  if (d < 180) return '🟡';
+  if (d < 365) return '🟠';
+  if (d < 730) return '🔴';
+  return '⚫';
+}
+
+// =====================================================================
+// LOAD MORE
+// =====================================================================
+function loadMore() {
+  const next = FILTERED.slice(rendered_count, rendered_count + PAGE_SIZE);
+  renderCards(next);
+  rendered_count += next.length;
+  updateResultsUI();
+}
+
+// =====================================================================
+// LOCALSTORAGE ACTIONS (shared keys with district pages)
+// =====================================================================
+function applyStorageStates() {
+  document.querySelectorAll('.card').forEach(card => {
+    const sid = card.getAttribute('data-sid');
+    if (!sid) return;
+    card.classList.toggle('fav',       _favs.has(sid));
+    card.classList.toggle('contacted', _contacted.has(sid));
+    card.classList.toggle('maybe',     _maybe.has(sid));
+    card.classList.toggle('blocked',   blocked_ids.has(sid));
+    const starBtn = card.querySelector('.star-btn');
+    if (starBtn) { starBtn.textContent = _favs.has(sid) ? '★' : '☆'; starBtn.classList.toggle('active', _favs.has(sid)); }
+    const cBtn = card.querySelector('.contacted-btn');
+    if (cBtn) cBtn.classList.toggle('active', _contacted.has(sid));
+    const mBtn = card.querySelector('.maybe-btn');
+    if (mBtn) mBtn.classList.toggle('active', _maybe.has(sid));
+    const bBtn = card.querySelector('.block-btn');
+    if (bBtn) bBtn.classList.toggle('active', blocked_ids.has(sid));
+    // Notes
+    const notes = lsGet(LS.notes) || {};
+    const nd = document.getElementById('nd-' + sid);
+    const nb = card.querySelector('.note-btn');
+    if (nd && notes[sid]) { nd.textContent = '📝 ' + notes[sid]; nd.classList.add('visible'); }
+    if (nb) nb.classList.toggle('active', !!notes[sid]);
+  });
+}
+
+function toggleFav(sid) {
+  const adding = !_favs.has(sid);
+  adding ? _favs.add(sid) : _favs.delete(sid);
+  saveLS(); applyStorageStates();
+  syncToggle('fav', sid, adding);
+}
+function toggleContacted(sid) {
+  const adding = !_contacted.has(sid);
+  adding ? _contacted.add(sid) : _contacted.delete(sid);
+  saveLS(); applyStorageStates();
+  syncToggle('contacted', sid, adding);
+}
+function toggleMaybe(sid) {
+  const adding = !_maybe.has(sid);
+  adding ? _maybe.add(sid) : _maybe.delete(sid);
+  saveLS(); applyStorageStates();
+  syncToggle('maybe', sid, adding);
+}
+function toggleBlock(sid) {
+  const adding = !blocked_ids.has(sid);
+  if (adding) { blocked_ids.add(sid); }
+  else { blocked_ids.delete(sid); }
+  saveLS();
+  // Re-apply immediately: hide or show the card
+  const card = document.querySelector(`.card[data-sid="${sid}"]`);
+  if (card) {
+    const hideBlocked = document.getElementById('f-hide-blocked').checked;
+    if (hideBlocked && blocked_ids.has(sid)) card.classList.add('blocked');
+    else card.classList.remove('blocked');
+  }
+  applyStorageStates();
+  syncToggle('block', sid, adding);
+}
+
+function openNote(sid) {
+  const editor = document.getElementById('ne-' + sid);
+  if (!editor) return;
+  const isOpen = editor.style.display !== 'none';
+  editor.style.display = isOpen ? 'none' : 'block';
+  if (!isOpen) {
+    const notes = lsGet(LS.notes) || {};
+    document.getElementById('nt-' + sid).value = notes[sid] || '';
+  }
+}
+function saveNote(sid) {
+  const ta = document.getElementById('nt-' + sid);
+  if (!ta) return;
+  const notes = lsGet(LS.notes) || {};
+  const text = ta.value.trim();
+  if (text) notes[sid] = text;
+  else delete notes[sid];
+  lsSet(LS.notes, notes);
+  document.getElementById('ne-' + sid).style.display = 'none';
+  applyStorageStates();
+  syncNote(sid, text);
+}
+
+// =====================================================================
+// UI HELPERS
+// =====================================================================
+function setPreset(min, max) {
+  document.getElementById('price-min').value = min || '';
+  document.getElementById('price-max').value = (max < 9000000 ? max : '');
+  document.querySelectorAll('.preset-btn').forEach(b => b.classList.remove('active'));
+  event.target.classList.add('active');
+  updatePreviewCount();
+}
+
+function toggleChip(el, typo) {
+  el.classList.toggle('active');
+  if (el.classList.contains('active')) active_typos.add(typo);
+  else active_typos.delete(typo);
+  updatePreviewCount();
+}
+
+function toggleSection(id) {
+  document.getElementById(id).classList.toggle('collapsed');
+}
+
+function toggleSidebar(btn) {
+  const wrap = document.getElementById('sidebar-wrap');
+  const open = wrap.classList.toggle('open');
+  document.getElementById('sidebar-arrow').textContent = open ? '▲' : '▼';
+}
+
+function setView(mode, btn) {
+  const grid = document.getElementById('cards-grid');
+  grid.classList.toggle('list-view', mode === 'list');
+  document.querySelectorAll('.view-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+}
+
+function resetFilters() {
+  document.getElementById('price-min').value = '';
+  document.getElementById('price-max').value = '';
+  document.getElementById('area-min').value  = '';
+  document.getElementById('area-max').value  = '';
+  document.getElementById('pm2-min').value   = '';
+  document.getElementById('pm2-max').value   = '';
+  document.querySelector('input[name="prop-type"][value=""]').checked = true;
+  document.getElementById('seller-private').checked   = false;
+  document.getElementById('seller-agent').checked     = false;
+  document.getElementById('seller-developer').checked = false;
+  document.getElementById('f-fresh').checked    = false;
+  document.getElementById('f-drop').checked     = false;
+  document.getElementById('f-gem').checked      = false;
+  document.getElementById('f-video').checked    = false;
+  document.getElementById('f-newbuild').checked = false;
+  document.getElementById('f-hide-blocked').checked = true;
+  active_typos.clear();
+  document.querySelectorAll('.cb-chip').forEach(c => c.classList.remove('active'));
+  document.querySelectorAll('.preset-btn').forEach(b => b.classList.remove('active'));
+  selectAllDistricts();
+  applyFilters();
+}
+
+// =====================================================================
+// HTML ESCAPE HELPERS
+// =====================================================================
+function escHtml(s) {
+  if (!s) return '';
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+function escAttr(s) {
+  if (!s) return '';
+  return String(s).replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+}
+
+// =====================================================================
+// INIT
+// =====================================================================
+initSync().then(function() { loadData(); });
+</script>
+</body>
+</html>
