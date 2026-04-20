@@ -282,7 +282,9 @@ def login_page():
 
 @app.route("/api/login", methods=["POST"])
 def login():
-    ip = request.headers.get("X-Forwarded-For", request.remote_addr or "unknown").split(",")[0].strip()
+    # ProxyFix already rewrote remote_addr to the true client IP — don't
+    # read X-Forwarded-For here (attacker can rotate that header).
+    ip = request.remote_addr or "unknown"
     if _rate_limited(ip):
         return jsonify({"error": "Too many attempts. Try again in 5 minutes."}), 429
 
