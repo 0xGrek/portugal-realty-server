@@ -242,6 +242,39 @@ def login_required(f):
     return decorated
 
 
+# --- Demo mode ---
+# Endpoints that mutate DB and must be blocked for demo users.
+# Demo state is client-side (localStorage) only.
+_DEMO_BLOCKED_ENDPOINTS = {
+    "add_favorite", "delete_favorite",
+    "toggle_fav", "toggle_contacted", "toggle_maybe", "toggle_block",
+    "upsert_note", "delete_note", "save_note_legacy",
+    "sync_to_user",
+    # Admin — demo can never touch these.
+    "admin_page", "admin_list_users", "admin_create_user",
+    "admin_reset_password", "admin_delete_user",
+}
+
+
+@app.before_request
+def _enforce_demo_scope():
+    """Hard-block demo users from any DB-write endpoint.
+
+    Demo user gets a pseudo user_id='demo' (string, not int) — this alone
+    breaks the DB layer because user_favorites.user_id is INTEGER. But we
+    guard explicitly at the HTTP layer so errors are clear, not 500s.
+    """
+    if not session.get("is_demo"):
+        return None
+    endpoint = request.endpoint or ""
+    if endpoint in _DEMO_BLOCKED_ENDPOINTS:
+        return jsonify({
+            "error": "demo_mode",
+            "message": "Demo mode — changes save locally in your browser only",
+        }), 403
+    return None
+
+
 def admin_required(f):
     """Reject if not admin. 403 — not 401 — because user is authed."""
     @wraps(f)
@@ -332,6 +365,24 @@ def login():
     })
 
 
+@app.route("/demo", methods=["GET"])
+def demo_login():
+    """Public demo entry — auto-session, no password.
+
+    Marks session is_demo=True. Client-side code (search.html) detects this
+    via /api/me and keeps SERVER_MODE=false so toggles go to localStorage.
+    DB writes are additionally blocked server-side by _enforce_demo_scope.
+    """
+    session.clear()
+    session["user_id"] = "demo"
+    session["username"] = "Demo Guest"
+    session["is_admin"] = False
+    session["is_demo"] = True
+    session.permanent = True
+    _get_csrf_token()
+    return redirect("/listings/search.html")
+
+
 @app.route("/logout", methods=["GET", "POST"])
 def logout():
     session.clear()
@@ -353,6 +404,7 @@ def me():
         "user_id": session["user_id"],
         "username": session.get("username"),
         "is_admin": session.get("is_admin", False),
+        "is_demo": session.get("is_demo", False),
         "csrf_token": _get_csrf_token(),
     })
 
@@ -464,6 +516,12 @@ def admin_delete_user(user_id):
 @login_required
 def get_state():
     """Returns current user's favs/maybe/blocked/contacted/notes + saved category."""
+    # Demo user has no server state — client uses localStorage exclusively.
+    if session.get("is_demo"):
+        return jsonify({
+            "favs": {}, "maybe": {}, "blocked": {},
+            "contacted": {}, "saved": {}, "notes": {},
+        })
     user_id = session["user_id"]
     favs, maybe, blocked, contacted, saved = {}, {}, {}, {}, {}
     notes = {}
@@ -526,6 +584,8 @@ def _set_user_category(listing_id, category):
 @app.route("/api/favorites", methods=["GET"])
 @login_required
 def list_favorites():
+    if session.get("is_demo"):
+        return jsonify({"favorites": []})
     user_id = session["user_id"]
     with _get_conn() as conn:
         cur = conn.cursor()
@@ -616,6 +676,8 @@ def toggle_block(lid):
 @app.route("/api/notes", methods=["GET"])
 @login_required
 def list_notes():
+    if session.get("is_demo"):
+        return jsonify({"notes": []})
     user_id = session["user_id"]
     with _get_conn() as conn:
         cur = conn.cursor()

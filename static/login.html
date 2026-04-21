@@ -77,6 +77,36 @@
       text-align: center;
       min-height: 18px;
     }
+    .divider {
+      display: flex;
+      align-items: center;
+      margin: 20px 0 16px;
+      color: #999;
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .divider::before, .divider::after {
+      content: "";
+      flex: 1;
+      height: 1px;
+      background: #e0e0e0;
+    }
+    .divider::before { margin-right: 10px; }
+    .divider::after { margin-left: 10px; }
+    .btn-demo {
+      background: #fff;
+      color: #1a237e;
+      border: 2px solid #1a237e;
+    }
+    .btn-demo:hover { background: #f0f2ff; color: #1a237e; }
+    .demo-note {
+      color: #888;
+      font-size: 11px;
+      text-align: center;
+      margin-top: 8px;
+      line-height: 1.4;
+    }
   </style>
 </head>
 <body>
@@ -93,6 +123,15 @@
 
       <button type="submit" id="submitBtn">Sign In</button>
       <div id="err" class="err"></div>
+    </form>
+
+    <div class="divider">or</div>
+
+    <form method="get" action="/demo">
+      <button type="submit" class="btn-demo">Try Demo (no signup)</button>
+      <div class="demo-note">
+        Browse all listings. Favorites and notes save in your browser only.
+      </div>
     </form>
   </div>
 

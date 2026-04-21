@@ -251,6 +251,11 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 #user-bar .user-name{font-weight:600;color:var(--brand)}
 #user-bar .logout-btn{background:var(--red);color:#fff;border:none;border-radius:14px;padding:5px 12px;font-size:11px;font-weight:600;cursor:pointer;transition:.15s}
 #user-bar .logout-btn:hover{background:#8e0000}
+#demo-banner{position:fixed;top:0;left:0;right:0;z-index:290;display:none;background:linear-gradient(90deg,#ff9800,#f57c00);color:#fff;padding:8px 16px;text-align:center;font-size:13px;font-weight:600;box-shadow:0 2px 8px rgba(0,0,0,.15)}
+#demo-banner.visible{display:block}
+#demo-banner a{color:#fff;text-decoration:underline;font-weight:700;margin-left:8px}
+#demo-banner a:hover{color:#fff3e0}
+body.demo-active{padding-top:36px}
 @media(max-width:480px){
   #user-bar{top:6px;right:6px;padding:4px 8px;font-size:11px}
   #user-bar .logout-btn{padding:3px 8px;font-size:10px}
@@ -258,6 +263,12 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 </style>
 </head>
 <body>
+
+<!-- Demo banner — shown when session.is_demo is true -->
+<div id="demo-banner">
+  Demo mode — favorites and notes are saved only in your browser.
+  <a href="/login">Sign in</a> to sync across devices.
+</div>
 
 <!-- User bar — fixed top-right, shown only when logged into server -->
 <div id="user-bar">
@@ -528,6 +539,7 @@ function lsSet(key, val) {
 // SERVER SYNC
 // =====================================================================
 let SERVER_MODE = false;
+let IS_DEMO = false;
 let CSRF_TOKEN = '';
 
 async function logout() {
@@ -549,14 +561,30 @@ function showUserBar(username) {
   bar.classList.add('visible');
 }
 
+function showDemoBanner() {
+  const bar = document.getElementById('demo-banner');
+  if (bar) bar.classList.add('visible');
+  document.body.classList.add('demo-active');
+}
+
 async function initSync() {
   try {
     const resp = await fetch('/api/me', {credentials: 'same-origin'});
     if (resp.ok) {
       const data = await resp.json();
-      SERVER_MODE = true;
-      CSRF_TOKEN = data.csrf_token || '';
       window.CURRENT_USER = data.username || '';
+      CSRF_TOKEN = data.csrf_token || '';
+
+      if (data.is_demo) {
+        // Demo mode — no server sync, localStorage only. Show banner instead of user bar.
+        IS_DEMO = true;
+        SERVER_MODE = false;
+        showDemoBanner();
+        loadLS();
+        return;
+      }
+
+      SERVER_MODE = true;
       showUserBar(window.CURRENT_USER);
       try {
         const stateResp = await fetch('/api/state', {credentials: 'same-origin'});
