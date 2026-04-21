@@ -408,6 +408,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
     <div class="filter-body">
       <div class="cb-group">
         <label><input type="checkbox" id="f-hide-blocked" checked> Скрыть заблокированные</label>
+        <label><input type="checkbox" id="hide-relistings"> Скрыть перезаливы (fraud)</label>
       </div>
     </div>
   </div>
@@ -689,6 +690,7 @@ function getFilters() {
   const fVideo    = document.getElementById('f-video').checked;
   const fNewBuild = document.getElementById('f-newbuild').checked;
   const fHideBlocked = document.getElementById('f-hide-blocked').checked;
+  const fHideRelistings = document.getElementById('hide-relistings').checked;
 
   const checkedDistricts = new Set(
     [...document.querySelectorAll('.d-cb:checked')].map(cb => cb.value)
@@ -699,7 +701,7 @@ function getFilters() {
   return {
     priceMin, priceMax, areaMin, areaMax, pm2Min, pm2Max, propType,
     sellerPrivate, sellerAgent, sellerDev, anySeller,
-    fFresh, fDrop, fGem, fVideo, fNewBuild, fHideBlocked,
+    fFresh, fDrop, fGem, fVideo, fNewBuild, fHideBlocked, fHideRelistings,
     checkedDistricts, checkedTypos,
   };
 }
@@ -778,6 +780,9 @@ function matchesFilter(l, f) {
   if (f.fGem      && !l.gem)       return false;
   if (f.fVideo    && !l.video)     return false;
   if (f.fNewBuild && !l.new_build) return false;
+
+  // Hide fraud relistings (Idealista re-uploads same flat to game freshness)
+  if (f.fHideRelistings && l.relisting) return false;
 
   return true;
 }
@@ -950,6 +955,19 @@ document.addEventListener('DOMContentLoaded', () => {
     el.addEventListener('change', updatePreviewCount);
     el.addEventListener('input', updatePreviewCount);
   });
+
+  // hide-relistings: restore from localStorage and re-apply filters on toggle.
+  // Stored as raw 'true' / 'false' strings (not JSON) so it's trivially
+  // greppable in DevTools and survives schema migrations.
+  const hideRelistEl = document.getElementById('hide-relistings');
+  if (hideRelistEl) {
+    const stored = localStorage.getItem('hide_relistings');
+    hideRelistEl.checked = stored === 'true';
+    hideRelistEl.addEventListener('change', () => {
+      localStorage.setItem('hide_relistings', hideRelistEl.checked);
+      applyFilters();
+    });
+  }
 });
 
 function updateResultsUI() {
@@ -1012,6 +1030,10 @@ function buildCard(l) {
   const div = document.createElement('div');
   div.className = 'card';
   div.setAttribute('data-sid', sid);
+  // data-relisting mirrors export_html.py:584 so DOM-based filters
+  // (e.g. the "hide-relistings" checkbox below) can hide fraud cards
+  // without going through matchesFilter() — useful for ad-hoc DevTools.
+  div.setAttribute('data-relisting', l.relisting ? '1' : '0');
 
   const badgeColor = TYPE_COLORS[l.type] || '#9E9E9E';
   const typeLabel  = TYPE_LABELS[l.type]  || l.type || '?';
@@ -1304,6 +1326,10 @@ function resetFilters() {
   document.getElementById('f-video').checked    = false;
   document.getElementById('f-newbuild').checked = false;
   document.getElementById('f-hide-blocked').checked = true;
+  // hide-relistings is a *user preference* (not a search filter), so reset
+  // honours the stored value rather than always defaulting to false.
+  const hr = document.getElementById('hide-relistings');
+  if (hr) hr.checked = localStorage.getItem('hide_relistings') === 'true';
   active_typos.clear();
   document.querySelectorAll('.cb-chip').forEach(c => c.classList.remove('active'));
   document.querySelectorAll('.preset-btn').forEach(b => b.classList.remove('active'));
