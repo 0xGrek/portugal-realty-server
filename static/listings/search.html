@@ -1027,6 +1027,10 @@ function attachCarouselDots() {
 
 function buildCard(l) {
   const sid = l.sid || l.id;
+  // sidAttr — pre-escaped для safe injection в HTML attribute context.
+  // setAttribute sets string as-is (no parsing), но template-literal embedding
+  // требует escape: если sid contains ' or " or <, breaks out of attr.
+  const sidAttr = escAttr(sid);
   const div = document.createElement('div');
   div.className = 'card';
   div.setAttribute('data-sid', sid);
@@ -1132,21 +1136,21 @@ function buildCard(l) {
       <span class="type-badge" style="background:${badgeColor}">${typeLabel}</span>
       ${sellerBadge}
       <div class="card-actions">
-        <button class="star-btn"      onclick="toggleFav('${sid}')"       title="Избранное">☆</button>
-        <button class="contacted-btn" onclick="toggleContacted('${sid}')" title="Связался">☎</button>
-        <button class="maybe-btn"     onclick="toggleMaybe('${sid}')"     title="Может быть">±</button>
-        <button class="block-btn"     onclick="toggleBlock('${sid}')"     title="Заблокировать">✕</button>
-        <button class="note-btn"      onclick="openNote('${sid}')"        title="Заметка">✎</button>
+        <button class="star-btn"      data-action="fav"       title="Избранное">☆</button>
+        <button class="contacted-btn" data-action="contacted" title="Связался">☎</button>
+        <button class="maybe-btn"     data-action="maybe"     title="Может быть">±</button>
+        <button class="block-btn"     data-action="block"     title="Заблокировать">✕</button>
+        <button class="note-btn"      data-action="note"      title="Заметка">✎</button>
       </div>
     </div>
     <div class="edge-badges">${edgeBadges}</div>
     ${photoHtml}
     <h3>${escHtml(l.title)}</h3>
-    <div class="price">${l.price ? l.price.toLocaleString() + ' EUR' : '—'}</div>
+    <div class="price">${l.price ? escHtml(l.price.toLocaleString()) + ' EUR' : '—'}</div>
     <div class="details">
-      ${l.area ? `<span>${l.area} м²</span>` : ''}
+      ${l.area ? `<span>${escHtml(l.area)} м²</span>` : ''}
       ${l.typo ? `<span>${escHtml(l.typo)}</span>` : ''}
-      ${l.pm2  ? `<span>${l.pm2.toLocaleString()} EUR/м²</span>` : ''}
+      ${l.pm2  ? `<span>${escHtml(l.pm2.toLocaleString())} EUR/м²</span>` : ''}
     </div>
     <div class="location"><a href="${escAttr(mapsUrl)}" target="_blank">📍 ${escHtml(locParts)}</a></div>
     ${trackingHtml}
@@ -1154,10 +1158,10 @@ function buildCard(l) {
     ${tagsHtml}
     ${imtHtml}
     ${ltvHtml}
-    <div class="note-display" id="nd-${sid}"></div>
-    <div class="note-editor" id="ne-${sid}">
-      <textarea id="nt-${sid}" placeholder="Заметка..." rows="2"></textarea>
-      <button onclick="saveNote('${sid}')">Сохранить</button>
+    <div class="note-display" id="nd-${sidAttr}"></div>
+    <div class="note-editor" id="ne-${sidAttr}">
+      <textarea id="nt-${sidAttr}" placeholder="Заметка..." rows="2"></textarea>
+      <button data-action="save-note">Сохранить</button>
     </div>
     <div class="buttons">
       <a href="${escAttr(l.url)}" target="_blank" class="btn">Смотреть</a>
@@ -1348,6 +1352,29 @@ function escAttr(s) {
   if (!s) return '';
   return String(s).replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
 }
+
+// =====================================================================
+// CARD ACTION DELEGATION (security: avoids inline onclick with raw sid)
+// =====================================================================
+// Single listener on the grid dispatches clicks to the right handler based
+// on button's data-action. sid читается from closest .card[data-sid] —
+// setAttribute escapes автоматически, так что XSS через sid невозможен.
+document.getElementById('cards-grid').addEventListener('click', function(ev) {
+  const btn = ev.target.closest('button[data-action]');
+  if (!btn) return;
+  const card = btn.closest('.card');
+  if (!card) return;
+  const sid = card.getAttribute('data-sid');
+  if (!sid) return;
+  switch (btn.dataset.action) {
+    case 'fav':       toggleFav(sid); break;
+    case 'contacted': toggleContacted(sid); break;
+    case 'maybe':     toggleMaybe(sid); break;
+    case 'block':     toggleBlock(sid); break;
+    case 'note':      openNote(sid); break;
+    case 'save-note': saveNote(sid); break;
+  }
+});
 
 // =====================================================================
 // INIT
