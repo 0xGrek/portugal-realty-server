@@ -251,11 +251,6 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 #user-bar .user-name{font-weight:600;color:var(--brand)}
 #user-bar .logout-btn{background:var(--red);color:#fff;border:none;border-radius:14px;padding:5px 12px;font-size:11px;font-weight:600;cursor:pointer;transition:.15s}
 #user-bar .logout-btn:hover{background:#8e0000}
-#demo-banner{position:fixed;top:0;left:0;right:0;z-index:290;display:none;background:linear-gradient(90deg,#ff9800,#f57c00);color:#fff;padding:8px 16px;text-align:center;font-size:13px;font-weight:600;box-shadow:0 2px 8px rgba(0,0,0,.15)}
-#demo-banner.visible{display:block}
-#demo-banner a{color:#fff;text-decoration:underline;font-weight:700;margin-left:8px}
-#demo-banner a:hover{color:#fff3e0}
-body.demo-active{padding-top:36px}
 @media(max-width:480px){
   #user-bar{top:6px;right:6px;padding:4px 8px;font-size:11px}
   #user-bar .logout-btn{padding:3px 8px;font-size:10px}
@@ -263,12 +258,6 @@ body.demo-active{padding-top:36px}
 </style>
 </head>
 <body>
-
-<!-- Demo banner — shown when session.is_demo is true -->
-<div id="demo-banner">
-  Demo mode — favorites and notes are saved only in your browser.
-  <a href="/login">Sign in</a> to sync across devices.
-</div>
 
 <!-- User bar — fixed top-right, shown only when logged into server -->
 <div id="user-bar">
@@ -539,7 +528,6 @@ function lsSet(key, val) {
 // SERVER SYNC
 // =====================================================================
 let SERVER_MODE = false;
-let IS_DEMO = false;
 let CSRF_TOKEN = '';
 
 async function logout() {
@@ -561,39 +549,24 @@ function showUserBar(username) {
   bar.classList.add('visible');
 }
 
-function showDemoBanner() {
-  const bar = document.getElementById('demo-banner');
-  if (bar) bar.classList.add('visible');
-  document.body.classList.add('demo-active');
-}
-
 async function initSync() {
   try {
     const resp = await fetch('/api/me', {credentials: 'same-origin'});
     if (resp.ok) {
       const data = await resp.json();
-      window.CURRENT_USER = data.username || '';
-      CSRF_TOKEN = data.csrf_token || '';
-
-      if (data.is_demo) {
-        // Demo mode — no server sync, localStorage only. Show banner instead of user bar.
-        IS_DEMO = true;
-        SERVER_MODE = false;
-        showDemoBanner();
-        loadLS();
-        return;
-      }
-
       SERVER_MODE = true;
+      CSRF_TOKEN = data.csrf_token || '';
+      window.CURRENT_USER = data.username || '';
       showUserBar(window.CURRENT_USER);
       try {
         const stateResp = await fetch('/api/state', {credentials: 'same-origin'});
         if (stateResp.ok) {
           const state = await stateResp.json();
-          _favs      = new Set(state.favs || []);
-          _contacted = new Set(state.contacted || []);
-          _maybe     = new Set(state.maybe || []);
-          blocked_ids= new Set(state.blocked || []);
+          // API returns dict {id: true} — extract keys as string IDs for Set
+          _favs      = new Set(Object.keys(state.favs || {}));
+          _contacted = new Set(Object.keys(state.contacted || {}));
+          _maybe     = new Set(Object.keys(state.maybe || {}));
+          blocked_ids= new Set(Object.keys(state.blocked || {}));
           // Write server state to localStorage as cache
           saveLS();
           const noteMap = {};
@@ -1107,7 +1080,7 @@ function buildCard(l) {
     photoHtml = `<div class="photos no-photo"><div class="photo-empty">Без фото</div></div>`;
   } else {
     const imgs = photoList.map((src, i) =>
-      `<img src="${escAttr(src)}" loading="lazy" alt="" onerror="this.style.display='none'">`
+      `<img src="${escAttr(src)}" loading="lazy" alt="" onerror="this.onerror=null;this.src='data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 180 130%22><rect fill=%22%23f0f0f0%22 width=%22180%22 height=%22130%22/><text x=%2290%22 y=%2265%22 text-anchor=%22middle%22 font-size=%2212%22 fill=%22%23999%22>Нет фото</text></svg>'">`
     ).join('');
     const dots = photoList.length > 1
       ? `<div class="photo-dots">${photoList.map((_,i) => `<span class="photo-dot${i===0?' active':''}"></span>`).join('')}</div>`
