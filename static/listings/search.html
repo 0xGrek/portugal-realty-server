@@ -261,18 +261,18 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 </head>
 <body>
 
-<!-- User bar — fixed top-right, shown only when logged into server -->
-<div id="user-bar">
-  <span>👤 <span class="user-name" id="user-name"></span></span>
-  <button class="logout-btn" onclick="logout()">Выйти</button>
-</div>
-
 <div class="layout">
 
 <!-- TOP BAR -->
 <div class="topbar">
   <h1>🔍 Portugal Realty — Поиск по всем районам</h1>
-  <a href="index.html" class="back-link">← По районам</a>
+  <div class="topbar-right">
+    <a href="index.html" class="back-link">← По районам</a>
+    <div class="user-bar-inline" id="user-bar">
+      <span class="user-name" id="user-name"></span>
+      <button class="logout-btn" onclick="logout()">Выйти</button>
+    </div>
+  </div>
 </div>
 
 <!-- SIDEBAR -->
