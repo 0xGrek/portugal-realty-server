@@ -1268,6 +1268,12 @@ function getLocationQualityBadge(l) {
     return '<span class="gps-badge" title="Координаты подтверждены">📍 GPS</span>';
   }
   if (l.latitude === null || l.latitude === undefined) {
+    if (l.text_match === 1) {
+      return '<span class="text-verified-badge" title="Текст консистентен (parish ∈ municipality)">📝✓ Адрес</span>';
+    }
+    if (l.text_match === 0) {
+      return '<span class="text-mismatch-badge" title="Текст mismatch — parish не из declared municipality">📝⚠ Адрес</span>';
+    }
     return '<span class="addr-badge" title="Только текстовый адрес, нет координат">📝 Адрес</span>';
   }
   return '';
