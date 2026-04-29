@@ -839,6 +839,8 @@ def static_files(path):
 # Files synced into render_server/static/listings/ by sync_to_render.py.
 # Falls back to sibling ../listings/ dir for local dev without sync.
 from pathlib import Path as _Path
+import json as _json
+
 _LISTINGS_DIR = _Path(__file__).parent / "static" / "listings"
 if not _LISTINGS_DIR.exists():
     _LISTINGS_DIR = _Path(__file__).parent.parent / "listings"
@@ -848,6 +850,48 @@ if not _LISTINGS_DIR.exists():
 @login_required
 def listings_index():
     return send_from_directory(str(_LISTINGS_DIR), "index.html")
+
+
+@app.route("/listings/data.json")
+@login_required
+def serve_data_json():
+    """Serve data.json with optional server-side shelf (region_match) filter.
+
+    Query param: ?shelf=match|mismatch|all  (default: match)
+      match    — show only region_match=1 OR region_match IS NULL (safe shelf)
+      mismatch — show only region_match=0 (отдельная полка: Mafra-as-Lisboa etc)
+      all      — no filter, return full dataset
+
+    Client-side JS also implements the same filter for zero-latency UX.
+    This endpoint enables server-side filtering for clients that prefer it.
+    """
+    shelf = request.args.get("shelf", "match").lower()
+    data_path = _LISTINGS_DIR / "data.json"
+
+    if not data_path.exists():
+        return jsonify([])
+
+    try:
+        with open(str(data_path), "r", encoding="utf-8") as f:
+            listings = _json.load(f)
+    except (OSError, ValueError):
+        return jsonify([])
+
+    if shelf == "match":
+        # region_match=1 (confirmed in-region) OR null (unknown — keep visible)
+        filtered = [l for l in listings if l.get("region_match") != 0]
+    elif shelf == "mismatch":
+        # region_match=0 only (confirmed outside declared region)
+        filtered = [l for l in listings if l.get("region_match") == 0]
+    else:
+        # 'all' or any unknown value — return everything
+        filtered = listings
+
+    response = app.response_class(
+        response=_json.dumps(filtered, ensure_ascii=False, separators=(",", ":")),
+        mimetype="application/json",
+    )
+    return response
 
 
 @app.route("/listings/<path:filename>")
