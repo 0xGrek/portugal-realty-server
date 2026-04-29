@@ -865,6 +865,15 @@ function applyFilters() {
   updateCategoryCounts();
 }
 
+// === Shelf (region_match) tabs ===
+function setShelf(shelf) {
+  activeShelf = shelf;
+  document.querySelectorAll('.shelf-tab[data-shelf]').forEach(b => {
+    b.classList.toggle('active', b.dataset.shelf === shelf);
+  });
+  applyFilters();
+}
+
 // === Category mode / edge filters / top50 / Novo Banco — ported from legacy ===
 function setMode(m) {
   activeMode = m;
