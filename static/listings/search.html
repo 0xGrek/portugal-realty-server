@@ -1216,6 +1216,7 @@ function buildCard(l) {
       </div>
     </div>
     <div class="edge-badges">${edgeBadges}</div>
+    ${warnBadge ? `<div style="margin-bottom:6px">${warnBadge}</div>` : ''}
     ${photoHtml}
     <h3>${escHtml(l.title)}</h3>
     <div class="price">${l.price ? escHtml(l.price.toLocaleString()) + ' EUR' : '—'}</div>
