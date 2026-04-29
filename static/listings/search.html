@@ -1123,6 +1123,11 @@ function buildCard(l) {
   else if (dom >= 30)  domClass = 'eb-dom-normal';
   edgeBadges += `<span class="edge-badge ${domClass}">${domIcon(dom)} ${dom} дн</span>`;
 
+  // ── Region mismatch warn-badge — shown on 'all' and 'mismatch' shelves ────
+  const warnBadge = (l.region_match === 0)
+    ? '<span class="warn-badge">⚠ Регион?</span>'
+    : '';
+
   // ── Photo carousel (multi-photo support) ─────────────────────────────────
   // Prefer l.photos array (new field). Fallback to single l.photo for backward compat.
   const photoList = (Array.isArray(l.photos) && l.photos.length)
