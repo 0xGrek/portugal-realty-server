@@ -169,11 +169,6 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 .location a:hover{text-decoration:underline}
 .tracking{display:flex;gap:12px;font-size:12px;color:var(--text3);margin-bottom:6px;flex-wrap:wrap}
 
-/* Price history block — match district page style (export_html.py:2090) */
-.price-history{font-size:12px;color:#e65100;background:#fff3e0;padding:6px 10px;border-radius:8px;margin-bottom:6px}
-.price-history b{display:block;margin-bottom:2px}
-.price-history div{padding:1px 0}
-
 /* Desc — fixed 3-line slot */
 .desc{font-size:12px;color:#666;margin-bottom:6px;line-height:1.4;
   display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:3;
@@ -246,21 +241,22 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 }
 .sidebar-toggle{display:none;width:100%;padding:12px;background:var(--brand);color:#fff;border:none;font-size:14px;font-weight:700;cursor:pointer;align-items:center;justify-content:space-between}
 
+/* === DISTRICT RATING CHIP === */
+.rating-chip{display:inline-flex;align-items:center;font-size:11px;padding:3px 9px;border-radius:12px;font-weight:700;color:#fff;white-space:nowrap;margin-bottom:4px}
+
 /* === NO RESULTS === */
 #no-results{display:none;text-align:center;padding:60px;color:var(--text3)}
 #no-results h2{font-size:18px;margin-bottom:8px}
 
-/* === USER BAR — integrated into topbar === */
-.user-bar-inline{display:none;align-items:center;gap:8px;font-size:13px;color:rgba(255,255,255,.9)}
-.user-bar-inline.visible{display:inline-flex}
-.user-bar-inline .user-name{font-weight:600;color:#fff}
-.user-bar-inline .logout-btn{background:rgba(255,255,255,.15);color:#fff;border:1px solid rgba(255,255,255,.3);border-radius:14px;padding:5px 12px;font-size:12px;font-weight:600;cursor:pointer;transition:.15s}
-.user-bar-inline .logout-btn:hover{background:rgba(255,255,255,.25)}
-.topbar-right{display:flex;align-items:center;gap:12px}
+/* === USER BAR (fixed top-right logout) === */
+#user-bar{position:fixed;top:10px;right:14px;z-index:300;display:none;align-items:center;gap:8px;background:rgba(255,255,255,.95);padding:6px 12px;border-radius:20px;box-shadow:0 2px 8px rgba(0,0,0,.2);font-size:12px;color:var(--text2)}
+#user-bar.visible{display:inline-flex}
+#user-bar .user-name{font-weight:600;color:var(--brand)}
+#user-bar .logout-btn{background:var(--red);color:#fff;border:none;border-radius:14px;padding:5px 12px;font-size:11px;font-weight:600;cursor:pointer;transition:.15s}
+#user-bar .logout-btn:hover{background:#8e0000}
 @media(max-width:480px){
-  .topbar-right{width:100%;justify-content:space-between}
-  .user-bar-inline{font-size:11px}
-  .user-bar-inline .logout-btn{padding:3px 8px;font-size:10px}
+  #user-bar{top:6px;right:6px;padding:4px 8px;font-size:11px}
+  #user-bar .logout-btn{padding:3px 8px;font-size:10px}
 }
 
 /* === SHELF TABS (region_match filter) === */
@@ -273,18 +269,18 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 </head>
 <body>
 
+<!-- User bar — fixed top-right, shown only when logged into server -->
+<div id="user-bar">
+  <span>👤 <span class="user-name" id="user-name"></span></span>
+  <button class="logout-btn" onclick="logout()">Выйти</button>
+</div>
+
 <div class="layout">
 
 <!-- TOP BAR -->
 <div class="topbar">
   <h1>🔍 Portugal Realty — Поиск по всем районам</h1>
-  <div class="topbar-right">
-    <a href="index.html" class="back-link">← По районам</a>
-    <div class="user-bar-inline" id="user-bar">
-      <span class="user-name" id="user-name"></span>
-      <button class="logout-btn" onclick="logout()">Выйти</button>
-    </div>
-  </div>
+  <a href="index.html" class="back-link">← По районам</a>
 </div>
 
 <!-- SHELF TABS — span full width (grid-column:1/-1) below topbar -->
@@ -430,6 +426,25 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
       <div class="cb-group">
         <label><input type="checkbox" id="f-hide-blocked" checked> Скрыть заблокированные</label>
         <label><input type="checkbox" id="hide-relistings"> Скрыть перезаливы (fraud)</label>
+      </div>
+    </div>
+  </div>
+
+  <!-- DISTRICT RATING -->
+  <div class="filter-section" id="sec-district-rating">
+    <div class="filter-title" onclick="toggleSection('sec-district-rating')">⭐ Оценка района</div>
+    <div class="filter-body">
+      <div style="margin-bottom:6px;font-size:12px;color:var(--text2)">
+        Мин. оценка: <strong><span id="min-score-val">1</span></strong>/10
+      </div>
+      <input type="range" id="min-score" min="1" max="10" value="1" step="1"
+             style="width:100%;accent-color:var(--brand)"
+             oninput="document.getElementById('min-score-val').textContent=this.value;updatePreviewCount()">
+      <div style="display:flex;justify-content:space-between;font-size:10px;color:var(--text3);margin-top:2px">
+        <span>1 BLACKLIST</span><span>5 CHECK</span><span>10 TOP</span>
+      </div>
+      <div style="margin-top:8px;font-size:11px;color:var(--text3)">
+        Листинги без оценки района <strong>не скрываются</strong>
       </div>
     </div>
   </div>
@@ -719,6 +734,7 @@ function getFilters() {
   const fNewBuild = document.getElementById('f-newbuild').checked;
   const fHideBlocked = document.getElementById('f-hide-blocked').checked;
   const fHideRelistings = document.getElementById('hide-relistings').checked;
+  const minDistrictScore = parseInt(document.getElementById('min-score').value) || 1;
 
   const checkedDistricts = new Set(
     [...document.querySelectorAll('.d-cb:checked')].map(cb => cb.value)
@@ -730,7 +746,7 @@ function getFilters() {
     priceMin, priceMax, areaMin, areaMax, pm2Min, pm2Max, propType,
     sellerPrivate, sellerAgent, sellerDev, anySeller,
     fFresh, fDrop, fGem, fVideo, fNewBuild, fHideBlocked, fHideRelistings,
-    checkedDistricts, checkedTypos,
+    checkedDistricts, checkedTypos, minDistrictScore,
   };
 }
 
@@ -822,6 +838,12 @@ function matchesFilter(l, f) {
 
   // Hide fraud relistings (Idealista re-uploads same flat to game freshness)
   if (f.fHideRelistings && l.relisting) return false;
+
+  // District score filter — listings without a score pass through (not excluded)
+  if (f.minDistrictScore > 1) {
+    const score = l.district_score;
+    if (score !== null && score !== undefined && score < f.minDistrictScore) return false;
+  }
 
   return true;
 }
@@ -977,6 +999,8 @@ function countActiveFilters() {
   if (document.getElementById('f-gem').checked)      n++;
   if (document.getElementById('f-video').checked)    n++;
   if (document.getElementById('f-newbuild').checked) n++;
+  const msVal = parseInt(document.getElementById('min-score')?.value) || 1;
+  if (msVal > 1) n++;
   n += active_typos.size;
   // District: count unchecked
   const totalD = allDistricts.length;
@@ -1097,13 +1121,7 @@ function buildCard(l) {
   // ── Edge badges ─────────────────────────────────────────────────────────
   let edgeBadges = '';
   if (l.fresh)     edgeBadges += '<span class="edge-badge eb-fresh">🆕 НОВОЕ</span>';
-  if (l.drop) {
-    // Show EUR amount when available — matches district page format (export_html.py:483)
-    const dropTxt = (l.drop_eur && l.drop_eur > 1000)
-      ? `💰 ЦЕНА СНИЖЕНА −${l.drop_eur.toLocaleString()} EUR`
-      : '💰 ЦЕНА СНИЖЕНА';
-    edgeBadges += `<span class="edge-badge eb-drop">${dropTxt}</span>`;
-  }
+  if (l.drop)      edgeBadges += '<span class="edge-badge eb-drop">💰 ЦЕНА СНИЖЕНА</span>';
   if (l.gem)       edgeBadges += `<span class="edge-badge eb-gem">💎 НАХОДКА</span>`;
   if (l.relisting) edgeBadges += '<span class="edge-badge eb-relisted">🔄 ПЕРЕЗАЛИВ</span>';
   if (l.video)     edgeBadges += '<span class="edge-badge eb-video">🎥 ВИДЕО</span>';
@@ -1155,19 +1173,6 @@ function buildCard(l) {
   const foundDate = l.found ? `<span>Найдено: ${escHtml(l.found)}</span>` : '';
   const trackingHtml = `<div class="tracking"><span>На рынке: <b>${dom} дн</b></span>${foundDate}</div>`;
 
-  // ── Price history block — same format as district pages (export_html.py:326) ─
-  // Только если listing has >= 2 history entries (price actually changed).
-  // Format: each row "DD.MM.YYYY - 250,000 EUR".
-  let historyHtml = '';
-  if (Array.isArray(l.history) && l.history.length >= 2) {
-    const rowsH = l.history.map(h => {
-      const date = escHtml(String(h[0] || ''));
-      const price = (typeof h[1] === 'number') ? h[1].toLocaleString() : escHtml(String(h[1] || ''));
-      return `<div>${date} - ${price} EUR</div>`;
-    }).join('');
-    historyHtml = `<div class="price-history"><b>История цен:</b>${rowsH}</div>`;
-  }
-
   // ── Description preview ──────────────────────────────────────────────────
   // Always render the slot — CSS line-clamp keeps it 3 lines, min-height reserves space if empty
   const descHtml = `<div class="desc">${escHtml(l.desc || '')}</div>`;
@@ -1184,7 +1189,7 @@ function buildCard(l) {
   const tagsHtml = `<div class="tags">${tagInner}</div>`;
 
   // ── IMT Jovem badge — always render slot ─────────────────────────────────
-  const imtHtml = `<div class="imt-slot">${l.imt_jovem ? '<span class="imt-badge">🎁 IMT Jovem 0%</span>' : ''}</div>`;
+  const imtHtml = `<div class="imt-slot">${l.imt_jovem ? '<span class="imt-badge">🎁 IMT Jovem 0%</span>' : ''}${getRatingBadge(l)}</div>`;
 
   // ── LTV block — always render slot (min-height keeps row aligned) ─────────
   let ltvHtml = '';
@@ -1227,7 +1232,6 @@ function buildCard(l) {
     </div>
     <div class="location"><a href="${escAttr(mapsUrl)}" target="_blank">📍 ${escHtml(locParts)}</a></div>
     ${trackingHtml}
-    ${historyHtml}
     ${descHtml}
     ${tagsHtml}
     ${imtHtml}
@@ -1251,6 +1255,20 @@ function domIcon(d) {
   if (d < 365) return '🟠';
   if (d < 730) return '🔴';
   return '⚫';
+}
+
+function getRatingBadge(l) {
+  if (!l.district_score) return '';
+  const colors = {
+    'TOP':       'background:#10b981;color:white',  // emerald green
+    'BUY':       'background:#3b82f6;color:white',  // blue
+    'CHECK':     'background:#f59e0b;color:white',  // amber
+    'AVOID':     'background:#ef4444;color:white',  // red
+    'BLACKLIST': 'background:#7f1d1d;color:white',  // dark red
+  };
+  const rec = l.district_recommendation || '';
+  const style = colors[rec] || 'background:#6b7280;color:white';
+  return `<span class="rating-chip" style="${style}">${escHtml(rec)} ${escHtml(String(l.district_score))}/10</span>`;
 }
 
 // =====================================================================
@@ -1408,6 +1426,9 @@ function resetFilters() {
   // honours the stored value rather than always defaulting to false.
   const hr = document.getElementById('hide-relistings');
   if (hr) hr.checked = localStorage.getItem('hide_relistings') === 'true';
+  // Reset district score slider
+  const msEl = document.getElementById('min-score');
+  if (msEl) { msEl.value = 1; document.getElementById('min-score-val').textContent = '1'; }
   active_typos.clear();
   document.querySelectorAll('.cb-chip').forEach(c => c.classList.remove('active'));
   document.querySelectorAll('.preset-btn').forEach(b => b.classList.remove('active'));
