@@ -245,15 +245,17 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 #no-results{display:none;text-align:center;padding:60px;color:var(--text3)}
 #no-results h2{font-size:18px;margin-bottom:8px}
 
-/* === USER BAR (fixed top-right logout) === */
-#user-bar{position:fixed;top:10px;right:14px;z-index:300;display:none;align-items:center;gap:8px;background:rgba(255,255,255,.95);padding:6px 12px;border-radius:20px;box-shadow:0 2px 8px rgba(0,0,0,.2);font-size:12px;color:var(--text2)}
-#user-bar.visible{display:inline-flex}
-#user-bar .user-name{font-weight:600;color:var(--brand)}
-#user-bar .logout-btn{background:var(--red);color:#fff;border:none;border-radius:14px;padding:5px 12px;font-size:11px;font-weight:600;cursor:pointer;transition:.15s}
-#user-bar .logout-btn:hover{background:#8e0000}
+/* === USER BAR — integrated into topbar === */
+.user-bar-inline{display:none;align-items:center;gap:8px;font-size:13px;color:rgba(255,255,255,.9)}
+.user-bar-inline.visible{display:inline-flex}
+.user-bar-inline .user-name{font-weight:600;color:#fff}
+.user-bar-inline .logout-btn{background:rgba(255,255,255,.15);color:#fff;border:1px solid rgba(255,255,255,.3);border-radius:14px;padding:5px 12px;font-size:12px;font-weight:600;cursor:pointer;transition:.15s}
+.user-bar-inline .logout-btn:hover{background:rgba(255,255,255,.25)}
+.topbar-right{display:flex;align-items:center;gap:12px}
 @media(max-width:480px){
-  #user-bar{top:6px;right:6px;padding:4px 8px;font-size:11px}
-  #user-bar .logout-btn{padding:3px 8px;font-size:10px}
+  .topbar-right{width:100%;justify-content:space-between}
+  .user-bar-inline{font-size:11px}
+  .user-bar-inline .logout-btn{padding:3px 8px;font-size:10px}
 }
 </style>
 </head>
