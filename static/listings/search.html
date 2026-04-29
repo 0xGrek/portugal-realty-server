@@ -1262,6 +1262,17 @@ function domIcon(d) {
   return '⚫';
 }
 
+function getLocationQualityBadge(l) {
+  if (l.region_match === 0) return ''; // warn-badge рендерится отдельно
+  if (l.latitude !== null && l.latitude !== undefined && l.region_match === 1) {
+    return '<span class="gps-badge" title="Координаты подтверждены">📍 GPS</span>';
+  }
+  if (l.latitude === null || l.latitude === undefined) {
+    return '<span class="addr-badge" title="Только текстовый адрес, нет координат">📝 Адрес</span>';
+  }
+  return '';
+}
+
 function getRatingBadge(l) {
   if (!l.district_score) return '';
   const colors = {
