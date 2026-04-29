@@ -169,6 +169,11 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 .location a:hover{text-decoration:underline}
 .tracking{display:flex;gap:12px;font-size:12px;color:var(--text3);margin-bottom:6px;flex-wrap:wrap}
 
+/* Price history block — match district page style (export_html.py:2090) */
+.price-history{font-size:12px;color:#e65100;background:#fff3e0;padding:6px 10px;border-radius:8px;margin-bottom:6px}
+.price-history b{display:block;margin-bottom:2px}
+.price-history div{padding:1px 0}
+
 /* Desc — fixed 3-line slot */
 .desc{font-size:12px;color:#666;margin-bottom:6px;line-height:1.4;
   display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:3;
@@ -1052,7 +1057,13 @@ function buildCard(l) {
   // ── Edge badges ─────────────────────────────────────────────────────────
   let edgeBadges = '';
   if (l.fresh)     edgeBadges += '<span class="edge-badge eb-fresh">🆕 НОВОЕ</span>';
-  if (l.drop)      edgeBadges += '<span class="edge-badge eb-drop">💰 ЦЕНА СНИЖЕНА</span>';
+  if (l.drop) {
+    // Show EUR amount when available — matches district page format (export_html.py:483)
+    const dropTxt = (l.drop_eur && l.drop_eur > 1000)
+      ? `💰 ЦЕНА СНИЖЕНА −${l.drop_eur.toLocaleString()} EUR`
+      : '💰 ЦЕНА СНИЖЕНА';
+    edgeBadges += `<span class="edge-badge eb-drop">${dropTxt}</span>`;
+  }
   if (l.gem)       edgeBadges += `<span class="edge-badge eb-gem">💎 НАХОДКА</span>`;
   if (l.relisting) edgeBadges += '<span class="edge-badge eb-relisted">🔄 ПЕРЕЗАЛИВ</span>';
   if (l.video)     edgeBadges += '<span class="edge-badge eb-video">🎥 ВИДЕО</span>';
@@ -1098,6 +1109,19 @@ function buildCard(l) {
   // ── Tracking row ─────────────────────────────────────────────────────────
   const foundDate = l.found ? `<span>Найдено: ${escHtml(l.found)}</span>` : '';
   const trackingHtml = `<div class="tracking"><span>На рынке: <b>${dom} дн</b></span>${foundDate}</div>`;
+
+  // ── Price history block — same format as district pages (export_html.py:326) ─
+  // Только если listing has >= 2 history entries (price actually changed).
+  // Format: each row "DD.MM.YYYY - 250,000 EUR".
+  let historyHtml = '';
+  if (Array.isArray(l.history) && l.history.length >= 2) {
+    const rowsH = l.history.map(h => {
+      const date = escHtml(String(h[0] || ''));
+      const price = (typeof h[1] === 'number') ? h[1].toLocaleString() : escHtml(String(h[1] || ''));
+      return `<div>${date} - ${price} EUR</div>`;
+    }).join('');
+    historyHtml = `<div class="price-history"><b>История цен:</b>${rowsH}</div>`;
+  }
 
   // ── Description preview ──────────────────────────────────────────────────
   // Always render the slot — CSS line-clamp keeps it 3 lines, min-height reserves space if empty
@@ -1157,6 +1181,7 @@ function buildCard(l) {
     </div>
     <div class="location"><a href="${escAttr(mapsUrl)}" target="_blank">📍 ${escHtml(locParts)}</a></div>
     ${trackingHtml}
+    ${historyHtml}
     ${descHtml}
     ${tagsHtml}
     ${imtHtml}
