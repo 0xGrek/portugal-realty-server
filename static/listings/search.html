@@ -1148,6 +1148,9 @@ function buildCard(l) {
     ? '<span class="warn-badge">⚠ Регион?</span>'
     : '';
 
+  // ── Location quality badge — GPS verified / address-only ─────────────────
+  const locQualityBadge = getLocationQualityBadge(l);
+
   // ── Photo carousel (multi-photo support) ─────────────────────────────────
   // Prefer l.photos array (new field). Fallback to single l.photo for backward compat.
   const photoList = (Array.isArray(l.photos) && l.photos.length)
