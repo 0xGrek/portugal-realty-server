@@ -287,6 +287,13 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
   </div>
 </div>
 
+<!-- SHELF TABS — span full width (grid-column:1/-1) below topbar -->
+<div class="shelf-tabs" id="shelf-tabs">
+  <button class="shelf-tab active" data-shelf="match" onclick="setShelf('match')">✓ Точное совпадение</button>
+  <button class="shelf-tab" data-shelf="mismatch" onclick="setShelf('mismatch')">⚠ Возможно не тот район</button>
+  <button class="shelf-tab" data-shelf="all" onclick="setShelf('all')">Все</button>
+</div>
+
 <!-- SIDEBAR -->
 <aside class="sidebar">
   <button class="sidebar-toggle" onclick="toggleSidebar(this)">
