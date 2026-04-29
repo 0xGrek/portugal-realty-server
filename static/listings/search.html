@@ -530,6 +530,12 @@ let top50Mode = false;
 let novoBancoMode = false;
 const SAVINGS_CAP = 29000;    // NB 70% affordability threshold (EUR required cash)
 
+// === Shelf (region_match) — 'match' | 'mismatch' | 'all' ===
+// 'match'    → show only region_match=1 OR region_match IS NULL (default: safe shelf)
+// 'mismatch' → show only region_match=0 (отдельная полка для Mafra-as-Lisboa etc)
+// 'all'      → no filter on region_match
+let activeShelf = 'match';
+
 const LS = {
   favs:      'realty_favs',
   contacted: 'realty_contacted',
