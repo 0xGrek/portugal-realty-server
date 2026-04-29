@@ -737,6 +737,17 @@ function getFilters() {
 function matchesFilter(l, f) {
   const sid = l.sid || l.id;
 
+  // Shelf (region_match) filter — applied FIRST, before category/edge filters.
+  // region_match: 1=confirmed in-region, 0=mismatch, null=unknown (no coords/muni).
+  // 'match' shelf: show region_match=1 OR null (null = cannot determine = keep visible)
+  // 'mismatch' shelf: show ONLY region_match=0 (the "separate shelf" for Mafra-as-Lisboa)
+  // 'all' shelf: no restriction
+  if (activeShelf === 'match') {
+    if (l.region_match === 0) return false;
+  } else if (activeShelf === 'mismatch') {
+    if (l.region_match !== 0) return false;
+  }
+
   // Category mode — takes priority over blacklist-hide
   if (activeMode === 'favs'      && !_favs.has(sid))       return false;
   if (activeMode === 'contacted' && !_contacted.has(sid))  return false;
