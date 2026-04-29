@@ -1453,6 +1453,18 @@ document.getElementById('cards-grid').addEventListener('click', function(ev) {
 // =====================================================================
 // INIT
 // =====================================================================
+// Restore shelf from localStorage (set by index.html quick links).
+(function() {
+  const savedShelf = localStorage.getItem('shelf');
+  if (savedShelf && ['match', 'mismatch', 'all'].includes(savedShelf)) {
+    activeShelf = savedShelf;
+    localStorage.removeItem('shelf');  // consume once
+    document.querySelectorAll('.shelf-tab[data-shelf]').forEach(b => {
+      b.classList.toggle('active', b.dataset.shelf === savedShelf);
+    });
+  }
+})();
+
 initSync().then(function() { loadData(); });
 </script>
 </body>
