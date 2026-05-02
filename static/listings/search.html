@@ -2,10 +2,11 @@
 <html lang="ru">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5">
 <title>Portugal Realty — Поиск по всем районам</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
+html,body{overflow-x:hidden;max-width:100vw}
 :root{
   --brand:#1a237e;--brand2:#283593;--accent:#1a73e8;
   --green:#4CAF50;--orange:#ff9800;--red:#c62828;--gold:#ffc107;
@@ -225,21 +226,100 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 
 /* === RESPONSIVE === */
 @media(max-width:768px){
+  /* Layout: sidebar collapses above main content */
   .layout{grid-template-columns:1fr;grid-template-rows:auto auto 1fr}
-  .sidebar{position:static;height:auto;max-height:none;border-right:none;border-bottom:1px solid var(--border)}
+  .sidebar{position:static;height:auto;max-height:60vh;border-right:none;border-bottom:1px solid var(--border);padding:10px;width:100%}
   .sidebar-toggle{display:flex}
   #sidebar-wrap{display:none}
   #sidebar-wrap.open{display:block}
-  #cards-grid{grid-template-columns:1fr}
-  .card{min-height:560px}
-  .photos{height:120px}
+  .main{padding:10px;width:100%;max-width:100%}
+
+  /* Topbar — compact */
+  .topbar{padding:10px 12px;gap:8px}
+  .topbar h1{font-size:15px;line-height:1.2}
+  .topbar .back-link{font-size:11px;padding:5px 10px}
+
+  /* Grid: single column with safe gap */
+  #cards-grid{grid-template-columns:1fr !important;gap:12px}
+  .card{width:100%;max-width:100%;min-height:auto;padding:12px;box-sizing:border-box;overflow:hidden}
+
+  /* Photos — fit container, not minimum 180px which forces overflow */
+  .photos{height:200px;gap:6px}
+  .photos img{min-width:80%;max-width:100%;width:auto;height:100%;object-fit:cover}
+  .photo-placeholder{width:100%;min-width:0;height:100%;max-height:200px}
+
+  /* Card text wrapping */
+  .card h3{font-size:15px;line-height:1.35;word-wrap:break-word;overflow-wrap:break-word;hyphens:auto}
+  .card .price{font-size:20px;margin-bottom:6px}
+  .desc{font-size:13px;-webkit-line-clamp:4;min-height:auto}
+  .details{font-size:12px}
+  .details span{padding:3px 8px}
+
+  /* Buttons — tap-friendly */
+  .buttons{gap:8px;padding-top:8px}
+  .btn{padding:12px 8px;font-size:13px;min-height:44px;display:flex;align-items:center;justify-content:center}
+
+  /* Card actions — bigger tap targets */
+  .card-actions{gap:2px}
+  .card-actions button{font-size:24px;padding:6px 4px;min-width:36px;min-height:36px}
+
+  /* Checkboxes / radios — comfortable for fingers */
+  .cb-group input,.rb-group input,.tier-list input,.district-list input{width:20px;height:20px}
+  .cb-group label,.rb-group label{font-size:14px;padding:6px 0}
+  .tier-list label{padding:8px 10px;font-size:13px}
+  .district-list label{font-size:13px;padding:8px 4px}
+
+  /* Filter pills/chips — easier to tap */
+  .cb-chip,.preset-btn,.edge-pill,.mode-btn,.shelf-tab{padding:8px 14px;font-size:13px;min-height:36px;display:inline-flex;align-items:center}
+
+  /* Inputs */
+  .price-row input,.range-row input,.district-search{padding:10px;font-size:14px;min-height:40px}
+
+  /* Sort row scrollable */
+  .sort-row{gap:8px}
+  #sort-select{padding:8px 12px;font-size:13px;min-height:40px}
+  .view-btn{padding:8px 12px;min-height:40px}
+
+  /* Mode bar / edge bar — horizontally scrollable on phone */
+  .mode-bar,.edge-bar{flex-wrap:wrap;gap:6px}
+
+  /* Shelf tabs — wrap nicely */
+  .shelf-tabs{padding:8px 10px;gap:6px}
+  .shelf-tab{padding:8px 12px;font-size:12px}
+
+  /* Counter pill — smaller */
+  .counter-pill{bottom:10px;right:10px;padding:6px 12px;font-size:11px}
+
+  /* Apply/reset bar tap targets */
+  #btn-apply,#btn-reset{padding:12px;font-size:14px;min-height:44px}
 }
+
 @media(max-width:480px){
-  #cards-grid{grid-template-columns:1fr}
-  .card{min-height:520px}
-  .photos{height:110px}
+  /* iPhone SE / small phones */
+  .topbar{padding:8px 10px}
+  .topbar h1{font-size:14px}
+  body{font-size:14px}
+  .main{padding:8px}
+  .sidebar{padding:8px}
+
+  #cards-grid{grid-template-columns:1fr !important;gap:10px}
+  .card{padding:10px;min-height:auto}
+  .photos{height:180px}
+  .card h3{font-size:14px}
+  .card .price{font-size:18px}
+  .desc{font-size:12px}
+
+  .btn{font-size:12px;padding:10px 6px}
+  .filter-title{font-size:11px;padding:8px 10px}
+
+  /* Cb-row chips fit */
+  .cb-chip{font-size:12px;padding:6px 10px}
 }
-.sidebar-toggle{display:none;width:100%;padding:12px;background:var(--brand);color:#fff;border:none;font-size:14px;font-weight:700;cursor:pointer;align-items:center;justify-content:space-between}
+
+/* Touch scrolling everywhere */
+.scrollable,.photos,.district-list,.sidebar{-webkit-overflow-scrolling:touch}
+
+.sidebar-toggle{display:none;width:100%;padding:14px;background:var(--brand);color:#fff;border:none;font-size:15px;font-weight:700;cursor:pointer;align-items:center;justify-content:space-between;min-height:48px}
 
 /* === DISTRICT RATING CHIP === */
 .rating-chip{display:inline-flex;align-items:center;font-size:11px;padding:3px 9px;border-radius:12px;font-weight:700;color:#fff;white-space:nowrap;margin-bottom:4px}
