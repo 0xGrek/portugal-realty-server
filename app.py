@@ -895,6 +895,10 @@ def serve_data_json():
         response=_json.dumps(filtered, ensure_ascii=False, separators=(",", ":")),
         mimetype="application/json",
     )
+    # Cache 1h on browser/CDN, serve stale up to 24h while revalidating.
+    # Vary: Accept-Encoding tells caches that gzip/br responses differ from raw.
+    response.headers["Cache-Control"] = "public, max-age=3600, stale-while-revalidate=86400"
+    response.headers["Vary"] = "Accept-Encoding"
     return response
 
 
