@@ -244,6 +244,29 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 /* === DISTRICT RATING CHIP === */
 .rating-chip{display:inline-flex;align-items:center;font-size:11px;padding:3px 9px;border-radius:12px;font-weight:700;color:#fff;white-space:nowrap;margin-bottom:4px}
 
+/* === DISTRICT TIER CHECKBOXES (filter sidebar) === */
+.tier-list{display:flex;flex-direction:column;gap:5px;margin-bottom:10px}
+.tier-list label{display:flex;align-items:center;gap:8px;cursor:pointer;font-size:12px;padding:5px 8px;border-radius:6px;border:1.5px solid var(--border);transition:.15s}
+.tier-list label:hover{background:#f5f5f5}
+.tier-list input{width:14px;height:14px;cursor:pointer;accent-color:var(--brand);flex-shrink:0}
+.tier-list .tier-name{font-weight:600;flex:1}
+.tier-list .tier-count{font-size:11px;color:var(--text3);font-weight:500}
+.tier-list label[data-tier="TOP"]      {border-left:4px solid #10b981}
+.tier-list label[data-tier="BUY"]      {border-left:4px solid #3b82f6}
+.tier-list label[data-tier="CHECK"]    {border-left:4px solid #f59e0b}
+.tier-list label[data-tier="AVOID"]    {border-left:4px solid #ef4444}
+.tier-list label[data-tier="BLACKLIST"]{border-left:4px solid #7f1d1d}
+.tier-list label[data-tier="NONE"]     {border-left:4px solid #9ca3af}
+
+/* === RATING BADGE on card (top-right corner overlay) === */
+.rating-badge-corner{position:absolute;top:8px;right:8px;font-size:10px;padding:4px 8px;border-radius:14px;font-weight:700;color:#fff;white-space:nowrap;z-index:3;box-shadow:0 1px 4px rgba(0,0,0,.25);letter-spacing:.3px}
+.rb-top      {background:linear-gradient(135deg,#fbbf24,#d97706);color:#1f2937}
+.rb-buy      {background:#3b82f6}
+.rb-check    {background:#f59e0b}
+.rb-avoid    {background:#ef4444}
+.rb-blacklist{background:#7f1d1d}
+.card{position:relative} /* allow .rating-badge-corner absolute positioning */
+
 /* === NO RESULTS === */
 #no-results{display:none;text-align:center;padding:60px;color:var(--text3)}
 #no-results h2{font-size:18px;margin-bottom:8px}
@@ -436,7 +459,41 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
   <div class="filter-section" id="sec-district-rating">
     <div class="filter-title" onclick="toggleSection('sec-district-rating')">⭐ Оценка района</div>
     <div class="filter-body">
-      <div style="margin-bottom:6px;font-size:12px;color:var(--text2)">
+      <!-- Tier multi-select checkboxes -->
+      <div class="tier-list" id="tier-list">
+        <label data-tier="TOP">
+          <input type="checkbox" class="tier-cb" value="TOP">
+          <span class="tier-name">🏆 TOP</span>
+          <span class="tier-count" id="tcnt-TOP">0</span>
+        </label>
+        <label data-tier="BUY">
+          <input type="checkbox" class="tier-cb" value="BUY">
+          <span class="tier-name">✅ BUY</span>
+          <span class="tier-count" id="tcnt-BUY">0</span>
+        </label>
+        <label data-tier="CHECK">
+          <input type="checkbox" class="tier-cb" value="CHECK">
+          <span class="tier-name">⚠️ CHECK</span>
+          <span class="tier-count" id="tcnt-CHECK">0</span>
+        </label>
+        <label data-tier="AVOID">
+          <input type="checkbox" class="tier-cb" value="AVOID">
+          <span class="tier-name">❌ AVOID</span>
+          <span class="tier-count" id="tcnt-AVOID">0</span>
+        </label>
+        <label data-tier="BLACKLIST">
+          <input type="checkbox" class="tier-cb" value="BLACKLIST">
+          <span class="tier-name">🚫 BLACKLIST</span>
+          <span class="tier-count" id="tcnt-BLACKLIST">0</span>
+        </label>
+        <label data-tier="NONE">
+          <input type="checkbox" class="tier-cb" value="NONE">
+          <span class="tier-name">❓ Без оценки</span>
+          <span class="tier-count" id="tcnt-NONE">0</span>
+        </label>
+      </div>
+      <!-- Score slider -->
+      <div style="margin-bottom:6px;font-size:12px;color:var(--text2);margin-top:4px">
         Мин. оценка: <strong><span id="min-score-val">1</span></strong>/10
       </div>
       <input type="range" id="min-score" min="1" max="10" value="1" step="1"
@@ -446,7 +503,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
         <span>1 BLACKLIST</span><span>5 CHECK</span><span>10 TOP</span>
       </div>
       <div style="margin-top:8px;font-size:11px;color:var(--text3)">
-        Листинги без оценки района <strong>не скрываются</strong>
+        Если ничего не выбрано — показываются все. Slider не влияет на листинги без оценки.
       </div>
     </div>
   </div>
@@ -688,6 +745,22 @@ function buildDistrictList() {
   }
   allDistricts = Object.entries(counts).sort((a,b) => b[1]-a[1]).map(([d,c]) => ({d,c}));
   renderDistrictList(allDistricts);
+  computeTierCounts();
+}
+
+// Compute tier counts (TOP/BUY/CHECK/AVOID/BLACKLIST/NONE) once after data load.
+// Result cached by injecting numbers рядом с каждой checkbox.
+function computeTierCounts() {
+  const tierCounts = {TOP:0, BUY:0, CHECK:0, AVOID:0, BLACKLIST:0, NONE:0};
+  for (const l of ALL_DATA) {
+    const rec = l.district_recommendation;
+    if (rec && tierCounts.hasOwnProperty(rec)) tierCounts[rec]++;
+    else tierCounts.NONE++;
+  }
+  for (const tier of Object.keys(tierCounts)) {
+    const el = document.getElementById('tcnt-' + tier);
+    if (el) el.textContent = '(' + tierCounts[tier].toLocaleString() + ')';
+  }
 }
 
 function renderDistrictList(list) {
@@ -744,11 +817,17 @@ function getFilters() {
 
   const checkedTypos = active_typos;  // Set from chip clicks
 
+  // District tier checkboxes — Set of selected tier names (TOP/BUY/CHECK/AVOID/BLACKLIST/NONE)
+  // Empty Set = no filter (show all). NONE = listings без оценки (null/undefined/empty).
+  const checkedTiers = new Set(
+    [...document.querySelectorAll('.tier-cb:checked')].map(cb => cb.value)
+  );
+
   return {
     priceMin, priceMax, areaMin, areaMax, pm2Min, pm2Max, propType,
     sellerPrivate, sellerAgent, sellerDev, anySeller,
     fFresh, fDrop, fGem, fVideo, fNewBuild, fHideBlocked, fHideRelistings,
-    checkedDistricts, checkedTypos, minDistrictScore,
+    checkedDistricts, checkedTypos, minDistrictScore, checkedTiers,
   };
 }
 
@@ -845,6 +924,22 @@ function matchesFilter(l, f) {
   if (f.minDistrictScore > 1) {
     const score = l.district_score;
     if (score !== null && score !== undefined && score < f.minDistrictScore) return false;
+  }
+
+  // District tier filter (multi-select checkboxes).
+  // Если ничего не отмечено → no filter (показать всё).
+  // Если что-то отмечено — листинг должен matched одну из selected tiers.
+  // 'NONE' tier matches listings без оценки (null/undefined/empty string).
+  if (f.checkedTiers && f.checkedTiers.size > 0) {
+    const rec = l.district_recommendation;
+    const hasRating = rec !== null && rec !== undefined && rec !== '';
+    if (!hasRating) {
+      // листинг без оценки — passes только если 'NONE' выбран
+      if (!f.checkedTiers.has('NONE')) return false;
+    } else {
+      // листинг с оценкой — passes если его tier в selected set
+      if (!f.checkedTiers.has(rec)) return false;
+    }
   }
 
   return true;
@@ -1004,6 +1099,8 @@ function countActiveFilters() {
   const msVal = parseInt(document.getElementById('min-score')?.value) || 1;
   if (msVal > 1) n++;
   n += active_typos.size;
+  // Tier checkboxes — каждый checked counts as one filter
+  n += document.querySelectorAll('.tier-cb:checked').length;
   // District: count unchecked
   const totalD = allDistricts.length;
   const checkedD = document.querySelectorAll('.d-cb:checked').length;
@@ -1023,11 +1120,42 @@ function updateFilterBadge() {
   }
 }
 
+// Debounce helper — delays fn execution until ms passed without новых invocations.
+// Используется для text inputs (price/area/pm2): keystroke → typing fast → only the
+// last keystroke (after 250ms idle) triggers updatePreviewCount → no UI lag на каждый
+// введённый символ. Сохраняем `this` через arrow function в setTimeout для корректного
+// контекста при event-handler invocation.
+function debounce(fn, ms) {
+  let timer;
+  return function(...args) {
+    clearTimeout(timer);
+    timer = setTimeout(() => fn.apply(this, args), ms);
+  };
+}
+
 // Add live preview on input changes
 document.addEventListener('DOMContentLoaded', () => {
+  // Debounced version для text inputs — 250ms задержка, чтобы typing не lag-овал.
+  // Для checkboxes/radios/selects/range — instant (change event fires only once).
+  const debouncedPreview = debounce(updatePreviewCount, 250);
+
   document.querySelectorAll('#sidebar-wrap input, #sidebar-wrap select').forEach(el => {
-    el.addEventListener('change', updatePreviewCount);
-    el.addEventListener('input', updatePreviewCount);
+    const isText = el.tagName === 'INPUT' &&
+      (el.type === 'number' || el.type === 'text' || el.type === 'search');
+    // Range slider — instant (drag = continuous), но мы уже handle slider в onclick handler
+    // на самом элементе, поэтому здесь skip range to avoid double-fire.
+    if (el.type === 'range') {
+      el.addEventListener('change', updatePreviewCount);
+    } else if (isText) {
+      // Text/number inputs — debounce 'input' event (fires per keystroke).
+      // 'change' fires on blur — instant OK.
+      el.addEventListener('input', debouncedPreview);
+      el.addEventListener('change', updatePreviewCount);
+    } else {
+      // Checkboxes, radios, selects — instant.
+      el.addEventListener('change', updatePreviewCount);
+      el.addEventListener('input', updatePreviewCount);
+    }
   });
 
   // hide-relistings: restore from localStorage and re-apply filters on toggle.
@@ -1148,6 +1276,10 @@ function buildCard(l) {
     ? '<span class="warn-badge">⚠ Регион?</span>'
     : '';
 
+  // ── Rating badge in card corner (top-right overlay) ──────────────────────
+  // Показываем только если есть оценка района. Без оценки → ничего не рендерим.
+  const cornerBadge = getRatingCornerBadge(l);
+
   // ── Location quality badge — GPS verified / address-only ─────────────────
   const locQualityBadge = getLocationQualityBadge(l);
 
@@ -1214,6 +1346,7 @@ function buildCard(l) {
   }
 
   div.innerHTML = `
+    ${cornerBadge}
     <div class="card-header">
       <span class="type-badge" style="background:${badgeColor}">${typeLabel}</span>
       ${sellerBadge}
@@ -1247,7 +1380,7 @@ function buildCard(l) {
       <button data-action="save-note">Сохранить</button>
     </div>
     <div class="buttons">
-      <a href="${escAttr(l.url)}" target="_blank" class="btn">Смотреть</a>
+      <a href="${escAttr(safeUrl(l.url))}" target="_blank" rel="noopener noreferrer" class="btn">Смотреть</a>
       <a href="${escAttr(mapsUrl)}" target="_blank" class="btn btn-map">Карта</a>
     </div>`;
 
@@ -1285,6 +1418,30 @@ function getRatingBadge(l) {
   const rec = l.district_recommendation || '';
   const style = colors[rec] || 'background:#6b7280;color:white';
   return `<span class="rating-chip" style="${style}">${escHtml(rec)} ${escHtml(String(l.district_score))}/10</span>`;
+}
+
+// Corner badge — top-right overlay. Без оценки → empty string (ничего не рендерится).
+// Tier-specific icons matching filter checkboxes (TOP=🏆, BUY=✅, CHECK=⚠️, AVOID=❌, BLACKLIST=🚫).
+// Format: "🏆 TOP 10/10" — короткое + score справа в маленьком.
+function getRatingCornerBadge(l) {
+  const rec = l.district_recommendation;
+  if (!rec) return ''; // без оценки — не показываем
+  const tierConfig = {
+    'TOP':       {cls:'rb-top',       icon:'🏆'},
+    'BUY':       {cls:'rb-buy',       icon:'✅'},
+    'CHECK':     {cls:'rb-check',     icon:'⚠️'},
+    'AVOID':     {cls:'rb-avoid',     icon:'❌'},
+    'BLACKLIST': {cls:'rb-blacklist', icon:'🚫'},
+  };
+  const cfg = tierConfig[rec];
+  if (!cfg) return '';
+  const score = l.district_score;
+  const scoreText = (score !== null && score !== undefined && score !== '')
+    ? ` <span style="opacity:.85;font-weight:500">${escHtml(String(score))}/10</span>`
+    : '';
+  // BLACKLIST → только иконка (минимум визуального шума)
+  const labelText = (rec === 'BLACKLIST') ? '' : ' ' + escHtml(rec);
+  return `<span class="rating-badge-corner ${cfg.cls}">${cfg.icon}${labelText}${scoreText}</span>`;
 }
 
 // =====================================================================
@@ -1445,6 +1602,8 @@ function resetFilters() {
   // Reset district score slider
   const msEl = document.getElementById('min-score');
   if (msEl) { msEl.value = 1; document.getElementById('min-score-val').textContent = '1'; }
+  // Reset tier checkboxes (TOP/BUY/CHECK/AVOID/BLACKLIST/NONE)
+  document.querySelectorAll('.tier-cb').forEach(cb => cb.checked = false);
   active_typos.clear();
   document.querySelectorAll('.cb-chip').forEach(c => c.classList.remove('active'));
   document.querySelectorAll('.preset-btn').forEach(b => b.classList.remove('active'));
@@ -1462,6 +1621,15 @@ function escHtml(s) {
 function escAttr(s) {
   if (!s) return '';
   return String(s).replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+}
+// safeUrl — last line of defense (defense in depth):
+// блокирует javascript:/data:/vbscript: schemes даже если они каким-то
+// образом просочились через export_json.safe_url() и Listing validator.
+// Returns '#' for invalid URLs so the link стоит inert но визуально present.
+function safeUrl(u) {
+  if (!u) return '#';
+  if (typeof u !== 'string') return '#';
+  return /^https?:\/\//i.test(u) ? u : '#';
 }
 
 // =====================================================================
