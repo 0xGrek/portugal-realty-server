@@ -23,9 +23,13 @@ from flask import (
     session,
     url_for,
 )
+from flask_compress import Compress
 from werkzeug.middleware.proxy_fix import ProxyFix
 
 app = Flask(__name__, static_folder="static")
+# Enable gzip/brotli compression for responses >500 bytes.
+# Saves ~83% bandwidth on data.json (13 MB → ~2.2 MB).
+Compress(app)
 # Render terminates TLS at one proxy — trust exactly one X-Forwarded-For hop.
 # Prevents attacker-spoofed XFF bypassing rate limits (request.remote_addr
 # now reflects the true client IP, not the socket peer).
