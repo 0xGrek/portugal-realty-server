@@ -13,14 +13,22 @@ html,body{overflow-x:hidden;max-width:100vw}
   --bg:#f5f5f5;--card:#fff;--border:#e0e0e0;
   --text:#333;--text2:#555;--text3:#888;
   --radius:12px;--radius-sm:8px;--shadow:0 2px 8px rgba(0,0,0,.1);
+  --safe-bottom:env(safe-area-inset-bottom,0px);
+  --safe-top:env(safe-area-inset-top,0px);
 }
-body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;padding-bottom:var(--safe-bottom)}
+
+/* === GLOBAL TEXT-WRAP — prevents long titles/addresses from breaking layout === */
+h1,h2,h3,h4,.card h3,.location a,.tracking,.desc,.tag-pro,.tag-con,.tag-alert,.ltv-tag,.edge-badge,.rating-chip{
+  word-wrap:break-word;
+  overflow-wrap:anywhere;
+}
 
 /* === LAYOUT === */
 .layout{display:grid;grid-template-columns:300px 1fr;grid-template-rows:auto 1fr;min-height:100vh}
-.topbar{grid-column:1/-1;background:linear-gradient(135deg,var(--brand),var(--brand2));color:#fff;padding:14px 20px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
-.topbar h1{font-size:18px;font-weight:700;flex:1}
-.topbar .back-link{color:rgba(255,255,255,.8);text-decoration:none;font-size:13px;padding:6px 12px;border:1px solid rgba(255,255,255,.4);border-radius:20px;white-space:nowrap}
+.topbar{grid-column:1/-1;background:linear-gradient(135deg,var(--brand),var(--brand2));color:#fff;padding:14px 20px;display:flex;align-items:center;gap:16px;flex-wrap:wrap;padding-top:calc(14px + var(--safe-top))}
+.topbar h1{font-size:18px;font-weight:700;flex:1;min-width:0;word-wrap:break-word;overflow-wrap:anywhere}
+.topbar .back-link{color:rgba(255,255,255,.8);text-decoration:none;font-size:13px;padding:6px 12px;border:1px solid rgba(255,255,255,.4);border-radius:20px;white-space:nowrap;flex-shrink:0}
 .topbar .back-link:hover{background:rgba(255,255,255,.15)}
 .sidebar{background:#fff;border-right:1px solid var(--border);overflow-y:auto;padding:14px;position:sticky;top:0;height:100vh;scrollbar-width:thin}
 .main{padding:14px;overflow-y:auto}
@@ -234,26 +242,34 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
   #sidebar-wrap.open{display:block}
   .main{padding:10px;width:100%;max-width:100%}
 
-  /* Topbar — compact */
-  .topbar{padding:10px 12px;gap:8px}
-  .topbar h1{font-size:15px;line-height:1.2}
-  .topbar .back-link{font-size:11px;padding:5px 10px}
+  /* Topbar — compact + truncate long h1 */
+  .topbar{padding:10px 12px;gap:8px;padding-top:calc(10px + var(--safe-top))}
+  .topbar > *{flex-shrink:1;min-width:0}
+  .topbar h1{font-size:15px;line-height:1.2;text-overflow:ellipsis;overflow:hidden;white-space:nowrap;max-width:100%;flex:1 1 auto}
+  .topbar .back-link{font-size:11px;padding:5px 10px;flex-shrink:0}
 
   /* Grid: single column with safe gap */
   #cards-grid{grid-template-columns:1fr !important;gap:12px}
   .card{width:100%;max-width:100%;min-height:auto;padding:12px;box-sizing:border-box;overflow:hidden}
+
+  /* Card-header: allow card-actions row to wrap so 5 buttons + badges don't overflow */
+  .card-header{flex-wrap:wrap;gap:6px;row-gap:6px}
+  .card-actions{flex-wrap:nowrap;flex-shrink:0;margin-left:auto}
 
   /* Photos — fit container, not minimum 180px which forces overflow */
   .photos{height:200px;gap:6px}
   .photos img{min-width:80%;max-width:100%;width:auto;height:100%;object-fit:cover}
   .photo-placeholder{width:100%;min-width:0;height:100%;max-height:200px}
 
-  /* Card text wrapping */
-  .card h3{font-size:15px;line-height:1.35;word-wrap:break-word;overflow-wrap:break-word;hyphens:auto}
-  .card .price{font-size:20px;margin-bottom:6px}
-  .desc{font-size:13px;-webkit-line-clamp:4;min-height:auto}
-  .details{font-size:12px}
+  /* Card text wrapping — aggressive break for long titles/addresses */
+  .card h3{font-size:15px;line-height:1.35;word-wrap:break-word;overflow-wrap:anywhere;hyphens:auto}
+  .card .price{font-size:20px;margin-bottom:6px;word-wrap:break-word;overflow-wrap:anywhere}
+  .desc{font-size:13px;-webkit-line-clamp:4;min-height:auto;overflow-wrap:anywhere}
+  .details{font-size:12px;flex-wrap:wrap}
   .details span{padding:3px 8px}
+  .location a{word-wrap:break-word;overflow-wrap:anywhere;display:inline-block;max-width:100%}
+  .tracking{flex-wrap:wrap;gap:8px}
+  .ltv-tag{word-wrap:break-word;overflow-wrap:anywhere;display:block}
 
   /* Buttons — tap-friendly */
   .buttons{gap:8px;padding-top:8px}
@@ -272,31 +288,38 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
   /* Filter pills/chips — easier to tap */
   .cb-chip,.preset-btn,.edge-pill,.mode-btn,.shelf-tab{padding:8px 14px;font-size:13px;min-height:36px;display:inline-flex;align-items:center}
 
+  /* Edge-badges row wraps so не overflow card */
+  .edge-badges{flex-wrap:wrap;gap:4px}
+
   /* Inputs */
   .price-row input,.range-row input,.district-search{padding:10px;font-size:14px;min-height:40px}
 
   /* Sort row scrollable */
   .sort-row{gap:8px}
-  #sort-select{padding:8px 12px;font-size:13px;min-height:40px}
+  #sort-select{padding:8px 12px;font-size:13px;min-height:40px;max-width:100%}
   .view-btn{padding:8px 12px;min-height:40px}
 
   /* Mode bar / edge bar — horizontally scrollable on phone */
   .mode-bar,.edge-bar{flex-wrap:wrap;gap:6px}
 
   /* Shelf tabs — wrap nicely */
-  .shelf-tabs{padding:8px 10px;gap:6px}
-  .shelf-tab{padding:8px 12px;font-size:12px}
+  .shelf-tabs{padding:8px 10px;gap:6px;flex-wrap:wrap}
+  .shelf-tab{padding:8px 12px;font-size:12px;word-wrap:break-word}
 
-  /* Counter pill — smaller */
-  .counter-pill{bottom:10px;right:10px;padding:6px 12px;font-size:11px}
+  /* Counter pill — move LEFT to не overlap FAB (bottom-right) */
+  .counter-pill{bottom:calc(10px + var(--safe-bottom));left:10px;right:auto;padding:6px 12px;font-size:11px}
 
   /* Apply/reset bar tap targets */
   #btn-apply,#btn-reset{padding:12px;font-size:14px;min-height:44px}
+
+  /* Pagination/load-more — leave space for FAB (bottom-right 56px FAB + 20px gap = 80px) */
+  #load-more-wrap{padding:20px 10px;margin-bottom:calc(80px + var(--safe-bottom))}
+  #footer-stats{margin-bottom:0}
 }
 
 @media(max-width:480px){
   /* iPhone SE / small phones */
-  .topbar{padding:8px 10px}
+  .topbar{padding:8px 10px;padding-top:calc(8px + var(--safe-top))}
   .topbar h1{font-size:14px}
   body{font-size:14px}
   .main{padding:8px}
@@ -314,6 +337,23 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 
   /* Cb-row chips fit */
   .cb-chip{font-size:12px;padding:6px 10px}
+
+  /* Rating badge corner — smaller на iPhone SE чтобы не overlap title */
+  .rating-badge-corner{top:8px;right:8px;font-size:10px;padding:4px 8px}
+
+  /* Card-actions on tiny phones — slightly smaller buttons чтобы fit без overflow */
+  .card-actions button{font-size:20px;min-width:32px;min-height:32px;padding:4px 2px}
+
+  /* Edge-pills/mode-btn — slightly compact на 320px */
+  .cb-chip,.preset-btn,.edge-pill,.mode-btn,.shelf-tab{padding:6px 10px;font-size:12px}
+}
+
+/* iPhone 320px ultra-narrow */
+@media(max-width:360px){
+  .topbar h1{font-size:13px}
+  .topbar .back-link{font-size:10px;padding:4px 8px}
+  .card-actions button{min-width:28px;min-height:28px;font-size:18px}
+  .mobile-filter-close{padding:14px 20px;font-size:14px}
 }
 
 /* Touch scrolling everywhere */
@@ -322,10 +362,10 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 .sidebar-toggle{display:none;width:100%;padding:14px;background:var(--brand);color:#fff;border:none;font-size:15px;font-weight:700;cursor:pointer;align-items:center;justify-content:space-between;min-height:48px}
 
 /* === MOBILE FILTER FAB + FULLSCREEN MODAL === */
-#mobileFilterFab{display:none;position:fixed;bottom:20px;right:20px;z-index:1000;width:56px;height:56px;border-radius:50%;background:linear-gradient(135deg,#007AFF 0%,#5856D6 100%);color:#fff;font-size:24px;border:none;box-shadow:0 8px 24px rgba(0,122,255,.4),0 2px 4px rgba(0,0,0,.1);cursor:pointer;align-items:center;justify-content:center;animation:gentlePulse 3s ease-in-out infinite;transition:transform .2s,box-shadow .2s}
+#mobileFilterFab{display:none;position:fixed;bottom:calc(20px + var(--safe-bottom));right:20px;z-index:1000;width:56px;height:56px;border-radius:50%;background:linear-gradient(135deg,#007AFF 0%,#5856D6 100%);color:#fff;font-size:24px;border:none;box-shadow:0 8px 24px rgba(0,122,255,.4),0 2px 4px rgba(0,0,0,.1);cursor:pointer;align-items:center;justify-content:center;animation:gentlePulse 3s ease-in-out infinite;transition:transform .2s,box-shadow .2s}
 #mobileFilterFab:hover,#mobileFilterFab:active{transform:scale(1.08);box-shadow:0 12px 32px rgba(0,122,255,.5)}
 @keyframes gentlePulse{0%,100%{transform:scale(1)}50%{transform:scale(1.03)}}
-.mobile-filter-close{display:none;position:fixed;bottom:20px;left:50%;transform:translateX(-50%);z-index:1001;padding:16px 36px;background:linear-gradient(135deg,#34C759 0%,#28A745 100%);color:#fff;border:none;border-radius:30px;font-size:16px;font-weight:700;letter-spacing:.5px;box-shadow:0 4px 16px rgba(52,199,89,.4);cursor:pointer;transition:transform .15s,box-shadow .15s}
+.mobile-filter-close{display:none;position:fixed;bottom:calc(20px + var(--safe-bottom));left:50%;transform:translateX(-50%);z-index:1001;padding:16px 36px;background:linear-gradient(135deg,#34C759 0%,#28A745 100%);color:#fff;border:none;border-radius:30px;font-size:16px;font-weight:700;letter-spacing:.5px;box-shadow:0 4px 16px rgba(52,199,89,.4);cursor:pointer;transition:transform .15s,box-shadow .15s;max-width:calc(100% - 40px);white-space:nowrap}
 .mobile-filter-close:hover{box-shadow:0 6px 20px rgba(52,199,89,.55)}
 .mobile-filter-close:active{transform:translateX(-50%) scale(.97)}
 @media(max-width:768px){
@@ -375,7 +415,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 #no-results h2{font-size:18px;margin-bottom:8px}
 
 /* === USER BAR (fixed top-right logout) === */
-#user-bar{position:fixed;top:10px;right:14px;z-index:300;display:none;align-items:center;gap:8px;background:rgba(255,255,255,.95);padding:6px 12px;border-radius:20px;box-shadow:0 2px 8px rgba(0,0,0,.2);font-size:12px;color:var(--text2)}
+#user-bar{position:fixed;top:calc(10px + var(--safe-top));right:14px;z-index:300;display:none;align-items:center;gap:8px;background:rgba(255,255,255,.95);padding:6px 12px;border-radius:20px;box-shadow:0 2px 8px rgba(0,0,0,.2);font-size:12px;color:var(--text2)}
 #user-bar.visible{display:inline-flex}
 #user-bar .user-name{font-weight:600;color:var(--brand)}
 #user-bar .logout-btn{background:var(--red);color:#fff;border:none;border-radius:14px;padding:5px 12px;font-size:11px;font-weight:600;cursor:pointer;transition:.15s}
