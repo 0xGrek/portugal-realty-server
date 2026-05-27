@@ -6,7 +6,7 @@ import hmac
 import os
 import secrets
 import time
-from collections import defaultdict, deque
+from collections import Counter, defaultdict, deque
 from contextlib import contextmanager
 from datetime import timedelta
 from functools import wraps
@@ -26,7 +26,7 @@ from flask import (
 from flask_compress import Compress
 from werkzeug.middleware.proxy_fix import ProxyFix
 
-app = Flask(__name__, static_folder="static")
+app = Flask(__name__, static_folder=None)
 # Enable gzip/brotli compression for responses >500 bytes.
 # Saves ~83% bandwidth on data.json (13 MB → ~2.2 MB).
 Compress(app)
@@ -37,7 +37,8 @@ app.wsgi_app = ProxyFix(app.wsgi_app, x_for=1, x_proto=1, x_host=1)
 app.secret_key = os.getenv("SECRET_KEY")
 
 NEON_URL = os.getenv("NEON_DATABASE_URL")
-LEGACY_PASSWORD = os.getenv("APP_PASSWORD")  # kept for 1-release backward compat
+ALLOW_LEGACY_PASSWORD = os.getenv("ALLOW_LEGACY_PASSWORD", "0") == "1"
+LEGACY_PASSWORD = os.getenv("APP_PASSWORD") if ALLOW_LEGACY_PASSWORD else None
 ADMIN_PASSWORD = os.getenv("APP_ADMIN_PASSWORD")  # used for seeding admin user
 
 if not app.secret_key or not NEON_URL:
@@ -224,7 +225,11 @@ def _check_csrf() -> bool:
 # --- Decorators ---
 
 def login_required(f):
-    """Reject if session has no user_id. Also accepts legacy X-Password for 1-release compat."""
+    """Reject if session has no user_id.
+
+    Legacy X-Password is disabled by default and only works when
+    ALLOW_LEGACY_PASSWORD=1 is explicitly set.
+    """
     @wraps(f)
     def decorated(*args, **kwargs):
         if session.get("user_id"):
@@ -785,6 +790,8 @@ def sync_to_user():
     target_username = (data.get("target_username") or "").strip()
     if not target_username:
         return jsonify({"error": "target_username required"}), 400
+    if not session.get("is_admin"):
+        return jsonify({"error": "forbidden"}), 403
 
     source_id = session["user_id"]
     with _get_conn() as conn:
@@ -836,7 +843,17 @@ def index():
 
 @app.route("/static/<path:path>")
 def static_files(path):
-    return send_from_directory("static", path)
+    normalized = path.replace("\\", "/").lstrip("/")
+    if normalized == "login.html":
+        return send_from_directory("static", normalized)
+    if normalized == "admin.html":
+        if not session.get("user_id"):
+            return jsonify({"error": "unauthorized"}), 401
+        if not session.get("is_admin"):
+            return jsonify({"error": "forbidden"}), 403
+    elif not session.get("user_id"):
+        return jsonify({"error": "unauthorized"}), 401
+    return send_from_directory("static", normalized)
 
 
 # --- Serve listings/ directory (server-synced frontend) ---
@@ -848,6 +865,208 @@ import json as _json
 _LISTINGS_DIR = _Path(__file__).parent / "static" / "listings"
 if not _LISTINGS_DIR.exists():
     _LISTINGS_DIR = _Path(__file__).parent.parent / "listings"
+
+_LISTINGS_CACHE = {"path": None, "mtime": None, "items": []}
+
+
+def _load_listings_json():
+    data_path = _LISTINGS_DIR / "data.json"
+    if not data_path.exists():
+        return []
+    try:
+        mtime = data_path.stat().st_mtime
+    except OSError:
+        return []
+    if _LISTINGS_CACHE["path"] == str(data_path) and _LISTINGS_CACHE["mtime"] == mtime:
+        return _LISTINGS_CACHE["items"]
+    try:
+        with open(str(data_path), "r", encoding="utf-8") as f:
+            items = _json.load(f)
+    except (OSError, ValueError):
+        items = []
+    _LISTINGS_CACHE.update({"path": str(data_path), "mtime": mtime, "items": items})
+    return items
+
+
+def _to_int(value, default=0):
+    try:
+        if value in (None, ""):
+            return default
+        return int(value)
+    except (TypeError, ValueError):
+        return default
+
+
+def _to_float(value, default=0.0):
+    try:
+        if value in (None, ""):
+            return default
+        return float(value)
+    except (TypeError, ValueError):
+        return default
+
+
+def _csv_set(value: str | None) -> set[str]:
+    if not value:
+        return set()
+    return {v for v in (part.strip() for part in value.split(",")) if v}
+
+
+def _has_known_days(item: dict) -> bool:
+    days = item.get("days")
+    if days in (None, ""):
+        return False
+    try:
+        float(days)
+        return True
+    except (TypeError, ValueError):
+        return False
+
+
+def _apply_listing_filters(items: list[dict], args) -> list[dict]:
+    shelf = args.get("shelf", "match").lower()
+    price_min = _to_int(args.get("price_min"), 0)
+    price_max = _to_int(args.get("price_max"), 0)
+    area_min = _to_float(args.get("area_min"), 0)
+    area_max = _to_float(args.get("area_max"), 0)
+    pm2_min = _to_float(args.get("pm2_min"), 0)
+    pm2_max = _to_float(args.get("pm2_max"), 0)
+    prop_type = args.get("type", "")
+    min_score = _to_int(args.get("min_score"), 1)
+    districts = _csv_set(args.get("districts"))
+    tiers = _csv_set(args.get("tiers"))
+    sellers = _csv_set(args.get("sellers"))
+    edges = _csv_set(args.get("edges"))
+    include_ids = _csv_set(args.get("ids"))
+    exclude_ids = _csv_set(args.get("exclude_ids"))
+    hide_relistings = args.get("hide_relistings") == "1"
+
+    filtered = []
+    for item in items:
+        sid = str(item.get("sid") or item.get("id") or "")
+        if include_ids and sid not in include_ids and str(item.get("id") or "") not in include_ids:
+            continue
+        if exclude_ids and (sid in exclude_ids or str(item.get("id") or "") in exclude_ids):
+            continue
+        if shelf == "match" and item.get("region_match") == 0:
+            continue
+        if shelf == "mismatch" and item.get("region_match") != 0:
+            continue
+        price = _to_int(item.get("price"), 0)
+        area = _to_float(item.get("area"), 0)
+        pm2 = _to_float(item.get("pm2"), 0)
+        if price_min and price < price_min:
+            continue
+        if price_max and price > price_max:
+            continue
+        if area_min and area < area_min:
+            continue
+        if area_max and (not area or area > area_max):
+            continue
+        if pm2_min and pm2 < pm2_min:
+            continue
+        if pm2_max and (not pm2 or pm2 > pm2_max):
+            continue
+        if prop_type and item.get("type") != prop_type:
+            continue
+        if districts and (item.get("district") or "?") not in districts:
+            continue
+        if sellers and (item.get("seller") or "") not in sellers:
+            continue
+        if min_score > 1:
+            score = item.get("district_score")
+            if score is not None and score < min_score:
+                continue
+        if tiers:
+            rec = item.get("district_recommendation") or ""
+            if not rec and "NONE" not in tiers:
+                continue
+            if rec and rec not in tiers:
+                continue
+        if hide_relistings and item.get("relisting"):
+            continue
+        if "fresh" in edges and not item.get("fresh"):
+            continue
+        if "drop" in edges and not item.get("drop"):
+            continue
+        if "gem" in edges and not item.get("gem"):
+            continue
+        if "video" in edges and not item.get("video"):
+            continue
+        if "private" in edges and item.get("seller") != "private":
+            continue
+        if "agent" in edges and item.get("seller") != "agent":
+            continue
+        known_days = _has_known_days(item)
+        if "dom-lt-30" in edges and not (known_days and item.get("days") < 30):
+            continue
+        if "dom-gt-365" in edges and not (known_days and item.get("days") > 365):
+            continue
+        filtered.append(item)
+    return filtered
+
+
+def _sort_listing_items(items: list[dict], sort_key: str) -> list[dict]:
+    def days_value(item, fallback):
+        return item.get("days") if _has_known_days(item) else fallback
+
+    key = sort_key or "price_asc"
+    if key == "price_desc":
+        return sorted(items, key=lambda x: _to_int(x.get("price"), 0), reverse=True)
+    if key == "pm2_asc":
+        return sorted(items, key=lambda x: _to_int(x.get("pm2"), 10**12) or 10**12)
+    if key == "days_asc":
+        return sorted(items, key=lambda x: days_value(x, 10**12))
+    if key == "days_desc":
+        return sorted(items, key=lambda x: days_value(x, -1), reverse=True)
+    if key == "area_asc":
+        return sorted(items, key=lambda x: _to_int(x.get("area"), 0))
+    if key == "area_desc":
+        return sorted(items, key=lambda x: _to_int(x.get("area"), 0), reverse=True)
+    return sorted(items, key=lambda x: _to_int(x.get("price"), 0))
+
+
+@app.route("/api/listings/meta")
+@login_required
+def listings_meta():
+    items = _load_listings_json()
+    districts = Counter((item.get("district") or "?") for item in items)
+    tier_counts = Counter((item.get("district_recommendation") or "NONE") for item in items)
+    for tier in ("TOP", "BUY", "CHECK", "AVOID", "BLACKLIST", "NONE"):
+        tier_counts.setdefault(tier, 0)
+    return jsonify({
+        "all_total": len(items),
+        "districts": [
+            {"d": d, "c": c}
+            for d, c in sorted(districts.items(), key=lambda kv: (-kv[1], kv[0]))
+        ],
+        "tier_counts": dict(tier_counts),
+    })
+
+
+@app.route("/api/listings/search")
+@login_required
+def listings_search_api():
+    items = _load_listings_json()
+    filtered = _apply_listing_filters(items, request.args)
+    filtered = _sort_listing_items(filtered, request.args.get("sort", "price_asc"))
+    if request.args.get("top50") == "1":
+        filtered = filtered[:50]
+    total = len(filtered)
+    offset = max(0, _to_int(request.args.get("offset"), 0))
+    limit = max(0, min(_to_int(request.args.get("limit"), 50), 200))
+    page = [] if limit == 0 else filtered[offset:offset + limit]
+    response = jsonify({
+        "items": page,
+        "total": total,
+        "all_total": len(items),
+        "offset": offset,
+        "limit": limit,
+        "has_more": bool(limit and offset + limit < total),
+    })
+    response.headers["Cache-Control"] = "private, max-age=60"
+    response.headers["Vary"] = "Cookie, Accept-Encoding"
+    return response
 
 
 @app.route("/listings/")
@@ -895,17 +1114,23 @@ def serve_data_json():
         response=_json.dumps(filtered, ensure_ascii=False, separators=(",", ":")),
         mimetype="application/json",
     )
-    # Cache 1h on browser/CDN, serve stale up to 24h while revalidating.
-    # Vary: Accept-Encoding tells caches that gzip/br responses differ from raw.
-    response.headers["Cache-Control"] = "public, max-age=3600, stale-while-revalidate=86400"
-    response.headers["Vary"] = "Accept-Encoding"
+    # Auth-gated data must stay out of shared caches. Keep a short private
+    # browser cache to avoid refetching the full payload on every navigation.
+    response.headers["Cache-Control"] = "private, max-age=300, stale-while-revalidate=3600"
+    response.headers["Vary"] = "Cookie, Accept-Encoding"
     return response
 
 
 @app.route("/listings/<path:filename>")
 @login_required
 def serve_listing(filename):
-    return send_from_directory(str(_LISTINGS_DIR), filename)
+    normalized = filename.replace("\\", "/").lstrip("/")
+    if (
+        normalized.lower().endswith(".html")
+        and normalized not in {"index.html", "search.html"}
+    ):
+        return redirect("/listings/search.html")
+    return send_from_directory(str(_LISTINGS_DIR), normalized)
 
 
 if __name__ == "__main__":

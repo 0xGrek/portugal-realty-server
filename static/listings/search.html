@@ -19,7 +19,7 @@ html,body{overflow-x:hidden;max-width:100vw}
 body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;padding-bottom:var(--safe-bottom)}
 
 /* === GLOBAL TEXT-WRAP — prevents long titles/addresses from breaking layout === */
-h1,h2,h3,h4,.card h3,.location a,.tracking,.desc,.tag-pro,.tag-con,.tag-alert,.ltv-tag,.edge-badge,.rating-chip{
+h1,h2,h3,h4,.card h3,.location a,.tracking,.desc,.tag-pro,.tag-con,.tag-alert,.edge-badge,.rating-chip{
   word-wrap:break-word;
   overflow-wrap:anywhere;
 }
@@ -31,6 +31,7 @@ h1,h2,h3,h4,.card h3,.location a,.tracking,.desc,.tag-pro,.tag-con,.tag-alert,.l
 .topbar .back-link{color:rgba(255,255,255,.8);text-decoration:none;font-size:13px;padding:6px 12px;border:1px solid rgba(255,255,255,.4);border-radius:20px;white-space:nowrap;flex-shrink:0}
 .topbar .back-link:hover{background:rgba(255,255,255,.15)}
 .sidebar{background:#fff;border-right:1px solid var(--border);overflow-y:auto;padding:14px;position:sticky;top:0;height:100vh;scrollbar-width:thin}
+#sidebar-wrap{max-width:100%;overflow-x:hidden}
 .main{padding:14px;overflow-y:auto}
 
 /* === SIDEBAR FILTERS === */
@@ -74,7 +75,7 @@ h1,h2,h3,h4,.card h3,.location a,.tracking,.desc,.tag-pro,.tag-con,.tag-alert,.l
 .district-bulk button:hover{background:#f0f0f0}
 
 /* Apply/Reset bar */
-#action-bar{position:sticky;top:0;background:#fff;padding:10px 12px;border-bottom:1px solid var(--border);z-index:10;display:flex;gap:8px;margin:-14px -14px 14px -14px}
+#action-bar{position:sticky;top:0;background:#fff;padding:10px 12px;border-bottom:1px solid var(--border);z-index:10;display:flex;gap:8px;margin:-14px 0 14px 0}
 #btn-apply{flex:2;background:var(--brand);color:#fff;border:none;border-radius:20px;padding:10px;font-size:14px;font-weight:700;cursor:pointer}
 #btn-apply:hover{background:var(--brand2)}
 #btn-reset{flex:1;background:#fff;color:var(--red);border:2px solid var(--red);border-radius:20px;padding:10px;font-size:13px;font-weight:700;cursor:pointer}
@@ -104,8 +105,6 @@ h1,h2,h3,h4,.card h3,.location a,.tracking,.desc,.tag-pro,.tag-con,.tag-alert,.l
 .mode-btn.maybe-mode.active{background:var(--orange);color:#fff}
 .mode-btn.block-mode{border-color:var(--red);color:var(--red)}
 .mode-btn.block-mode.active{background:var(--red);color:#fff}
-.mode-btn.nb-mode{border-color:#1565C0;color:#1565C0}
-.mode-btn.nb-mode.active{background:#1565C0;color:#fff}
 .mode-btn.top50-mode{border-color:#d84315;color:#d84315}
 .mode-btn.top50-mode.active{background:#d84315;color:#fff}
 
@@ -132,10 +131,10 @@ h1,h2,h3,h4,.card h3,.location a,.tracking,.desc,.tag-pro,.tag-con,.tag-alert,.l
 .card.maybe{border-left:4px solid var(--orange)}
 .card.blocked:not(.show-blocked){display:none!important}
 .card.blocked.show-blocked{border-left:4px solid var(--red);opacity:.75}
-.card-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+.card-header{display:flex;align-items:flex-start;margin-bottom:8px;gap:6px;flex-wrap:wrap}
 .type-badge{color:#fff;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:600}
 .seller-badge{color:#fff;padding:2px 8px;border-radius:12px;font-size:10px;font-weight:600}
-.card-actions{display:flex;gap:4px}
+.card-actions{display:flex;gap:4px;margin-left:auto;flex-shrink:0;z-index:2}
 .card-actions button{background:none;border:none;font-size:20px;cursor:pointer;padding:0 3px;color:#ccc;line-height:1}
 .card-actions button.active{color:var(--gold)}
 .card-actions .contacted-btn.active{color:var(--green)}
@@ -153,7 +152,6 @@ h1,h2,h3,h4,.card h3,.location a,.tracking,.desc,.tag-pro,.tag-con,.tag-alert,.l
 .eb-relisted{background:#ff9100}
 .eb-seller{background:#616161}
 .eb-video{background:#1976d2}
-.eb-new{background:#00838f}
 .eb-dom-fresh{background:#00c853}
 .eb-dom-normal{background:#fbc02d}
 .eb-dom-stale{background:#f57c00}
@@ -190,14 +188,8 @@ h1,h2,h3,h4,.card h3,.location a,.tracking,.desc,.tag-pro,.tag-con,.tag-alert,.l
 .tag-pro{font-size:11px;padding:2px 7px;border-radius:6px;background:#e8f5e9;color:#2e7d32}
 .tag-con{font-size:11px;padding:2px 7px;border-radius:6px;background:#fce4ec;color:var(--red)}
 
-/* IMT badge — reserved 28px slot */
+/* Rating/meta badge slot */
 .imt-slot{min-height:28px;margin-bottom:4px;display:flex;align-items:center}
-.imt-badge{font-size:11px;padding:3px 9px;border-radius:6px;background:#e8f5e9;color:#1b5e20;font-weight:700;display:inline-block}
-
-/* LTV block — reserved 3-scenario slot */
-.ltv-block{display:flex;flex-direction:column;gap:3px;margin-bottom:8px;min-height:88px;justify-content:flex-start}
-.ltv-block:empty,.ltv-empty{min-height:88px}
-.ltv-tag{font-size:11px;padding:3px 8px;border-radius:6px}
 
 /* Buttons — always at bottom */
 .buttons{display:flex;gap:8px;margin-top:auto;padding-top:10px}
@@ -269,8 +261,6 @@ h1,h2,h3,h4,.card h3,.location a,.tracking,.desc,.tag-pro,.tag-con,.tag-alert,.l
   .details span{padding:3px 8px}
   .location a{word-wrap:break-word;overflow-wrap:anywhere;display:inline-block;max-width:100%}
   .tracking{flex-wrap:wrap;gap:8px}
-  .ltv-tag{word-wrap:break-word;overflow-wrap:anywhere;display:block}
-
   /* Buttons — tap-friendly */
   .buttons{gap:8px;padding-top:8px}
   .btn{padding:12px 8px;font-size:13px;min-height:44px;display:flex;align-items:center;justify-content:center}
@@ -438,7 +428,7 @@ h1,h2,h3,h4,.card h3,.location a,.tracking,.desc,.tag-pro,.tag-con,.tag-alert,.l
 <body>
 
 <!-- Mobile filter FAB — floating gear button, only visible on phone -->
-<button id="mobileFilterFab" type="button" aria-label="Открыть фильтры" onclick="openMobileFilters()">⚙️</button>
+<button id="mobileFilterFab" data-testid="mobile-filter-fab" type="button" aria-label="Открыть фильтры" onclick="openMobileFilters()">⚙️</button>
 
 <!-- User bar — fixed top-right, shown only when logged into server -->
 <div id="user-bar">
@@ -472,8 +462,8 @@ h1,h2,h3,h4,.card h3,.location a,.tracking,.desc,.tag-pro,.tag-con,.tag-alert,.l
   <div id="action-bar">
     <div style="flex:1;display:flex;flex-direction:column;gap:6px">
       <div style="display:flex;gap:8px;align-items:center">
-        <button id="btn-apply" onclick="applyFilters()">Применить</button>
-        <button id="btn-reset" onclick="resetFilters()">Сбросить <span id="filter-badge"></span></button>
+        <button id="btn-apply" data-testid="apply-filters" onclick="applyFilters()">Применить</button>
+        <button id="btn-reset" data-testid="reset-filters" onclick="resetFilters()">Сбросить <span id="filter-badge"></span></button>
       </div>
       <div id="preview-count"></div>
     </div>
@@ -581,11 +571,10 @@ h1,h2,h3,h4,.card h3,.location a,.tracking,.desc,.tag-pro,.tag-con,.tag-alert,.l
     <div class="filter-title" onclick="toggleSection('sec-badges')">🏷️ Специальные</div>
     <div class="filter-body">
       <div class="cb-group">
-        <label><input type="checkbox" id="f-fresh"> 🆕 Новые &lt;24ч</label>
+        <label><input type="checkbox" id="f-fresh"> 🆕 Новые ≤1д</label>
         <label><input type="checkbox" id="f-drop"> 💰 Снижение цены</label>
         <label><input type="checkbox" id="f-gem"> 💎 Находки (–15%+)</label>
         <label><input type="checkbox" id="f-video"> 🎥 Есть видео</label>
-        <label><input type="checkbox" id="f-newbuild"> 🏗️ Новостройка</label>
       </div>
     </div>
   </div>
@@ -655,7 +644,7 @@ h1,h2,h3,h4,.card h3,.location a,.tracking,.desc,.tag-pro,.tag-con,.tag-alert,.l
   </div>
 
   </div><!-- end sidebar-wrap -->
-  <button class="mobile-filter-close" type="button" onclick="closeMobileFilters()">Применить фильтры</button>
+  <button class="mobile-filter-close" data-testid="mobile-apply-filters" type="button" onclick="closeMobileFilters()">Применить фильтры</button>
 </aside>
 
 <!-- MAIN -->
@@ -668,15 +657,14 @@ h1,h2,h3,h4,.card h3,.location a,.tracking,.desc,.tag-pro,.tag-con,.tag-alert,.l
     <button class="mode-btn contacted-mode" data-mode="contacted" onclick="setMode('contacted')">☎ (<span id="cnt-contacted">0</span>)</button>
     <button class="mode-btn maybe-mode" data-mode="maybe" onclick="setMode('maybe')">± (<span id="cnt-maybe">0</span>)</button>
     <button class="mode-btn block-mode" data-mode="blocked" onclick="setMode('blocked')">✕ (<span id="cnt-block">0</span>)</button>
-    <button class="mode-btn nb-mode" onclick="toggleNovoBanco()">🏦 NB 70% (<span id="cnt-nb">0</span>)</button>
-    <button class="mode-btn top50-mode" onclick="toggleTop50()">🔥 Топ-50</button>
+    <button class="mode-btn top50-mode" data-testid="top50-mode" onclick="toggleTop50()">🔥 Топ-50</button>
   </div>
 
   <!-- Edge filter pills (competitive signals) -->
   <div class="edge-bar">
-    <button class="edge-pill" data-edge="private" onclick="toggleEdge('private')">🧑 Частники</button>
+    <button class="edge-pill" data-edge="private" data-testid="edge-private" onclick="toggleEdge('private')">🧑 Частники</button>
     <button class="edge-pill" data-edge="agent" onclick="toggleEdge('agent')">🏢 Агентства</button>
-    <button class="edge-pill" data-edge="fresh" onclick="toggleEdge('fresh')">🆕 &lt;24ч</button>
+    <button class="edge-pill" data-edge="fresh" onclick="toggleEdge('fresh')">🆕 ≤1д</button>
     <button class="edge-pill" data-edge="drop" onclick="toggleEdge('drop')">💰 Снижение</button>
     <button class="edge-pill" data-edge="gem" onclick="toggleEdge('gem')">💎 Находка</button>
     <button class="edge-pill" data-edge="dom-lt-30" onclick="toggleEdge('dom-lt-30')">📅 &lt;30 дней</button>
@@ -721,7 +709,7 @@ h1,h2,h3,h4,.card h3,.location a,.tracking,.desc,.tag-pro,.tag-con,.tag-alert,.l
 
   <!-- Load more -->
   <div id="load-more-wrap">
-    <button id="btn-load-more" onclick="loadMore()">Загрузить ещё 50</button>
+    <button id="btn-load-more" data-testid="load-more" onclick="loadMore()">Загрузить ещё 50</button>
     <div id="footer-stats"></div>
   </div>
 </main>
@@ -741,15 +729,18 @@ let FILTERED = [];          // after filter+sort
 let PAGE_SIZE = 50;
 let rendered_count = 0;
 let active_typos = new Set();
+let selectedDistricts = new Set();
 let blocked_ids = new Set();
 let _favs = new Set(), _contacted = new Set(), _maybe = new Set();
 
-// === Ported state: category mode + edge filters + top50 + Novo Banco ===
+// === Ported state: category mode + edge filters + top50 ===
 let activeMode = 'all';       // 'all' | 'favs' | 'contacted' | 'maybe' | 'blocked'
 let activeEdges = new Set();  // edge-filter pills: private/agent/fresh/drop/gem/dom-lt-30/dom-gt-365/video
 let top50Mode = false;
-let novoBancoMode = false;
-const SAVINGS_CAP = 29000;    // NB 70% affordability threshold (EUR required cash)
+let SERVER_RESULTS_TOTAL = 0;
+let SERVER_ALL_TOTAL = 0;
+let SERVER_OFFSET = 0;
+let API_REQUEST_SEQ = 0;
 
 // === Shelf (region_match) — 'match' | 'mismatch' | 'all' ===
 // 'match'    → show only region_match=1 OR region_match IS NULL (default: safe shelf)
@@ -798,10 +789,21 @@ function showUserBar(username) {
 }
 
 async function initSync() {
+  if (!useSearchApi()) {
+    loadLS();
+    return;
+  }
   try {
     const resp = await fetch('/api/me', {credentials: 'same-origin'});
     if (resp.ok) {
       const data = await resp.json();
+      if (data.is_demo) {
+        SERVER_MODE = false;
+        window.CURRENT_USER = data.username || '';
+        showUserBar(window.CURRENT_USER);
+        loadLS();
+        return;
+      }
       SERVER_MODE = true;
       CSRF_TOKEN = data.csrf_token || '';
       window.CURRENT_USER = data.username || '';
@@ -818,7 +820,11 @@ async function initSync() {
           // Write server state to localStorage as cache
           saveLS();
           const noteMap = {};
-          if (state.notes) state.notes.forEach(function(n) { noteMap[n.listing_id] = n.note; });
+          if (Array.isArray(state.notes)) {
+            state.notes.forEach(function(n) { noteMap[n.listing_id] = n.note; });
+          } else if (state.notes && typeof state.notes === 'object') {
+            Object.assign(noteMap, state.notes);
+          }
           lsSet(LS.notes, noteMap);
         }
       } catch(e) {}
@@ -865,9 +871,110 @@ function saveLS() {
 // =====================================================================
 // FETCH DATA
 // =====================================================================
+function useSearchApi() {
+  const params = new URLSearchParams(window.location.search);
+  if (params.get('api') === '1') return true;
+  if (params.get('static') === '1') return false;
+  const host = window.location.hostname;
+  if (host === '127.0.0.1' || host === 'localhost' || window.location.protocol === 'file:') return false;
+  return window.location.pathname.startsWith('/listings/');
+}
+
+function activeModeIds() {
+  if (activeMode === 'favs') return _favs;
+  if (activeMode === 'contacted') return _contacted;
+  if (activeMode === 'maybe') return _maybe;
+  if (activeMode === 'blocked') return blocked_ids;
+  return null;
+}
+
+function buildServerParams(offset, limit, countOnly=false) {
+  const f = getFilters();
+  const params = new URLSearchParams();
+  params.set('offset', String(offset));
+  params.set('limit', countOnly ? '0' : String(limit));
+  params.set('shelf', activeShelf);
+  params.set('sort', document.getElementById('sort-select').value);
+  if (top50Mode) params.set('top50', '1');
+  if (f.priceMin) params.set('price_min', String(f.priceMin));
+  if (Number.isFinite(f.priceMax)) params.set('price_max', String(f.priceMax));
+  if (f.areaMin) params.set('area_min', String(f.areaMin));
+  if (Number.isFinite(f.areaMax)) params.set('area_max', String(f.areaMax));
+  if (f.pm2Min) params.set('pm2_min', String(f.pm2Min));
+  if (Number.isFinite(f.pm2Max)) params.set('pm2_max', String(f.pm2Max));
+  if (f.propType) params.set('type', f.propType);
+  if (f.minDistrictScore > 1) params.set('min_score', String(f.minDistrictScore));
+  if (f.checkedDistricts.size && f.checkedDistricts.size < allDistricts.length) {
+    params.set('districts', [...f.checkedDistricts].join(','));
+  }
+  if (f.checkedTiers.size) params.set('tiers', [...f.checkedTiers].join(','));
+  const sellers = [];
+  if (!f.anySeller) {
+    if (f.sellerPrivate) sellers.push('private');
+    if (f.sellerAgent) sellers.push('agent');
+    if (f.sellerDev) sellers.push('developer');
+  }
+  if (sellers.length) params.set('sellers', sellers.join(','));
+  const edges = [...activeEdges];
+  if (f.fFresh) edges.push('fresh');
+  if (f.fDrop) edges.push('drop');
+  if (f.fGem) edges.push('gem');
+  if (f.fVideo) edges.push('video');
+  if (edges.length) params.set('edges', [...new Set(edges)].join(','));
+  if (f.fHideRelistings) params.set('hide_relistings', '1');
+  const modeIds = activeModeIds();
+  if (modeIds) params.set('ids', modeIds.size ? [...modeIds].join(',') : '__none__');
+  else if (f.fHideBlocked && blocked_ids.size) params.set('exclude_ids', [...blocked_ids].join(','));
+  return params;
+}
+
+async function fetchServerPage(offset=0, append=false) {
+  const seq = ++API_REQUEST_SEQ;
+  const params = buildServerParams(offset, PAGE_SIZE);
+  const resp = await fetch('/api/listings/search?' + params.toString(), {cache: 'no-cache', credentials: 'same-origin'});
+  if (!resp.ok) throw new Error('HTTP ' + resp.status);
+  const data = await resp.json();
+  if (seq !== API_REQUEST_SEQ) return;
+  SERVER_RESULTS_TOTAL = data.total || 0;
+  SERVER_ALL_TOTAL = data.all_total || 0;
+  SERVER_OFFSET = data.offset || 0;
+  if (append) {
+    FILTERED = FILTERED.concat(data.items || []);
+    renderCards(data.items || []);
+  } else {
+    FILTERED = data.items || [];
+    rendered_count = 0;
+    document.getElementById('cards-grid').innerHTML = '';
+    document.getElementById('no-results').style.display = FILTERED.length ? 'none' : 'block';
+    renderCards(FILTERED);
+  }
+  rendered_count = FILTERED.length;
+  updateResultsUI();
+  updateCategoryCounts();
+}
+
 async function loadData() {
   try {
-    const resp = await fetch('data.json', {cache: 'default'});
+    if (useSearchApi()) {
+      const metaResp = await fetch('/api/listings/meta', {cache: 'no-cache', credentials: 'same-origin'});
+      if (!metaResp.ok) throw new Error('HTTP ' + metaResp.status);
+      const meta = await metaResp.json();
+      SERVER_ALL_TOTAL = meta.all_total || 0;
+      ALL_DATA = [];
+      allDistricts = meta.districts || [];
+      selectedDistricts = new Set(allDistricts.map(({d}) => d));
+      renderDistrictList(allDistricts);
+      if (meta.tier_counts) {
+        for (const [tier, count] of Object.entries(meta.tier_counts)) {
+          const el = document.getElementById('tcnt-' + tier);
+          if (el) el.textContent = '(' + Number(count || 0).toLocaleString() + ')';
+        }
+      }
+      document.getElementById('loading').style.display = 'none';
+      await fetchServerPage(0, false);
+      return;
+    }
+    const resp = await fetch('data.json?shelf=all', {cache: 'no-cache'});
     if (!resp.ok) throw new Error('HTTP ' + resp.status);
     ALL_DATA = await resp.json();
     document.getElementById('loading').style.display = 'none';
@@ -891,6 +998,7 @@ function buildDistrictList() {
     counts[d] = (counts[d] || 0) + 1;
   }
   allDistricts = Object.entries(counts).sort((a,b) => b[1]-a[1]).map(([d,c]) => ({d,c}));
+  selectedDistricts = new Set(allDistricts.map(({d}) => d));
   renderDistrictList(allDistricts);
   computeTierCounts();
 }
@@ -913,7 +1021,7 @@ function computeTierCounts() {
 function renderDistrictList(list) {
   const wrap = document.getElementById('district-list');
   wrap.innerHTML = list.map(({d,c}) =>
-    `<label><input type="checkbox" class="d-cb" value="${escHtml(d)}" checked> ${escHtml(d)} (${c})</label>`
+    `<label><input type="checkbox" class="d-cb" value="${escAttr(d)}" onchange="updateDistrictSelection(this)" ${selectedDistricts.has(d) ? 'checked' : ''}> ${escHtml(d)} (${c})</label>`
   ).join('');
 }
 
@@ -923,12 +1031,20 @@ function filterDistrictList(q) {
   renderDistrictList(filtered);
 }
 
+function updateDistrictSelection(cb) {
+  if (cb.checked) selectedDistricts.add(cb.value);
+  else selectedDistricts.delete(cb.value);
+  updatePreviewCount();
+}
+
 function selectAllDistricts() {
-  document.querySelectorAll('.d-cb').forEach(cb => cb.checked = true);
+  selectedDistricts = new Set(allDistricts.map(({d}) => d));
+  filterDistrictList(document.getElementById('district-search')?.value || '');
   updatePreviewCount();
 }
 function clearAllDistricts() {
-  document.querySelectorAll('.d-cb').forEach(cb => cb.checked = false);
+  selectedDistricts.clear();
+  filterDistrictList(document.getElementById('district-search')?.value || '');
   updatePreviewCount();
 }
 
@@ -953,14 +1069,11 @@ function getFilters() {
   const fDrop     = document.getElementById('f-drop').checked;
   const fGem      = document.getElementById('f-gem').checked;
   const fVideo    = document.getElementById('f-video').checked;
-  const fNewBuild = document.getElementById('f-newbuild').checked;
   const fHideBlocked = document.getElementById('f-hide-blocked').checked;
   const fHideRelistings = document.getElementById('hide-relistings').checked;
   const minDistrictScore = parseInt(document.getElementById('min-score').value) || 1;
 
-  const checkedDistricts = new Set(
-    [...document.querySelectorAll('.d-cb:checked')].map(cb => cb.value)
-  );
+  const checkedDistricts = new Set(selectedDistricts);
 
   const checkedTypos = active_typos;  // Set from chip clicks
 
@@ -973,7 +1086,7 @@ function getFilters() {
   return {
     priceMin, priceMax, areaMin, areaMax, pm2Min, pm2Max, propType,
     sellerPrivate, sellerAgent, sellerDev, anySeller,
-    fFresh, fDrop, fGem, fVideo, fNewBuild, fHideBlocked, fHideRelistings,
+    fFresh, fDrop, fGem, fVideo, fHideBlocked, fHideRelistings,
     checkedDistricts, checkedTypos, minDistrictScore, checkedTiers,
   };
 }
@@ -1001,12 +1114,6 @@ function matchesFilter(l, f) {
   // Blacklist hide (only in 'all' mode)
   if (activeMode === 'all' && f.fHideBlocked && blocked_ids.has(sid)) return false;
 
-  // Novo Banco 70% mode — first LTV scenario is NB 70%, required cash = l.ltv.s[0].c
-  if (novoBancoMode) {
-    const cash70 = (l.ltv && l.ltv.s && l.ltv.s[0]) ? l.ltv.s[0].c : 9e9;
-    if (cash70 > SAVINGS_CAP) return false;
-  }
-
   // Edge filter pills (AND-combined)
   if (activeEdges.size > 0) {
     for (const edge of activeEdges) {
@@ -1016,8 +1123,9 @@ function matchesFilter(l, f) {
       if (edge === 'drop'    && !l.drop)                return false;
       if (edge === 'gem'     && !l.gem)                 return false;
       if (edge === 'video'   && !l.video)               return false;
-      if (edge === 'dom-lt-30'  && !(l.days < 30))      return false;
-      if (edge === 'dom-gt-365' && !(l.days > 365))     return false;
+      const daysKnown = hasKnownDays(l);
+      if (edge === 'dom-lt-30'  && !(daysKnown && l.days < 30))      return false;
+      if (edge === 'dom-gt-365' && !(daysKnown && l.days > 365))     return false;
     }
   }
 
@@ -1062,8 +1170,6 @@ function matchesFilter(l, f) {
   if (f.fDrop     && !l.drop)      return false;
   if (f.fGem      && !l.gem)       return false;
   if (f.fVideo    && !l.video)     return false;
-  if (f.fNewBuild && !l.new_build) return false;
-
   // Hide fraud relistings (Idealista re-uploads same flat to game freshness)
   if (f.fHideRelistings && l.relisting) return false;
 
@@ -1106,8 +1212,8 @@ function sortData(data, sortKey) {
     case 'price_asc':  d.sort((a,b) => a.price - b.price); break;
     case 'price_desc': d.sort((a,b) => b.price - a.price); break;
     case 'pm2_asc':    d.sort((a,b) => (a.pm2||9e9) - (b.pm2||9e9)); break;
-    case 'days_asc':   d.sort((a,b) => a.days - b.days); break;
-    case 'days_desc':  d.sort((a,b) => b.days - a.days); break;
+    case 'days_asc':   d.sort((a,b) => dayValue(a, Infinity) - dayValue(b, Infinity)); break;
+    case 'days_desc':  d.sort((a,b) => dayValue(b, -1) - dayValue(a, -1)); break;
     case 'area_asc':   d.sort((a,b) => (a.area||0) - (b.area||0)); break;
     case 'area_desc':  d.sort((a,b) => (b.area||0) - (a.area||0)); break;
   }
@@ -1117,7 +1223,16 @@ function sortData(data, sortKey) {
 // =====================================================================
 // APPLY FILTERS — main entry point
 // =====================================================================
-function applyFilters() {
+async function applyFilters() {
+  if (useSearchApi()) {
+    try {
+      await fetchServerPage(0, false);
+    } catch(e) {
+      document.getElementById('loading').innerHTML =
+        '<p style="color:red">Ошибка загрузки /api/listings/search: ' + e.message + '</p>';
+    }
+    return;
+  }
   const f = getFilters();
   const sortKey = document.getElementById('sort-select').value;
 
@@ -1151,7 +1266,7 @@ function setShelf(shelf) {
   applyFilters();
 }
 
-// === Category mode / edge filters / top50 / Novo Banco — ported from legacy ===
+// === Category mode / edge filters / top50 ===
 function setMode(m) {
   activeMode = m;
   document.querySelectorAll('.mode-bar .mode-btn[data-mode]').forEach(b => {
@@ -1180,22 +1295,24 @@ function toggleTop50() {
   applyFilters();
 }
 
-function toggleNovoBanco() {
-  novoBancoMode = !novoBancoMode;
-  const btn = document.querySelector('.nb-mode');
-  if (btn) btn.classList.toggle('active', novoBancoMode);
-  applyFilters();
-}
-
 function updateCategoryCounts() {
+  if (useSearchApi()) {
+    const setTxt = (id, v) => { const el = document.getElementById(id); if (el) el.textContent = v; };
+    setTxt('cnt-all', SERVER_RESULTS_TOTAL || 0);
+    setTxt('cnt-fav', _favs.size);
+    setTxt('cnt-contacted', _contacted.size);
+    setTxt('cnt-maybe', _maybe.size);
+    setTxt('cnt-block', blocked_ids.size);
+    return;
+  }
   // Count only items that pass the *non-mode* filters (price/area/typo/district/etc)
   // so counts reflect what user sees in each tab
-  const f = getFilters();
+  const f = {...getFilters(), fHideBlocked: false};
   const savedMode = activeMode;
   const savedTop50 = top50Mode;
   activeMode = 'all';
   top50Mode = false;
-  let favCnt = 0, conCnt = 0, mayCnt = 0, blkCnt = 0, allCnt = 0, nbCnt = 0;
+  let favCnt = 0, conCnt = 0, mayCnt = 0, blkCnt = 0, allCnt = 0;
   for (const l of ALL_DATA) {
     if (!matchesFilter(l, f)) continue;
     const sid = l.sid || l.id;
@@ -1204,8 +1321,6 @@ function updateCategoryCounts() {
     if (_maybe.has(sid))      mayCnt++;
     if (blocked_ids.has(sid)) blkCnt++;
     if (!blocked_ids.has(sid)) allCnt++;
-    const c70 = (l.ltv && l.ltv.s && l.ltv.s[0]) ? l.ltv.s[0].c : 9e9;
-    if (c70 <= SAVINGS_CAP) nbCnt++;
   }
   activeMode = savedMode;
   top50Mode = savedTop50;
@@ -1215,10 +1330,22 @@ function updateCategoryCounts() {
   setTxt('cnt-contacted', conCnt);
   setTxt('cnt-maybe', mayCnt);
   setTxt('cnt-block', blkCnt);
-  setTxt('cnt-nb', nbCnt);
 }
 
 function updatePreviewCount() {
+  if (useSearchApi()) {
+    const params = buildServerParams(0, 0, true);
+    fetch('/api/listings/search?' + params.toString(), {cache: 'no-cache', credentials: 'same-origin'})
+      .then(r => r.ok ? r.json() : null)
+      .then(data => {
+        if (!data) return;
+        document.getElementById('preview-count').textContent =
+          `Найдено: ${Number(data.total || 0).toLocaleString()} из ${Number(data.all_total || 0).toLocaleString()}`;
+        updateFilterBadge();
+      })
+      .catch(function(){ updateFilterBadge(); });
+    return;
+  }
   const f = getFilters();
   const cnt = ALL_DATA.filter(l => matchesFilter(l, f)).length;
   document.getElementById('preview-count').textContent = `Найдено: ${cnt.toLocaleString()} из ${ALL_DATA.length.toLocaleString()}`;
@@ -1242,7 +1369,6 @@ function countActiveFilters() {
   if (document.getElementById('f-drop').checked)     n++;
   if (document.getElementById('f-gem').checked)      n++;
   if (document.getElementById('f-video').checked)    n++;
-  if (document.getElementById('f-newbuild').checked) n++;
   const msVal = parseInt(document.getElementById('min-score')?.value) || 1;
   if (msVal > 1) n++;
   n += active_typos.size;
@@ -1250,7 +1376,7 @@ function countActiveFilters() {
   n += document.querySelectorAll('.tier-cb:checked').length;
   // District: count unchecked
   const totalD = allDistricts.length;
-  const checkedD = document.querySelectorAll('.d-cb:checked').length;
+  const checkedD = selectedDistricts.size;
   if (totalD > 0 && checkedD < totalD) n++;
   return n;
 }
@@ -1263,6 +1389,7 @@ function updateFilterBadge() {
     badge.textContent = n;
     badge.classList.add('visible');
   } else {
+    badge.textContent = '';
     badge.classList.remove('visible');
   }
 }
@@ -1320,6 +1447,20 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 function updateResultsUI() {
+  if (useSearchApi()) {
+    const total = SERVER_RESULTS_TOTAL;
+    const showing = FILTERED.length;
+    const allTotal = SERVER_ALL_TOTAL || total;
+    document.getElementById('results-count').textContent =
+      `Найдено: ${total.toLocaleString()} из ${allTotal.toLocaleString()}`;
+    document.getElementById('footer-stats').textContent =
+      showing < total ? `Показано ${showing.toLocaleString()} из ${total.toLocaleString()}` : '';
+    document.getElementById('btn-load-more').style.display =
+      showing < total ? 'inline-block' : 'none';
+    document.getElementById('counter-pill').textContent =
+      total.toLocaleString() + ' объектов';
+    return;
+  }
   const total = FILTERED.length;
   const showing = Math.min(rendered_count, total);
   document.getElementById('results-count').textContent =
@@ -1402,39 +1543,33 @@ function buildCard(l) {
   if (l.gem)       edgeBadges += `<span class="edge-badge eb-gem">💎 НАХОДКА</span>`;
   if (l.relisting) edgeBadges += '<span class="edge-badge eb-relisted">🔄 ПЕРЕЗАЛИВ</span>';
   if (l.video)     edgeBadges += '<span class="edge-badge eb-video">🎥 ВИДЕО</span>';
-  if (l.new_build) edgeBadges += '<span class="edge-badge eb-new">🏗️ НОВОСТРОЙКА</span>';
-
   // Seller badge in edge row
   if (l.seller === 'private')   edgeBadges += '<span class="edge-badge eb-seller">🧑 ЧАСТНОЕ</span>';
   else if (l.seller === 'agent') edgeBadges += '<span class="edge-badge eb-seller">🏢 АГЕНТСТВО</span>';
   else if (l.seller === 'developer') edgeBadges += '<span class="edge-badge eb-seller">🏗️ ЗАСТРОЙЩИК</span>';
 
   // DOM badge
-  const dom = l.days || 0;
-  let domClass = 'eb-dom-fresh';
-  if (dom >= 730)      domClass = 'eb-dom-ancient';
-  else if (dom >= 365) domClass = 'eb-dom-old';
-  else if (dom >= 180) domClass = 'eb-dom-stale';
-  else if (dom >= 30)  domClass = 'eb-dom-normal';
-  edgeBadges += `<span class="edge-badge ${domClass}">${domIcon(dom)} ${dom} дн</span>`;
+  const hasDom = hasKnownDays(l);
+  const dom = hasDom ? Number(l.days) : null;
+  if (hasDom) {
+    let domClass = 'eb-dom-fresh';
+    if (dom >= 730)      domClass = 'eb-dom-ancient';
+    else if (dom >= 365) domClass = 'eb-dom-old';
+    else if (dom >= 180) domClass = 'eb-dom-stale';
+    else if (dom >= 30)  domClass = 'eb-dom-normal';
+    edgeBadges += `<span class="edge-badge ${domClass}">${domIcon(dom)} ${dom} дн</span>`;
+  }
 
   // ── Region mismatch warn-badge — shown on 'all' and 'mismatch' shelves ────
   const warnBadge = (l.region_match === 0)
     ? '<span class="warn-badge">⚠ Регион?</span>'
     : '';
 
-  // ── Rating badge in card corner (top-right overlay) ──────────────────────
-  // Показываем только если есть оценка района. Без оценки → ничего не рендерим.
-  const cornerBadge = getRatingCornerBadge(l);
-
   // ── Location quality badge — GPS verified / address-only ─────────────────
   const locQualityBadge = getLocationQualityBadge(l);
 
-  // ── Photo carousel (multi-photo support) ─────────────────────────────────
-  // Prefer l.photos array (new field). Fallback to single l.photo for backward compat.
-  const photoList = (Array.isArray(l.photos) && l.photos.length)
-    ? l.photos
-    : (l.photo ? [l.photo] : []);
+  // Show exactly one photo per listing to keep cards light and prevent overflow.
+  const photoList = l.photo ? [l.photo] : [];
   let photoHtml;
   if (photoList.length === 0) {
     photoHtml = `<div class="photos no-photo"><div class="photo-empty">Без фото</div></div>`;
@@ -1454,8 +1589,9 @@ function buildCard(l) {
   const mapsUrl = `https://www.google.com/maps/search/${encodeURIComponent(mapsQuery)}`;
 
   // ── Tracking row ─────────────────────────────────────────────────────────
-  const foundDate = l.found ? `<span>Найдено: ${escHtml(l.found)}</span>` : '';
-  const trackingHtml = `<div class="tracking"><span>На рынке: <b>${dom} дн</b></span>${foundDate}</div>`;
+  const listedDate = l.listed ? `<span>Выставлено: ${escHtml(l.listed)}</span>` : '';
+  const daysText = hasDom ? `<span>На рынке: <b>${dom} дн</b></span>` : '';
+  const trackingHtml = (daysText || listedDate) ? `<div class="tracking">${daysText}${listedDate}</div>` : '';
 
   // ── Description preview ──────────────────────────────────────────────────
   // Always render the slot — CSS line-clamp keeps it 3 lines, min-height reserves space if empty
@@ -1472,37 +1608,19 @@ function buildCard(l) {
   }
   const tagsHtml = `<div class="tags">${tagInner}</div>`;
 
-  // ── IMT Jovem badge — always render slot ─────────────────────────────────
-  const imtHtml = `<div class="imt-slot">${l.imt_jovem ? '<span class="imt-badge">🎁 IMT Jovem 0%</span>' : ''}${getRatingBadge(l)}</div>`;
-
-  // ── LTV block — always render slot (min-height keeps row aligned) ─────────
-  let ltvHtml = '';
-  if (l.ltv && l.ltv.s && l.ltv.s.length > 0) {
-    const LTV_COLORS = ['#e53935', '#FB8C00', '#43A047'];
-    const ltvParts = l.ltv.s.map((sc, i) => {
-      const color = LTV_COLORS[i] || '#888';
-      const icon = sc.c <= 5000 ? '✓' : sc.c <= 30000 ? '~' : '✗';
-      const bg = sc.c <= 5000 ? '#e8f5e9' : sc.c <= 30000 ? '#fff8e1' : '#fce4ec';
-      const imtNote = l.imt_jovem ? ' (IMT=0)' : (l.ltv.imt > 0 ? ` (IMT=${l.ltv.imt.toLocaleString()})` : '');
-      return `<span class="ltv-tag" style="border-left:3px solid ${color};background:${bg}">${icon} ${escHtml(sc.l)}: ${sc.c.toLocaleString()} EUR своих${imtNote} | ${sc.m.toLocaleString()} EUR/мес</span>`;
-    }).join('');
-    ltvHtml = `<div class="ltv-block">${ltvParts}</div>`;
-  } else {
-    // Empty slot — reserve space so cards without LTV align to same height
-    ltvHtml = `<div class="ltv-block"></div>`;
-  }
+  // ── Rating/meta slot ─────────────────────────────────────────────────────
+  const metaHtml = `<div class="imt-slot">${getRatingBadge(l)}</div>`;
 
   div.innerHTML = `
-    ${cornerBadge}
     <div class="card-header">
       <span class="type-badge" style="background:${badgeColor}">${typeLabel}</span>
       ${sellerBadge}
       <div class="card-actions">
-        <button class="star-btn"      data-action="fav"       title="Избранное">☆</button>
-        <button class="contacted-btn" data-action="contacted" title="Связался">☎</button>
-        <button class="maybe-btn"     data-action="maybe"     title="Может быть">±</button>
-        <button class="block-btn"     data-action="block"     title="Заблокировать">✕</button>
-        <button class="note-btn"      data-action="note"      title="Заметка">✎</button>
+        <button class="star-btn"      data-action="fav"       data-testid="action-fav"       title="Избранное">☆</button>
+        <button class="contacted-btn" data-action="contacted" data-testid="action-contacted" title="Связался">☎</button>
+        <button class="maybe-btn"     data-action="maybe"     data-testid="action-maybe"     title="Может быть">±</button>
+        <button class="block-btn"     data-action="block"     data-testid="action-block"     title="Заблокировать">✕</button>
+        <button class="note-btn"      data-action="note"      data-testid="action-note"      title="Заметка">✎</button>
       </div>
     </div>
     <div class="edge-badges">${edgeBadges}</div>
@@ -1519,8 +1637,7 @@ function buildCard(l) {
     ${trackingHtml}
     ${descHtml}
     ${tagsHtml}
-    ${imtHtml}
-    ${ltvHtml}
+    ${metaHtml}
     <div class="note-display" id="nd-${sidAttr}"></div>
     <div class="note-editor" id="ne-${sidAttr}">
       <textarea id="nt-${sidAttr}" placeholder="Заметка..." rows="2"></textarea>
@@ -1528,7 +1645,7 @@ function buildCard(l) {
     </div>
     <div class="buttons">
       <a href="${escAttr(safeUrl(l.url))}" target="_blank" rel="noopener noreferrer" class="btn">Смотреть</a>
-      <a href="${escAttr(mapsUrl)}" target="_blank" class="btn btn-map">Карта</a>
+      <a href="${escAttr(mapsUrl)}" target="_blank" rel="noopener noreferrer" class="btn btn-map">Карта</a>
     </div>`;
 
   return div;
@@ -1540,6 +1657,14 @@ function domIcon(d) {
   if (d < 365) return '🟠';
   if (d < 730) return '🔴';
   return '⚫';
+}
+
+function dayValue(listing, fallback) {
+  return hasKnownDays(listing) ? Number(listing.days) : fallback;
+}
+
+function hasKnownDays(listing) {
+  return listing.days !== null && listing.days !== undefined && listing.days !== '' && Number.isFinite(Number(listing.days));
 }
 
 function getLocationQualityBadge(l) {
@@ -1596,6 +1721,12 @@ function getRatingCornerBadge(l) {
 // LOAD MORE
 // =====================================================================
 function loadMore() {
+  if (useSearchApi()) {
+    fetchServerPage(FILTERED.length, true).catch(function(e) {
+      document.getElementById('footer-stats').textContent = 'Ошибка загрузки: ' + e.message;
+    });
+    return;
+  }
   const next = FILTERED.slice(rendered_count, rendered_count + PAGE_SIZE);
   renderCards(next);
   rendered_count += next.length;
@@ -1671,7 +1802,7 @@ function toggleBlock(sid) {
 function openNote(sid) {
   const editor = document.getElementById('ne-' + sid);
   if (!editor) return;
-  const isOpen = editor.style.display !== 'none';
+  const isOpen = getComputedStyle(editor).display !== 'none';
   editor.style.display = isOpen ? 'none' : 'block';
   if (!isOpen) {
     const notes = lsGet(LS.notes) || {};
@@ -1762,7 +1893,6 @@ function resetFilters() {
   document.getElementById('f-drop').checked     = false;
   document.getElementById('f-gem').checked      = false;
   document.getElementById('f-video').checked    = false;
-  document.getElementById('f-newbuild').checked = false;
   document.getElementById('f-hide-blocked').checked = true;
   // hide-relistings is a *user preference* (not a search filter), so reset
   // honours the stored value rather than always defaulting to false.
@@ -1774,7 +1904,22 @@ function resetFilters() {
   // Reset tier checkboxes (TOP/BUY/CHECK/AVOID/BLACKLIST/NONE)
   document.querySelectorAll('.tier-cb').forEach(cb => cb.checked = false);
   active_typos.clear();
+  activeEdges.clear();
+  top50Mode = false;
+  activeMode = 'all';
+  activeShelf = 'match';
+  document.getElementById('sort-select').value = 'price_asc';
+  document.getElementById('district-search').value = '';
   document.querySelectorAll('.cb-chip').forEach(c => c.classList.remove('active'));
+  document.querySelectorAll('.edge-pill').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.mode-bar .mode-btn[data-mode]').forEach(b => {
+    b.classList.toggle('active', b.dataset.mode === activeMode);
+  });
+  document.querySelectorAll('.shelf-tab[data-shelf]').forEach(b => {
+    b.classList.toggle('active', b.dataset.shelf === activeShelf);
+  });
+  const top50Btn = document.querySelector('.top50-mode');
+  if (top50Btn) top50Btn.classList.remove('active');
   document.querySelectorAll('.preset-btn').forEach(b => b.classList.remove('active'));
   selectAllDistricts();
   applyFilters();

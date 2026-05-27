@@ -191,3 +191,117 @@ def test_rate_limit_after_5_attempts(client):
             "/api/login", json={"username": "nobody", "password": "x"}
         )
     assert last.status_code == 429
+
+
+def test_public_static_route_does_not_expose_listing_assets(client):
+    assert client.get("/static/login.html").status_code == 200
+    assert client.get("/static/admin.html").status_code == 401
+    assert client.get("/static/index.html").status_code == 401
+    assert client.get("/static/listings/data.json").status_code == 401
+
+
+def test_data_json_uses_private_cache_headers(client, tmp_path):
+    import app as app_module
+
+    old_listings_dir = app_module._LISTINGS_DIR
+    (tmp_path / "data.json").write_text(
+        '[{"id":"1","region_match":1}]', encoding="utf-8"
+    )
+    app_module._LISTINGS_DIR = tmp_path
+    try:
+        client.post("/api/login", json={"username": "serhii", "password": "testpass123"})
+        r = client.get("/listings/data.json")
+    finally:
+        app_module._LISTINGS_DIR = old_listings_dir
+
+    assert r.status_code == 200
+    assert r.headers["Cache-Control"].startswith("private")
+    assert "Cookie" in r.headers["Vary"]
+
+
+def test_listings_search_api_returns_sliced_results(client, tmp_path):
+    import app as app_module
+
+    old_listings_dir = app_module._LISTINGS_DIR
+    (tmp_path / "data.json").write_text(
+        """
+        [
+          {"id":"1","price":100000,"district":"Lisboa","region_match":1,"days":10},
+          {"id":"2","price":200000,"district":"Porto","region_match":0,"days":20},
+          {"id":"3","price":300000,"district":"Lisboa","region_match":null,"days":30}
+        ]
+        """,
+        encoding="utf-8",
+    )
+    app_module._LISTINGS_DIR = tmp_path
+    try:
+        client.post("/api/login", json={"username": "serhii", "password": "testpass123"})
+        r = client.get("/api/listings/search?shelf=all&limit=2&offset=1&sort=price_asc")
+    finally:
+        app_module._LISTINGS_DIR = old_listings_dir
+
+    assert r.status_code == 200
+    data = r.get_json()
+    assert data["all_total"] == 3
+    assert data["total"] == 3
+    assert data["offset"] == 1
+    assert data["limit"] == 2
+    assert [item["id"] for item in data["items"]] == ["2", "3"]
+    assert data["has_more"] is False
+
+
+def test_listings_meta_returns_district_counts(client, tmp_path):
+    import app as app_module
+
+    old_listings_dir = app_module._LISTINGS_DIR
+    (tmp_path / "data.json").write_text(
+        '[{"id":"1","district":"Lisboa","district_recommendation":"TOP"},'
+        '{"id":"2","district":"Lisboa"},'
+        '{"id":"3","district":"Porto","district_recommendation":"BUY"}]',
+        encoding="utf-8",
+    )
+    app_module._LISTINGS_DIR = tmp_path
+    try:
+        client.post("/api/login", json={"username": "serhii", "password": "testpass123"})
+        r = client.get("/api/listings/meta")
+    finally:
+        app_module._LISTINGS_DIR = old_listings_dir
+
+    assert r.status_code == 200
+    data = r.get_json()
+    assert data["all_total"] == 3
+    assert data["districts"][0] == {"d": "Lisboa", "c": 2}
+    assert data["tier_counts"]["TOP"] == 1
+    assert data["tier_counts"]["BUY"] == 1
+    assert data["tier_counts"]["NONE"] == 1
+
+
+def test_legacy_district_html_redirects_to_search(client):
+    client.post("/api/login", json={"username": "serhii", "password": "testpass123"})
+
+    r = client.get("/listings/lisboa.html", follow_redirects=False)
+
+    assert r.status_code == 302
+    assert r.headers["Location"].endswith("/listings/search.html")
+
+
+def test_sync_requires_admin_user(client):
+    r = client.post("/api/login", json={"username": "serhii", "password": "testpass123"})
+    csrf = r.get_json()["csrf_token"]
+    r = client.post(
+        "/api/admin/users",
+        json={"username": "viewer", "password": "viewerpass"},
+        headers={"X-CSRF-Token": csrf},
+    )
+    assert r.status_code == 200
+
+    client.get("/logout", follow_redirects=False)
+    r = client.post("/api/login", json={"username": "viewer", "password": "viewerpass"})
+    csrf = r.get_json()["csrf_token"]
+    r = client.post(
+        "/api/sync",
+        json={"target_username": "serhii"},
+        headers={"X-CSRF-Token": csrf},
+    )
+
+    assert r.status_code == 403
